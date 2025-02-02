@@ -30,9 +30,13 @@ endif()
 # precompiled header
 add_subdirectory(common)
 
+# vector maths
+add_subdirectory(glm)
+
 # Add source to this project's executable.
 add_executable(${PROJECT_NAME} "vk-hpp-tutorial.cpp" "vk-hpp-tutorial.h")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE common)
+target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
 target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)
 
