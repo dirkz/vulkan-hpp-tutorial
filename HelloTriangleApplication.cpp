@@ -5,18 +5,18 @@ static const uint32_t Height = 600;
 
 struct HelloTriangleApplication
 {
-    void run()
+    void Run()
     {
-        initWindow();
-        initVulkan();
-        mainLoop();
-        cleanup();
+        InitWindow();
+        InitVulkan();
+        MainLoop();
+        Cleanup();
     }
 
   private:
     GLFWwindow *m_window;
 
-    void initWindow()
+    void InitWindow()
     {
         glfwInit();
 
@@ -26,11 +26,11 @@ struct HelloTriangleApplication
         m_window = glfwCreateWindow(Width, Height, "Vulkan", nullptr, nullptr);
     }
 
-    void initVulkan()
+    void InitVulkan()
     {
     }
 
-    void mainLoop()
+    void MainLoop()
     {
         while (!glfwWindowShouldClose(m_window))
         {
@@ -38,7 +38,7 @@ struct HelloTriangleApplication
         }
     }
 
-    void cleanup()
+    void Cleanup()
     {
         glfwDestroyWindow(m_window);
         glfwTerminate();
@@ -51,7 +51,7 @@ int main()
 
     try
     {
-        app.run();
+        app.Run();
     }
     catch (const std::exception &e)
     {
