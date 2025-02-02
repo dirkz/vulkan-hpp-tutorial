@@ -12,7 +12,7 @@ You'll need the [Vulkan SDK](https://vulkan.lunarg.com/sdk/home), or you
 Other dependencies are "vendored in", like GLM and GLfW. In this case, that means
 they are integrated as git submodules.
 
-Please note that I tend to prefer ssh repository URL wherever possible.
+Please note that I tend to prefer ssh repository URLs wherever feasible.
 
 ## How to check out
 
