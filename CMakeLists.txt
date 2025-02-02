@@ -36,7 +36,7 @@ add_subdirectory(glm)
 add_subdirectory(glfw)
 
 # Add source to this project's executable.
-add_executable(${PROJECT_NAME} "vk-hpp-tutorial.cpp" "vk-hpp-tutorial.h")
+add_executable(${PROJECT_NAME} "HelloTriangleApplication.cpp")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE common)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
