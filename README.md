@@ -14,7 +14,7 @@ they are integrated as git submodules.
 
 Please note that I tend to prefer ssh repository URLs wherever feasible.
 
-## How to check out
+## How to check out (with all submodules)
 
 Either from the start:
 
