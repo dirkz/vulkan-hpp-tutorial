@@ -59,7 +59,7 @@ struct HelloTriangleApplication
         ApplicationInfo appInfo{"Hello Triangle", VK_MAKE_API_VERSION(0, 0, 1, 0), "No Engine",
                                 VK_MAKE_API_VERSION(0, 0, 1, 0), VK_API_VERSION_1_0};
 
-        InstanceCreateInfo createInfo{InstanceCreateFlags{}, &appInfo, {}, extensions};
+        InstanceCreateInfo createInfo{{}, &appInfo, {}, extensions};
     }
 
     void InitVulkan()
