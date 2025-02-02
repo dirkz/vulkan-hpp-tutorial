@@ -1,5 +1,8 @@
 #include "stdafx.h"
 
+using namespace std;
+using namespace vk;
+
 static const uint32_t Width = 800;
 static const uint32_t Height = 600;
 
@@ -26,8 +29,36 @@ struct HelloTriangleApplication
         m_window = glfwCreateWindow(Width, Height, "Vulkan", nullptr, nullptr);
     }
 
+    vector<string> WindowExtensions()
+    {
+        uint32_t glfwExtensionCount = 0;
+        const char **glfwExtensions;
+
+        glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+
+        vector<string> extensions(glfwExtensionCount);
+
+        for (uint32_t i = 0; i < glfwExtensionCount; ++i)
+        {
+            extensions[i] = string{glfwExtensions[i]};
+        }
+
+        return extensions;
+    }
+
+    void CreateInstance()
+    {
+        vector<string> glfwExtensions = WindowExtensions();
+
+        ApplicationInfo appInfo{"Hello Triangle", VK_MAKE_VERSION(1, 0, 0), "No Engine",
+                                VK_MAKE_VERSION(0, 0, 1), VK_API_VERSION_1_0};
+
+        InstanceCreateInfo createInfo{InstanceCreateFlags{}, &appInfo, {}, {}};
+    }
+
     void InitVulkan()
     {
+        CreateInstance();
     }
 
     void MainLoop()
