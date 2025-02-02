@@ -56,8 +56,8 @@ struct HelloTriangleApplication
         vector<string> glfwExtensions = WindowExtensions();
         vector<const char *> extensions = CharPointers(glfwExtensions);
 
-        ApplicationInfo appInfo{"Hello Triangle", VK_MAKE_VERSION(1, 0, 0), "No Engine",
-                                VK_MAKE_VERSION(0, 0, 1), VK_API_VERSION_1_0};
+        ApplicationInfo appInfo{"Hello Triangle", VK_MAKE_API_VERSION(0, 0, 1, 0), "No Engine",
+                                VK_MAKE_API_VERSION(0, 0, 1, 0), VK_API_VERSION_1_0};
 
         InstanceCreateInfo createInfo{InstanceCreateFlags{}, &appInfo, {}, extensions};
     }
@@ -86,7 +86,7 @@ struct HelloTriangleApplication
 
 int main()
 {
-    vkz::HelloTriangleApplication app;
+    vkz::HelloTriangleApplication app{};
 
     try
     {
