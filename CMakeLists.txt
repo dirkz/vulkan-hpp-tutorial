@@ -31,7 +31,8 @@ endif()
 add_subdirectory(common)
 
 # Add source to this project's executable.
-add_executable (vk-hpp-tutorial "vk-hpp-tutorial.cpp" "vk-hpp-tutorial.h")
+add_executable(${PROJECT_NAME} "vk-hpp-tutorial.cpp" "vk-hpp-tutorial.h")
 
-target_link_libraries(vk-hpp-tutorial PRIVATE common)
+target_link_libraries(${PROJECT_NAME} PRIVATE common)
+target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)
 

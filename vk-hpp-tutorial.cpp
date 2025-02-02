@@ -4,9 +4,15 @@
 #include "vk-hpp-tutorial.h"
 
 using namespace std;
+using namespace vk;
 
 int main()
 {
-    cout << "Hello CMake." << endl;
+    vector<ExtensionProperties> properties = enumerateInstanceExtensionProperties();
+    for (const auto &property : properties)
+    {
+        cout << "*** extension" << property.extensionName << "\n";
+    }
+
     return 0;
 }
