@@ -1,7 +1,12 @@
 #include "stdafx.h"
 
+#include "Util.h"
+
 using namespace std;
 using namespace vk;
+
+namespace vkz
+{
 
 static const uint32_t Width = 800;
 static const uint32_t Height = 600;
@@ -49,11 +54,12 @@ struct HelloTriangleApplication
     void CreateInstance()
     {
         vector<string> glfwExtensions = WindowExtensions();
+        vector<const char *> extensions = CharPointers(glfwExtensions);
 
         ApplicationInfo appInfo{"Hello Triangle", VK_MAKE_VERSION(1, 0, 0), "No Engine",
                                 VK_MAKE_VERSION(0, 0, 1), VK_API_VERSION_1_0};
 
-        InstanceCreateInfo createInfo{InstanceCreateFlags{}, &appInfo, {}, {}};
+        InstanceCreateInfo createInfo{InstanceCreateFlags{}, &appInfo, {}, extensions};
     }
 
     void InitVulkan()
@@ -76,9 +82,11 @@ struct HelloTriangleApplication
     }
 };
 
+} // namespace vkz
+
 int main()
 {
-    HelloTriangleApplication app;
+    vkz::HelloTriangleApplication app;
 
     try
     {
