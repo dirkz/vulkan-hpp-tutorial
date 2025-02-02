@@ -3,7 +3,7 @@
 namespace vkz
 {
 
-std::vector<const char *> CharPointers(std::vector<std::string> strings)
+std::vector<const char *> TmpCharPointers(std::vector<std::string> strings)
 {
     std::vector<const char *> result;
 

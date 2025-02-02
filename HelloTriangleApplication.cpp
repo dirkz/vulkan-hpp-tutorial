@@ -54,7 +54,7 @@ struct HelloTriangleApplication
     void CreateInstance()
     {
         vector<string> glfwExtensions = WindowExtensions();
-        vector<const char *> extensions = CharPointers(glfwExtensions);
+        vector<const char *> extensions = TmpCharPointers(glfwExtensions);
 
         ApplicationInfo appInfo{"Hello Triangle", VK_MAKE_API_VERSION(0, 0, 1, 0), "No Engine",
                                 VK_MAKE_API_VERSION(0, 0, 1, 0), VK_API_VERSION_1_0};
