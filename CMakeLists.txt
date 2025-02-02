@@ -19,6 +19,19 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_compile_definitions(_UNICODE UNICODE)
 
+find_package(Vulkan REQUIRED)
+
+if(NOT Vulkan_FOUND)
+    message(FATAL_ERROR "Vulkan SDK could not be found, have you set VULKAN_SDK correctly?")
+else()
+    message(STATUS "Vulkan: Version ${Vulkan_VERSION}")
+endif()
+
+# precompiled header
+add_subdirectory(common)
+
 # Add source to this project's executable.
 add_executable (vk-hpp-tutorial "vk-hpp-tutorial.cpp" "vk-hpp-tutorial.h")
+
+target_link_libraries(vk-hpp-tutorial PRIVATE common)
 
