@@ -12,7 +12,25 @@ DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
     return messenger->DebugCallback(messageSeverity, messageType, pCallbackData);
 }
 
+DebugMessenger::DebugMessenger()
+{
+}
+
 DebugMessenger::DebugMessenger(vk::Instance instance)
+{
+    m_debugMessenger = instance.createDebugUtilsMessengerEXTUnique(CreateInfo());
+}
+
+VKAPI_ATTR VkBool32 VKAPI_CALL
+DebugMessenger::DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+                              VkDebugUtilsMessageTypeFlagsEXT messageType,
+                              const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData)
+{
+    std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
+    return VK_FALSE;
+}
+
+vk::DebugUtilsMessengerCreateInfoEXT DebugMessenger::CreateInfo()
 {
     vk::DebugUtilsMessageSeverityFlagsEXT severityFlags =
         vk::DebugUtilsMessageSeverityFlagBitsEXT::eError |
@@ -23,16 +41,7 @@ DebugMessenger::DebugMessenger(vk::Instance instance)
     vk::DebugUtilsMessengerCreateInfoEXT createInfo{
         {}, severityFlags, messageTypeFlags, zvk::DebugCallback, this};
 
-    m_debugMessenger = instance.createDebugUtilsMessengerEXTUnique(createInfo);
-}
-
-VKAPI_ATTR VkBool32 VKAPI_CALL
-DebugMessenger::DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-                              VkDebugUtilsMessageTypeFlagsEXT messageType,
-                              const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData)
-{
-    std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
-    return VK_FALSE;
+    return createInfo;
 }
 
 } // namespace zvk

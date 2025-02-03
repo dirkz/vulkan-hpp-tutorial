@@ -7,6 +7,16 @@ namespace zvk
 
 struct DebugMessenger
 {
+    /// <summary>
+    /// Create a stand-alone debug utils messenger suitable before instance creation
+    /// and during its destruction.
+    /// </summary>
+    DebugMessenger();
+
+    /// <summary>
+    /// Create a debug utils messenger tied to an (already created) instance.
+    /// </summary>
+    /// <param name="instance">The instance to receive messages from</param>
     DebugMessenger(vk::Instance instance);
 
     VKAPI_ATTR VkBool32 VKAPI_CALL
@@ -16,6 +26,13 @@ struct DebugMessenger
 
   private:
     vk::UniqueDebugUtilsMessengerEXT m_debugMessenger;
+
+    /// <summary>
+    /// Shared method for creating a <code>DebugUtilsMessengerCreateInfoEXT</code>.
+    /// </summary>
+    /// <returns></returns>
+    vk::DebugUtilsMessengerCreateInfoEXT CreateInfo();
+
 };
 
 } // namespace zvk
