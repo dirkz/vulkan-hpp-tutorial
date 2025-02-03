@@ -36,7 +36,7 @@ add_subdirectory(glm)
 add_subdirectory(glfw)
 
 # Add source to this project's executable.
-add_executable(${PROJECT_NAME} "HelloTriangleApplication.cpp"   "Validation.h" "Validation.cpp")
+add_executable(${PROJECT_NAME} "HelloTriangleApplication.cpp"   "Validation.h" "Validation.cpp" "Extensions.h" "Extensions.cpp" "Constants.h")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE common)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)

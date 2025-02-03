@@ -1,17 +1,13 @@
 #include "Validation.h"
 
+#include "Constants.h"
+
 using namespace std;
 
 namespace zvk
 {
 
 static const std::vector<const char *> ValidationLayers = {"VK_LAYER_KHRONOS_validation"};
-
-#ifdef NDEBUG
-static const bool EnableValidationLayers = false;
-#else
-static const bool EnableValidationLayers = true;
-#endif
 
 static bool CheckValidationLayerSupport()
 {
