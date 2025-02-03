@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include "DebugMessenger.h"
 #include "Extensions.h"
 #include "Validation.h"
 
@@ -30,6 +31,7 @@ struct HelloTriangleApplication
   private:
     GLFWwindow *m_window;
     vk::UniqueInstance m_instance;
+    std::unique_ptr<DebugMessenger> m_debugMessenger;
 
     void InitWindow()
     {
@@ -59,6 +61,7 @@ struct HelloTriangleApplication
     {
         VULKAN_HPP_DEFAULT_DISPATCHER.init();
         CreateInstance();
+        m_debugMessenger.reset(new DebugMessenger{m_instance.get()});
     }
 
     void MainLoop()
