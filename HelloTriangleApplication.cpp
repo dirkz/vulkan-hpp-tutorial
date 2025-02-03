@@ -13,6 +13,10 @@ static const uint32_t Height = 600;
 
 struct HelloTriangleApplication
 {
+    HelloTriangleApplication() : m_window{nullptr}
+    {
+    }
+
     void Run()
     {
         VULKAN_HPP_DEFAULT_DISPATCHER.init();
@@ -90,10 +94,9 @@ struct HelloTriangleApplication
 
 int main()
 {
-    vkz::HelloTriangleApplication app{};
-
     try
     {
+		vkz::HelloTriangleApplication app{};
         app.Run();
     }
     catch (const std::exception &e)
