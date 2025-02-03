@@ -19,6 +19,12 @@ struct DebugMessenger
     /// <param name="instance">The instance to receive messages from</param>
     DebugMessenger(vk::Instance instance);
 
+    /// <summary>
+    /// Shared method for creating a <code>DebugUtilsMessengerCreateInfoEXT</code>.
+    /// </summary>
+    /// <returns></returns>
+    vk::DebugUtilsMessengerCreateInfoEXT CreateInfo();
+
     VKAPI_ATTR VkBool32 VKAPI_CALL
     DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
                   VkDebugUtilsMessageTypeFlagsEXT messageType,
@@ -26,13 +32,6 @@ struct DebugMessenger
 
   private:
     vk::UniqueDebugUtilsMessengerEXT m_instanceDebugMessenger;
-
-    /// <summary>
-    /// Shared method for creating a <code>DebugUtilsMessengerCreateInfoEXT</code>.
-    /// </summary>
-    /// <returns></returns>
-    vk::DebugUtilsMessengerCreateInfoEXT CreateInfo();
-
 };
 
 } // namespace zvk
