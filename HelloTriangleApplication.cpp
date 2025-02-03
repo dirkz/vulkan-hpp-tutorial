@@ -5,7 +5,6 @@
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
 
 using namespace std;
-using namespace vk;
 
 namespace zvk
 {
@@ -62,13 +61,13 @@ struct HelloTriangleApplication
     {
         vector<const char *> extensions = WindowExtensions();
 
-        ApplicationInfo appInfo{"Hello Triangle", VK_MAKE_API_VERSION(0, 0, 1, 0), "No Engine",
-                                VK_MAKE_API_VERSION(0, 0, 1, 0), VK_API_VERSION_1_0};
+        vk::ApplicationInfo appInfo{"Hello Triangle", VK_MAKE_API_VERSION(0, 0, 1, 0), "No Engine",
+                                    VK_MAKE_API_VERSION(0, 0, 1, 0), VK_API_VERSION_1_0};
 
         vector<const char *> validationLayers = EnabledValidationLayers();
 
-        InstanceCreateInfo createInfo{{}, &appInfo, validationLayers, extensions};
-        m_instance = createInstanceUnique(createInfo);
+        vk::InstanceCreateInfo createInfo{{}, &appInfo, validationLayers, extensions};
+        m_instance = vk::createInstanceUnique(createInfo);
         VULKAN_HPP_DEFAULT_DISPATCHER.init(*m_instance);
     }
 

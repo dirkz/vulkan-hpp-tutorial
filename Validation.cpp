@@ -1,7 +1,6 @@
 #include "Validation.h"
 
 using namespace std;
-using namespace vk;
 
 namespace zvk
 {
@@ -16,11 +15,11 @@ static const bool EnableValidationLayers = true;
 
 bool CheckValidationLayerSupport()
 {
-    vector<LayerProperties> layerProperties = enumerateInstanceLayerProperties();
+    vector<vk::LayerProperties> layerProperties = vk::enumerateInstanceLayerProperties();
 
     set<string> layerNames{};
 
-    for (const LayerProperties &properties : layerProperties)
+    for (const vk::LayerProperties &properties : layerProperties)
     {
         layerNames.insert(properties.layerName);
     }
