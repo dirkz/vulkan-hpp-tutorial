@@ -1,4 +1,4 @@
-#include "DebugMessenger.h"
+#include "DebugUtilsMessenger.h"
 
 namespace zvk
 {
@@ -8,20 +8,20 @@ DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
               VkDebugUtilsMessageTypeFlagsEXT messageType,
               const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData, void *pUserData)
 {
-    DebugMessenger *messenger = static_cast<DebugMessenger *>(pUserData);
+    DebugUtilsMessenger *messenger = static_cast<DebugUtilsMessenger *>(pUserData);
     return messenger->DebugCallback(messageSeverity, messageType, pCallbackData);
 }
 
-DebugMessenger::DebugMessenger()
+DebugUtilsMessenger::DebugUtilsMessenger()
 {
 }
 
-DebugMessenger::DebugMessenger(vk::Instance instance)
+DebugUtilsMessenger::DebugUtilsMessenger(vk::Instance instance)
 {
     m_instanceDebugMessenger = instance.createDebugUtilsMessengerEXTUnique(CreateInfo());
 }
 
-vk::DebugUtilsMessengerCreateInfoEXT DebugMessenger::CreateInfo()
+vk::DebugUtilsMessengerCreateInfoEXT DebugUtilsMessenger::CreateInfo()
 {
     vk::DebugUtilsMessageSeverityFlagsEXT severityFlags =
         vk::DebugUtilsMessageSeverityFlagBitsEXT::eError |
@@ -36,7 +36,7 @@ vk::DebugUtilsMessengerCreateInfoEXT DebugMessenger::CreateInfo()
 }
 
 VKAPI_ATTR VkBool32 VKAPI_CALL
-DebugMessenger::DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+DebugUtilsMessenger::DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
                               VkDebugUtilsMessageTypeFlagsEXT messageType,
                               const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData)
 {

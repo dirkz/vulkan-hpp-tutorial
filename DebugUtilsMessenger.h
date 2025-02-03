@@ -5,19 +5,19 @@
 namespace zvk
 {
 
-struct DebugMessenger
+struct DebugUtilsMessenger
 {
     /// <summary>
     /// Create a stand-alone debug utils messenger suitable before instance creation
     /// and during its destruction.
     /// </summary>
-    DebugMessenger();
+    DebugUtilsMessenger();
 
     /// <summary>
     /// Create a debug utils messenger tied to an (already created) instance.
     /// </summary>
     /// <param name="instance">The instance to receive messages from</param>
-    DebugMessenger(vk::Instance instance);
+    DebugUtilsMessenger(vk::Instance instance);
 
     /// <summary>
     /// Shared method for creating a <code>DebugUtilsMessengerCreateInfoEXT</code>.

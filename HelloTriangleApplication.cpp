@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "Constants.h"
-#include "DebugMessenger.h"
+#include "DebugUtilsMessenger.h"
 #include "Extensions.h"
 #include "Validation.h"
 
@@ -32,8 +32,8 @@ struct HelloTriangleApplication
   private:
     GLFWwindow *m_window;
     vk::UniqueInstance m_instance;
-    std::unique_ptr<DebugMessenger> m_instanceDebugMessenger;
-    std::unique_ptr<DebugMessenger> m_standaloneDebugMessenger;
+    std::unique_ptr<DebugUtilsMessenger> m_instanceDebugMessenger;
+    std::unique_ptr<DebugUtilsMessenger> m_standaloneDebugMessenger;
 
     void InitWindow()
     {
@@ -57,7 +57,7 @@ struct HelloTriangleApplication
         if (EnableValidationLayers)
         {
             // Create the debug messenger for before and after the instance.
-            m_standaloneDebugMessenger.reset(new DebugMessenger{});
+            m_standaloneDebugMessenger.reset(new DebugUtilsMessenger{});
         }
 
         vk::InstanceCreateInfo createInfo{{}, &appInfo, validationLayers, extensions};
@@ -73,7 +73,7 @@ struct HelloTriangleApplication
         if (EnableValidationLayers)
         {
             // Create the debug messenger for the instance.
-            m_instanceDebugMessenger.reset(new DebugMessenger{m_instance.get()});
+            m_instanceDebugMessenger.reset(new DebugUtilsMessenger{m_instance.get()});
         }
     }
 
