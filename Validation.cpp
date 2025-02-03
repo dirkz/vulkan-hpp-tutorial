@@ -45,6 +45,11 @@ std::vector<const char *> EnabledValidationLayers()
     }
     else
     {
+        if (EnableValidationLayers && !CheckValidationLayerSupport())
+        {
+            throw std::runtime_error{
+                "validation layers requested, but none defined by the instance"};
+        }
         return {};
     }
 }
