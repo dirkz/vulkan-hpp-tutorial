@@ -25,6 +25,7 @@ struct HelloTriangleApplication
 
   private:
     GLFWwindow *m_window;
+    vk::UniqueInstance m_instance;
 
     void InitWindow()
     {
@@ -61,8 +62,8 @@ struct HelloTriangleApplication
                                 VK_MAKE_API_VERSION(0, 0, 1, 0), VK_API_VERSION_1_0};
 
         InstanceCreateInfo createInfo{{}, &appInfo, {}, extensions};
-        vk::UniqueInstance instance = createInstanceUnique(createInfo);
-        VULKAN_HPP_DEFAULT_DISPATCHER.init(instance.get());
+        m_instance = createInstanceUnique(createInfo);
+        VULKAN_HPP_DEFAULT_DISPATCHER.init(*m_instance);
     }
 
     void InitVulkan()
