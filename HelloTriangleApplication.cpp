@@ -34,18 +34,18 @@ struct HelloTriangleApplication
         m_window = glfwCreateWindow(Width, Height, "Vulkan", nullptr, nullptr);
     }
 
-    vector<string> WindowExtensions()
+    vector<const char *> WindowExtensions()
     {
         uint32_t glfwExtensionCount = 0;
         const char **glfwExtensions;
 
         glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
 
-        vector<string> extensions(glfwExtensionCount);
+        vector<const char *> extensions(glfwExtensionCount);
 
         for (uint32_t i = 0; i < glfwExtensionCount; ++i)
         {
-            extensions[i] = string{glfwExtensions[i]};
+            extensions[i] = glfwExtensions[i];
         }
 
         return extensions;
@@ -53,8 +53,7 @@ struct HelloTriangleApplication
 
     void CreateInstance()
     {
-        vector<string> glfwExtensions = WindowExtensions();
-        vector<const char *> extensions = TmpCharPointers(glfwExtensions);
+        vector<const char *> extensions = WindowExtensions();
 
         ApplicationInfo appInfo{"Hello Triangle", VK_MAKE_API_VERSION(0, 0, 1, 0), "No Engine",
                                 VK_MAKE_API_VERSION(0, 0, 1, 0), VK_API_VERSION_1_0};
