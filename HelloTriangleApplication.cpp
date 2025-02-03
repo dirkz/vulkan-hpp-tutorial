@@ -61,8 +61,8 @@ struct HelloTriangleApplication
                                 VK_MAKE_API_VERSION(0, 0, 1, 0), VK_API_VERSION_1_0};
 
         InstanceCreateInfo createInfo{{}, &appInfo, {}, extensions};
-        vk::Instance instance = createInstance(createInfo);
-        VULKAN_HPP_DEFAULT_DISPATCHER.init(instance);
+        vk::UniqueInstance instance = createInstanceUnique(createInfo);
+        VULKAN_HPP_DEFAULT_DISPATCHER.init(instance.get());
     }
 
     void InitVulkan()
