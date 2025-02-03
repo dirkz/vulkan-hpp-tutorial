@@ -18,7 +18,7 @@ DebugMessenger::DebugMessenger()
 
 DebugMessenger::DebugMessenger(vk::Instance instance)
 {
-    m_debugMessenger = instance.createDebugUtilsMessengerEXTUnique(CreateInfo());
+    m_instanceDebugMessenger = instance.createDebugUtilsMessengerEXTUnique(CreateInfo());
 }
 
 VKAPI_ATTR VkBool32 VKAPI_CALL

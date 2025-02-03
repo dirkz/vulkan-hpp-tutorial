@@ -25,7 +25,7 @@ struct DebugMessenger
                   const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData);
 
   private:
-    vk::UniqueDebugUtilsMessengerEXT m_debugMessenger;
+    vk::UniqueDebugUtilsMessengerEXT m_instanceDebugMessenger;
 
     /// <summary>
     /// Shared method for creating a <code>DebugUtilsMessengerCreateInfoEXT</code>.
