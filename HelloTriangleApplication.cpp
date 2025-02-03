@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include "Constants.h"
 #include "DebugMessenger.h"
 #include "Extensions.h"
 #include "Validation.h"
@@ -61,7 +62,11 @@ struct HelloTriangleApplication
     {
         VULKAN_HPP_DEFAULT_DISPATCHER.init();
         CreateInstance();
-        m_debugMessenger.reset(new DebugMessenger{m_instance.get()});
+
+        if (EnableValidationLayers)
+        {
+            m_debugMessenger.reset(new DebugMessenger{m_instance.get()});
+        }
     }
 
     void MainLoop()

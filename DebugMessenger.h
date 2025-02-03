@@ -13,6 +13,9 @@ struct DebugMessenger
     DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
                   VkDebugUtilsMessageTypeFlagsEXT messageType,
                   const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData);
+
+  private:
+    vk::UniqueDebugUtilsMessengerEXT m_debugMessenger;
 };
 
 } // namespace zvk

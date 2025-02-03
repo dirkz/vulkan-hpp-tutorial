@@ -19,8 +19,11 @@ DebugMessenger::DebugMessenger(vk::Instance instance)
         vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning;
     vk::DebugUtilsMessageTypeFlagsEXT messageTypeFlags =
         vk::FlagTraits<vk::DebugUtilsMessageTypeFlagBitsEXT>::allFlags;
+
     vk::DebugUtilsMessengerCreateInfoEXT createInfo{
         {}, severityFlags, messageTypeFlags, zvk::DebugCallback, this};
+
+    m_debugMessenger = instance.createDebugUtilsMessengerEXTUnique(createInfo);
 }
 
 VKAPI_ATTR VkBool32 VKAPI_CALL
