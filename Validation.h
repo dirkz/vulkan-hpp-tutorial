@@ -5,6 +5,6 @@
 namespace zvk
 {
 
-bool CheckValidationLayerSupport();
+std::vector<const char *> EnabledValidationLayers();
 
-}
+} // namespace zvk

@@ -65,9 +65,9 @@ struct HelloTriangleApplication
         ApplicationInfo appInfo{"Hello Triangle", VK_MAKE_API_VERSION(0, 0, 1, 0), "No Engine",
                                 VK_MAKE_API_VERSION(0, 0, 1, 0), VK_API_VERSION_1_0};
 
-        bool bValidationLayers = CheckValidationLayerSupport();
+        vector<const char *> validationLayers = EnabledValidationLayers();
 
-        InstanceCreateInfo createInfo{{}, &appInfo, {}, extensions};
+        InstanceCreateInfo createInfo{{}, &appInfo, validationLayers, extensions};
         m_instance = createInstanceUnique(createInfo);
         VULKAN_HPP_DEFAULT_DISPATCHER.init(*m_instance);
     }

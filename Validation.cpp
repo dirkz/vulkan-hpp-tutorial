@@ -38,4 +38,16 @@ bool CheckValidationLayerSupport()
     return true;
 }
 
+std::vector<const char *> EnabledValidationLayers()
+{
+    if (EnableValidationLayers && CheckValidationLayerSupport)
+    {
+        return ValidationLayers;
+    }
+    else
+    {
+        return {};
+    }
+}
+
 } // namespace zvk
