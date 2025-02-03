@@ -1,7 +1,5 @@
 #include "stdafx.h"
 
-#include "Util.h"
-
 using namespace std;
 using namespace vk;
 
