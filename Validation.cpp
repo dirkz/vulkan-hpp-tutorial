@@ -13,7 +13,7 @@ static const bool EnableValidationLayers = false;
 static const bool EnableValidationLayers = true;
 #endif
 
-bool CheckValidationLayerSupport()
+static bool CheckValidationLayerSupport()
 {
     vector<vk::LayerProperties> layerProperties = vk::enumerateInstanceLayerProperties();
 
@@ -39,7 +39,7 @@ bool CheckValidationLayerSupport()
 
 std::vector<const char *> EnabledValidationLayers()
 {
-    if (EnableValidationLayers && CheckValidationLayerSupport)
+    if (EnableValidationLayers && CheckValidationLayerSupport())
     {
         return ValidationLayers;
     }
