@@ -1,5 +1,3 @@
-#include <vulkan/vulkan.hpp>
-
 // Make GLM suitable for vulkan
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 
@@ -11,6 +9,10 @@
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+
+#define VULKAN_HPP_DISPATCH_LOADER_DYNAMIC 1
+
+#include <vulkan/vulkan.hpp>
 
 #include <iostream>
 #include <string>
