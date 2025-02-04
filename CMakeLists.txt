@@ -37,6 +37,8 @@ add_subdirectory(glfw)
 
 # Add source to this project's executable.
 add_executable(${PROJECT_NAME}
+	"main.cpp"
+	"HelloTriangleApplication.h"
 	"HelloTriangleApplication.cpp"
 	"Constants.h"
 	"Validation.h"
@@ -44,7 +46,11 @@ add_executable(${PROJECT_NAME}
 	"Extensions.h"
 	"Extensions.cpp"
 	"DebugUtilsMessenger.h"
-	"DebugUtilsMessenger.cpp" "Strings.h" "Strings.cpp" "QueueFamilyIndices.h" "QueueFamilyIndices.cpp")
+	"DebugUtilsMessenger.cpp"
+	"Strings.h"
+	"Strings.cpp"
+	"QueueFamilyIndices.h"
+	"QueueFamilyIndices.cpp")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE common)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)

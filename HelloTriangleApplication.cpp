@@ -1,7 +1,6 @@
-#include "stdafx.h"
+#include "HelloTriangleApplication.h"
 
 #include "Constants.h"
-#include "DebugUtilsMessenger.h"
 #include "Extensions.h"
 #include "QueueFamilyIndices.h"
 #include "Validation.h"
@@ -16,146 +15,119 @@ namespace zvk
 static const uint32_t Width = 800;
 static const uint32_t Height = 600;
 
-struct HelloTriangleApplication
+HelloTriangleApplication::HelloTriangleApplication() : m_window{nullptr}
 {
-    HelloTriangleApplication() : m_window{nullptr}
+}
+
+void HelloTriangleApplication::Run()
+{
+    InitWindow();
+    InitVulkan();
+    MainLoop();
+    Cleanup();
+}
+
+void HelloTriangleApplication::InitWindow()
+{
+    glfwInit();
+
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
+    m_window = glfwCreateWindow(Width, Height, "Vulkan", nullptr, nullptr);
+}
+
+void HelloTriangleApplication::CreateInstance()
+{
+    vector<const char *> extensions = RequiredExtensions();
+
+    vk::ApplicationInfo appInfo{"Hello Triangle", VK_MAKE_API_VERSION(0, 0, 1, 0), "No Engine",
+                                VK_MAKE_API_VERSION(0, 0, 1, 0), VK_API_VERSION_1_0};
+
+    vector<const char *> validationLayers = EnabledValidationLayers();
+
+    vk::InstanceCreateInfo createInfo{{}, &appInfo, validationLayers, extensions};
+
+    if (EnableValidationLayers)
     {
+        m_standaloneDebugMessenger.reset(new DebugUtilsMessenger{});
+        vk::StructureChain<vk::InstanceCreateInfo, vk::DebugUtilsMessengerCreateInfoEXT> c{
+            createInfo, m_standaloneDebugMessenger->CreateInfo()};
+
+        // Manually follow the pNext chain and assert it looks correct.
+        vk::InstanceCreateInfo createInfo = c.get<vk::InstanceCreateInfo>();
+        const vk::DebugUtilsMessengerCreateInfoEXT *debugCreateInfo =
+            static_cast<const vk::DebugUtilsMessengerCreateInfoEXT *>(createInfo.pNext);
+        assert(debugCreateInfo);
+
+        m_instance = vk::createInstanceUnique(c.get<vk::InstanceCreateInfo>());
+    }
+    else
+    {
+        m_instance = vk::createInstanceUnique(createInfo);
     }
 
-    void Run()
+    VULKAN_HPP_DEFAULT_DISPATCHER.init(*m_instance);
+}
+
+void HelloTriangleApplication::SetupDebugMessenger()
+{
+    if (EnableValidationLayers)
     {
-        InitWindow();
-        InitVulkan();
-        MainLoop();
-        Cleanup();
+        // Create the debug messenger for the instance.
+        m_instanceDebugMessenger.reset(new DebugUtilsMessenger{m_instance.get()});
     }
+}
 
-  private:
-    GLFWwindow *m_window;
+bool HelloTriangleApplication::IsDeviceSuitable(vk::PhysicalDevice device)
+{
+    QueueFamilyIndices indices{device};
+    return indices.IsComplete();
+}
 
-    std::unique_ptr<DebugUtilsMessenger> m_standaloneDebugMessenger;
-    vk::UniqueInstance m_instance;
-    std::unique_ptr<DebugUtilsMessenger> m_instanceDebugMessenger;
-    vk::PhysicalDevice m_physicalDevice;
+void HelloTriangleApplication::PickPhysicalDevice()
+{
+    vk::PhysicalDevice result;
 
-    void InitWindow()
+    vector<vk::PhysicalDevice> devices = m_instance->enumeratePhysicalDevices();
+    for (auto device : devices)
     {
-        glfwInit();
-
-        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-
-        m_window = glfwCreateWindow(Width, Height, "Vulkan", nullptr, nullptr);
-    }
-
-    void CreateInstance()
-    {
-        vector<const char *> extensions = RequiredExtensions();
-
-        vk::ApplicationInfo appInfo{"Hello Triangle", VK_MAKE_API_VERSION(0, 0, 1, 0), "No Engine",
-                                    VK_MAKE_API_VERSION(0, 0, 1, 0), VK_API_VERSION_1_0};
-
-        vector<const char *> validationLayers = EnabledValidationLayers();
-
-        vk::InstanceCreateInfo createInfo{{}, &appInfo, validationLayers, extensions};
-
-        if (EnableValidationLayers)
+        if (IsDeviceSuitable(device))
         {
-            m_standaloneDebugMessenger.reset(new DebugUtilsMessenger{});
-            vk::StructureChain<vk::InstanceCreateInfo, vk::DebugUtilsMessengerCreateInfoEXT> c{
-                createInfo, m_standaloneDebugMessenger->CreateInfo()};
-
-            // Manually follow the pNext chain and assert it looks correct.
-            vk::InstanceCreateInfo createInfo = c.get<vk::InstanceCreateInfo>();
-            const vk::DebugUtilsMessengerCreateInfoEXT *debugCreateInfo =
-                static_cast<const vk::DebugUtilsMessengerCreateInfoEXT *>(createInfo.pNext);
-            assert(debugCreateInfo);
-
-            m_instance = vk::createInstanceUnique(c.get<vk::InstanceCreateInfo>());
-        }
-        else
-        {
-            m_instance = vk::createInstanceUnique(createInfo);
-        }
-
-        VULKAN_HPP_DEFAULT_DISPATCHER.init(*m_instance);
-    }
-
-    void SetupDebugMessenger()
-    {
-        if (EnableValidationLayers)
-        {
-            // Create the debug messenger for the instance.
-            m_instanceDebugMessenger.reset(new DebugUtilsMessenger{m_instance.get()});
-        }
-    }
-
-    bool IsDeviceSuitable(vk::PhysicalDevice device)
-    {
-        QueueFamilyIndices indices{device};
-        return indices.IsComplete();
-    }
-
-    void PickPhysicalDevice()
-    {
-        vk::PhysicalDevice result;
-
-        vector<vk::PhysicalDevice> devices = m_instance->enumeratePhysicalDevices();
-        for (auto device : devices)
-        {
-            if (IsDeviceSuitable(device))
-            {
-                result = device;
-                break;
-            }
-        }
-
-        if (!result)
-        {
-            throw runtime_error{"no suitable device found"};
-        }
-
-        m_physicalDevice = result;
-    }
-
-    void InitVulkan()
-    {
-        VULKAN_HPP_DEFAULT_DISPATCHER.init();
-
-        CreateInstance();
-        SetupDebugMessenger();
-        PickPhysicalDevice();
-    }
-
-    void MainLoop()
-    {
-        while (!glfwWindowShouldClose(m_window))
-        {
-            glfwPollEvents();
+            result = device;
+            break;
         }
     }
 
-    void Cleanup()
+    if (!result)
     {
-        glfwDestroyWindow(m_window);
-        glfwTerminate();
+        throw runtime_error{"no suitable device found"};
     }
-};
+
+    m_physicalDevice = result;
+}
+
+void HelloTriangleApplication::InitVulkan()
+{
+    VULKAN_HPP_DEFAULT_DISPATCHER.init();
+
+    CreateInstance();
+    SetupDebugMessenger();
+    PickPhysicalDevice();
+}
+
+void HelloTriangleApplication::MainLoop()
+{
+    while (!glfwWindowShouldClose(m_window))
+    {
+        glfwPollEvents();
+    }
+}
+
+void HelloTriangleApplication::Cleanup()
+{
+    glfwDestroyWindow(m_window);
+    glfwTerminate();
+}
 
 } // namespace zvk
-
-int main()
-{
-    try
-    {
-        zvk::HelloTriangleApplication app{};
-        app.Run();
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << std::endl;
-        return EXIT_FAILURE;
-    }
-
-    return EXIT_SUCCESS;
-}
