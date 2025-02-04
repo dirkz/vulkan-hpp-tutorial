@@ -68,6 +68,7 @@ struct HelloTriangleApplication
     void InitVulkan()
     {
         VULKAN_HPP_DEFAULT_DISPATCHER.init();
+
         CreateInstance();
 
         if (EnableValidationLayers)
