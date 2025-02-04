@@ -28,3 +28,4 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <set>
+#include <optional>
