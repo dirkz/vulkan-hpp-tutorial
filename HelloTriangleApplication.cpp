@@ -2,7 +2,6 @@
 
 #include "Constants.h"
 #include "Extensions.h"
-#include "QueueFamilyIndices.h"
 #include "Validation.h"
 
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
@@ -105,6 +104,11 @@ void HelloTriangleApplication::PickPhysicalDevice()
     }
 
     m_physicalDevice = result;
+    m_familyIndices.reset(new QueueFamilyIndices{m_physicalDevice});
+}
+
+void HelloTriangleApplication::CreateLogicalDevice()
+{
 }
 
 void HelloTriangleApplication::InitVulkan()
@@ -114,6 +118,7 @@ void HelloTriangleApplication::InitVulkan()
     CreateInstance();
     SetupDebugMessenger();
     PickPhysicalDevice();
+    CreateLogicalDevice();
 }
 
 void HelloTriangleApplication::MainLoop()
