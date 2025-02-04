@@ -56,7 +56,7 @@ struct HelloTriangleApplication
 
         if (EnableValidationLayers)
         {
-            // Create the debug messenger for before and after the instance.
+            // Create the debug messenger for before instance creation and after its destruction.
             m_standaloneDebugMessenger.reset(new DebugUtilsMessenger{});
         }
 
