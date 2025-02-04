@@ -3,6 +3,7 @@
 #include "Constants.h"
 #include "DebugUtilsMessenger.h"
 #include "Extensions.h"
+#include "QueueFamilyIndices.h"
 #include "Validation.h"
 
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
@@ -91,7 +92,8 @@ struct HelloTriangleApplication
 
     bool IsDeviceSuitable(vk::PhysicalDevice device)
     {
-        return true;
+        QueueFamilyIndices indices{device};
+        return indices.IsComplete();
     }
 
     void PickPhysicalDevice()
