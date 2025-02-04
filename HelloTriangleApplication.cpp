@@ -31,6 +31,7 @@ struct HelloTriangleApplication
 
   private:
     GLFWwindow *m_window;
+
     std::unique_ptr<DebugUtilsMessenger> m_standaloneDebugMessenger;
     vk::UniqueInstance m_instance;
     std::unique_ptr<DebugUtilsMessenger> m_instanceDebugMessenger;
