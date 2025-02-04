@@ -120,13 +120,20 @@ void HelloTriangleApplication::PickPhysicalDevice()
 
 void HelloTriangleApplication::CreateLogicalDevice()
 {
+    vector<uint32_t> queueFamilies = m_familyIndices->UniqueFamilies();
+
     float priority = 1.0f;
-    vk::DeviceQueueCreateInfo queueCreateInfo{
-        {}, m_familyIndices->GraphicsFamily().value(), 1, &priority};
+    vector<vk::DeviceQueueCreateInfo> deviceQueueCreateInfos(queueFamilies.size());
+    for (int i = 0; i < queueFamilies.size(); ++i)
+    {
+        uint32_t family = queueFamilies[i];
+        vk::DeviceQueueCreateInfo deviceQueueCreateInfo{{}, family, 1, &priority};
+        deviceQueueCreateInfos[i] = deviceQueueCreateInfo;
+    }
 
     vk::PhysicalDeviceFeatures deviceFeatures{};
 
-    vk::DeviceCreateInfo deviceCreateInfo{{}, queueCreateInfo, {}, {}, &deviceFeatures};
+    vk::DeviceCreateInfo deviceCreateInfo{{}, deviceQueueCreateInfos, {}, {}, &deviceFeatures};
 
     m_device = m_physicalDevice.createDeviceUnique(deviceCreateInfo);
 

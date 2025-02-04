@@ -45,4 +45,10 @@ std::optional<uint32_t> QueueFamilyIndices::PresentFamily()
     return m_presentFamily;
 }
 
+std::vector<uint32_t> QueueFamilyIndices::UniqueFamilies()
+{
+    set<uint32_t> familySet{m_graphicsFamily.value(), m_presentFamily.value()};
+    return vector<uint32_t>{familySet.begin(), familySet.end()};
+}
+
 } // namespace zvk
