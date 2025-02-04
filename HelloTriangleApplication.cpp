@@ -35,6 +35,7 @@ struct HelloTriangleApplication
     std::unique_ptr<DebugUtilsMessenger> m_standaloneDebugMessenger;
     vk::UniqueInstance m_instance;
     std::unique_ptr<DebugUtilsMessenger> m_instanceDebugMessenger;
+    vk::PhysicalDevice m_device;
 
     void InitWindow()
     {
@@ -88,8 +89,29 @@ struct HelloTriangleApplication
         }
     }
 
+    bool IsDeviceSuitable(vk::PhysicalDevice device)
+    {
+        return true;
+    }
+
     void PickPhysicalDevice()
     {
+        vk::PhysicalDevice result;
+
+        vector<vk::PhysicalDevice> devices = m_instance->enumeratePhysicalDevices();
+        for (auto device : devices)
+        {
+            if (IsDeviceSuitable(device))
+            {
+                result = device;
+                break;
+            }
+        }
+
+        if (!result)
+        {
+            throw runtime_error{"no suitable device found"};
+        }
     }
 
     void InitVulkan()
