@@ -78,6 +78,16 @@ void HelloTriangleApplication::SetupDebugMessenger()
     }
 }
 
+void HelloTriangleApplication::CreateSurface()
+{
+    VkSurfaceKHR surface;
+    if (glfwCreateWindowSurface(m_instance.get(), m_window, nullptr, &surface) != VK_SUCCESS)
+    {
+        throw std::runtime_error("failed to create window surface!");
+    }
+    m_surface.reset(surface);
+}
+
 bool HelloTriangleApplication::IsDeviceSuitable(vk::PhysicalDevice device)
 {
     QueueFamilyIndices indices{device};

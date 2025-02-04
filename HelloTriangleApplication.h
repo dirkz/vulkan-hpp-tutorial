@@ -20,6 +20,7 @@ struct HelloTriangleApplication
     std::unique_ptr<DebugUtilsMessenger> m_standaloneDebugMessenger;
     vk::UniqueInstance m_instance;
     std::unique_ptr<DebugUtilsMessenger> m_instanceDebugMessenger;
+    vk::UniqueSurfaceKHR m_surface;
     std::unique_ptr<QueueFamilyIndices> m_familyIndices;
     vk::PhysicalDevice m_physicalDevice;
     vk::UniqueDevice m_device;
@@ -28,6 +29,7 @@ struct HelloTriangleApplication
     void InitWindow();
     void CreateInstance();
     void SetupDebugMessenger();
+    void CreateSurface();
     bool IsDeviceSuitable(vk::PhysicalDevice device);
     void PickPhysicalDevice();
     void CreateLogicalDevice();
