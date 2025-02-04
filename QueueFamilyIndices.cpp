@@ -28,4 +28,9 @@ bool QueueFamilyIndices::IsComplete()
     return m_graphicsFamily.has_value();
 }
 
+std::optional<uint32_t> QueueFamilyIndices::GraphicsFamiliy()
+{
+    return m_graphicsFamily;
+}
+
 } // namespace zvk
