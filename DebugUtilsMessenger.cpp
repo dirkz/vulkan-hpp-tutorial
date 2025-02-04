@@ -1,5 +1,7 @@
 #include "DebugUtilsMessenger.h"
 
+#include "Strings.h"
+
 namespace zvk
 {
 
@@ -37,11 +39,17 @@ vk::DebugUtilsMessengerCreateInfoEXT DebugUtilsMessenger::CreateInfo()
 
 VKAPI_ATTR VkBool32 VKAPI_CALL
 DebugUtilsMessenger::DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-                              VkDebugUtilsMessageTypeFlagsEXT messageType,
-                              const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData)
+                                   VkDebugUtilsMessageTypeFlagsEXT messageType,
+                                   const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData)
 {
-    // TODO: For windows, put this into the debug console.
-    std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
+    std::cerr << "*** " << pCallbackData->pMessage << "\n";
+
+#ifdef _WIN32
+    std::wstring message = UTF8ToWideChar(pCallbackData->pMessage);
+    OutputDebugString(L"*** ");
+    OutputDebugString(message.c_str());
+    OutputDebugString(L"\n");
+#endif
 
     // stop the application
     return VK_TRUE;
