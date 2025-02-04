@@ -85,7 +85,8 @@ void HelloTriangleApplication::CreateSurface()
     {
         throw std::runtime_error("failed to create window surface!");
     }
-    m_surface.reset(surface);
+
+    m_surface = vk::UniqueSurfaceKHR{surface, m_instance.get()};
 }
 
 bool HelloTriangleApplication::IsDeviceSuitable(vk::PhysicalDevice device)
