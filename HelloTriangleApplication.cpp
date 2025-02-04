@@ -90,7 +90,7 @@ void HelloTriangleApplication::CreateSurface()
 
 bool HelloTriangleApplication::IsDeviceSuitable(vk::PhysicalDevice device)
 {
-    QueueFamilyIndices indices{device};
+    QueueFamilyIndices indices{device, m_surface.get()};
     return indices.IsComplete();
 }
 
@@ -114,7 +114,7 @@ void HelloTriangleApplication::PickPhysicalDevice()
     }
 
     m_physicalDevice = result;
-    m_familyIndices.reset(new QueueFamilyIndices{m_physicalDevice});
+    m_familyIndices.reset(new QueueFamilyIndices{m_physicalDevice, m_surface.get()});
 }
 
 void HelloTriangleApplication::CreateLogicalDevice()
@@ -138,6 +138,7 @@ void HelloTriangleApplication::InitVulkan()
 
     CreateInstance();
     SetupDebugMessenger();
+    CreateSurface();
     PickPhysicalDevice();
     CreateLogicalDevice();
 }
