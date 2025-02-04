@@ -36,7 +36,7 @@ struct HelloTriangleApplication
     std::unique_ptr<DebugUtilsMessenger> m_standaloneDebugMessenger;
     vk::UniqueInstance m_instance;
     std::unique_ptr<DebugUtilsMessenger> m_instanceDebugMessenger;
-    vk::PhysicalDevice m_device;
+    vk::PhysicalDevice m_physicalDevice;
 
     void InitWindow()
     {
@@ -114,6 +114,8 @@ struct HelloTriangleApplication
         {
             throw runtime_error{"no suitable device found"};
         }
+
+        m_physicalDevice = result;
     }
 
     void InitVulkan()
