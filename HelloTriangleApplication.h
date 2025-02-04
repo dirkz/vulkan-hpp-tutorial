@@ -25,6 +25,7 @@ struct HelloTriangleApplication
     vk::PhysicalDevice m_physicalDevice;
     vk::UniqueDevice m_device;
     vk::Queue m_graphicsQueue;
+    vk::Queue m_presentQueue;
 
     void InitWindow();
     void CreateInstance();
