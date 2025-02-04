@@ -31,9 +31,9 @@ struct HelloTriangleApplication
 
   private:
     GLFWwindow *m_window;
-    vk::UniqueInstance m_instance;
     std::unique_ptr<DebugUtilsMessenger> m_instanceDebugMessenger;
     std::unique_ptr<DebugUtilsMessenger> m_standaloneDebugMessenger;
+    vk::UniqueInstance m_instance;
 
     void InitWindow()
     {
@@ -54,14 +54,27 @@ struct HelloTriangleApplication
 
         vector<const char *> validationLayers = EnabledValidationLayers();
 
+        vk::InstanceCreateInfo createInfo{{}, &appInfo, validationLayers, extensions};
+
         if (EnableValidationLayers)
         {
-            // Create the debug messenger for before instance creation and after its destruction.
             m_standaloneDebugMessenger.reset(new DebugUtilsMessenger{});
+            vk::StructureChain<vk::InstanceCreateInfo, vk::DebugUtilsMessengerCreateInfoEXT> c{
+                createInfo, m_standaloneDebugMessenger->CreateInfo()};
+
+            // Manually follow the pNext chain and assert it looks correct.
+            vk::InstanceCreateInfo createInfo = c.get<vk::InstanceCreateInfo>();
+            const vk::DebugUtilsMessengerCreateInfoEXT *debugCreateInfo =
+                static_cast<const vk::DebugUtilsMessengerCreateInfoEXT *>(createInfo.pNext);
+            assert(debugCreateInfo);
+
+            m_instance = vk::createInstanceUnique(c.get<vk::InstanceCreateInfo>());
+        }
+        else
+        {
+            m_instance = vk::createInstanceUnique(createInfo);
         }
 
-        vk::InstanceCreateInfo createInfo{{}, &appInfo, validationLayers, extensions};
-        m_instance = vk::createInstanceUnique(createInfo);
         VULKAN_HPP_DEFAULT_DISPATCHER.init(*m_instance);
     }
 

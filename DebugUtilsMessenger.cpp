@@ -40,8 +40,11 @@ DebugUtilsMessenger::DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messag
                               VkDebugUtilsMessageTypeFlagsEXT messageType,
                               const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData)
 {
+    // TODO: For windows, put this into the debug console.
     std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
-    return VK_FALSE;
+
+    // stop the application
+    return VK_TRUE;
 }
 
 } // namespace zvk
