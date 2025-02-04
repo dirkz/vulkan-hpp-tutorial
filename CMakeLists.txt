@@ -44,7 +44,7 @@ add_executable(${PROJECT_NAME}
 	"Extensions.h"
 	"Extensions.cpp"
 	"DebugUtilsMessenger.h"
-	"DebugUtilsMessenger.cpp")
+	"DebugUtilsMessenger.cpp" "Strings.h" "Strings.cpp")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE common)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
