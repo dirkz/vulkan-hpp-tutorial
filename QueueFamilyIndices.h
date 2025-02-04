@@ -11,7 +11,7 @@ struct QueueFamilyIndices
 
     bool IsComplete();
 
-    std::optional<uint32_t> GraphicsFamiliy();
+    std::optional<uint32_t> GraphicsFamily();
 
   private:
     std::optional<uint32_t> m_graphicsFamily;

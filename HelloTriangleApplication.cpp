@@ -109,6 +109,9 @@ void HelloTriangleApplication::PickPhysicalDevice()
 
 void HelloTriangleApplication::CreateLogicalDevice()
 {
+    float priority = 1.0f;
+    vk::DeviceQueueCreateInfo createInfo{
+        {}, m_familyIndices->GraphicsFamily().value(), 1, &priority};
 }
 
 void HelloTriangleApplication::InitVulkan()
