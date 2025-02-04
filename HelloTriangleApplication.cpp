@@ -79,17 +79,26 @@ struct HelloTriangleApplication
         VULKAN_HPP_DEFAULT_DISPATCHER.init(*m_instance);
     }
 
-    void InitVulkan()
+    void SetupDebugMessenger()
     {
-        VULKAN_HPP_DEFAULT_DISPATCHER.init();
-
-        CreateInstance();
-
         if (EnableValidationLayers)
         {
             // Create the debug messenger for the instance.
             m_instanceDebugMessenger.reset(new DebugUtilsMessenger{m_instance.get()});
         }
+    }
+
+    void PickPhysicalDevice()
+    {
+    }
+
+    void InitVulkan()
+    {
+        VULKAN_HPP_DEFAULT_DISPATCHER.init();
+
+        CreateInstance();
+        SetupDebugMessenger();
+        PickPhysicalDevice();
     }
 
     void MainLoop()
