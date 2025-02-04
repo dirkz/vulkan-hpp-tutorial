@@ -23,6 +23,7 @@ struct HelloTriangleApplication
     std::unique_ptr<QueueFamilyIndices> m_familyIndices;
     vk::PhysicalDevice m_physicalDevice;
     vk::UniqueDevice m_device;
+    vk::Queue m_graphicsQueue;
 
     void InitWindow();
     void CreateInstance();

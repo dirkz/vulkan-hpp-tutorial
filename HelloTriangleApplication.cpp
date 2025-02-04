@@ -118,6 +118,8 @@ void HelloTriangleApplication::CreateLogicalDevice()
     vk::DeviceCreateInfo deviceCreateInfo{{}, queueCreateInfo, {}, {}, &deviceFeatures};
 
     m_device = m_physicalDevice.createDeviceUnique(deviceCreateInfo);
+
+    m_graphicsQueue = m_device->getQueue(m_familyIndices->GraphicsFamily().value(), 0);
 }
 
 void HelloTriangleApplication::InitVulkan()
