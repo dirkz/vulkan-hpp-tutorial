@@ -35,8 +35,6 @@ add_subdirectory(glm)
 
 add_subdirectory(glfw)
 
-add_subdirectory(windows)
-
 # Add source to this project's executable.
 add_executable(${PROJECT_NAME}
 	"main.cpp"
@@ -57,7 +55,6 @@ add_executable(${PROJECT_NAME}
 	"SwapChainSupportDetails.cpp")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE common)
-target_link_libraries(${PROJECT_NAME} PRIVATE windows)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)
