@@ -158,6 +158,23 @@ void HelloTriangleApplication::CreateSwapChain()
 
     vk::SharingMode imageSharingMode =
         isCombinedIndices ? vk::SharingMode::eExclusive : vk::SharingMode::eConcurrent;
+
+    vk::SwapchainCreateInfoKHR createInfo{{},
+                                          m_surface.get(),
+                                          imageCount,
+                                          format.format,
+                                          format.colorSpace,
+                                          extent,
+                                          1 /* imageArrayLayers */,
+                                          vk::ImageUsageFlagBits::eColorAttachment,
+                                          imageSharingMode,
+                                          static_cast<uint32_t>(queueFamilyIndices.size()),
+                                          queueFamilyIndices.data(),
+                                          support.Capabilities().currentTransform,
+                                          vk::CompositeAlphaFlagBitsKHR::eOpaque,
+                                          presentMode,
+                                          VK_TRUE /* clipped */,
+                                          nullptr /* oldSwapchain */};
 }
 
 void HelloTriangleApplication::InitVulkan()
