@@ -21,7 +21,6 @@ struct HelloTriangleApplication
     vk::UniqueInstance m_instance;
     std::unique_ptr<DebugUtilsMessenger> m_instanceDebugMessenger;
     vk::UniqueSurfaceKHR m_surface;
-    std::unique_ptr<QueueFamilyIndices> m_familyIndices;
     vk::PhysicalDevice m_physicalDevice;
     vk::UniqueDevice m_device;
     vk::Queue m_graphicsQueue;
