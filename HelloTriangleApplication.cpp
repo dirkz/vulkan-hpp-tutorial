@@ -183,7 +183,7 @@ void HelloTriangleApplication::CreateSwapChain()
                                           vk::CompositeAlphaFlagBitsKHR::eOpaque,
                                           presentMode,
                                           VK_TRUE /* clipped */,
-                                          nullptr /* oldSwapchain */};
+                                          VK_NULL_HANDLE /* oldSwapchain */};
 }
 
 void HelloTriangleApplication::InitVulkan()
