@@ -4,15 +4,10 @@ int main()
 {
     try
     {
-		glfwInit();
-
-        {
-            zvk::HelloTriangleApplication app{};
-            app.Run();
-        }
-
-		glfwTerminate();
+        zvk::HelloTriangleApplication app{};
+        app.Run();
     }
+
     catch (const std::exception &e)
     {
         std::cerr << e.what() << "\n";
