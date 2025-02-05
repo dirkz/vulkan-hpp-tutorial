@@ -186,6 +186,9 @@ void HelloTriangleApplication::CreateSwapChain()
                                           VK_NULL_HANDLE /* oldSwapchain */};
 
     m_swapchain = m_device->createSwapchainKHRUnique(createInfo);
+    m_swapchainImages = m_device->getSwapchainImagesKHR(m_swapchain.get());
+    m_swapchainImageFormat = format.format;
+    m_swapchainExtent = extent;
 }
 
 void HelloTriangleApplication::InitVulkan()

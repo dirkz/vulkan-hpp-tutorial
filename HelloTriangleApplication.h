@@ -19,10 +19,17 @@ struct HelloTriangleApplication
     std::unique_ptr<DebugUtilsMessenger> m_standaloneDebugMessenger;
     vk::UniqueInstance m_instance;
     std::unique_ptr<DebugUtilsMessenger> m_instanceDebugMessenger;
+
     vk::UniqueSurfaceKHR m_surface;
+
     vk::PhysicalDevice m_physicalDevice;
     vk::UniqueDevice m_device;
+
     vk::UniqueSwapchainKHR m_swapchain;
+    std::vector<vk::Image> m_swapchainImages;
+    vk::Format m_swapchainImageFormat;
+    vk::Extent2D m_swapchainExtent;
+
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;
 
