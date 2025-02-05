@@ -43,7 +43,7 @@ bool CheckDeviceExtensionSupport(vk::PhysicalDevice device)
     vector<vk::ExtensionProperties> extensionProperties =
         device.enumerateDeviceExtensionProperties();
 
-    set<const char *> extensionNames{};
+    set<string> extensionNames{};
     for (const vk::ExtensionProperties &properties : extensionProperties)
     {
         extensionNames.insert(properties.extensionName);
