@@ -4,8 +4,14 @@ int main()
 {
     try
     {
-        zvk::HelloTriangleApplication app{};
-        app.Run();
+		glfwInit();
+
+        {
+            zvk::HelloTriangleApplication app{};
+            app.Run();
+        }
+
+		glfwTerminate();
     }
     catch (const std::exception &e)
     {
@@ -14,6 +20,7 @@ int main()
         OutputDebugStringA(e.what());
         OutputDebugString(L"\n");
 #endif
+
         return EXIT_FAILURE;
     }
 

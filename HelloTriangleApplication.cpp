@@ -29,12 +29,7 @@ void HelloTriangleApplication::Run()
 
 void HelloTriangleApplication::InitWindow()
 {
-    glfwInit();
-
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-
-    m_window = glfwCreateWindow(Width, Height, "Vulkan", nullptr, nullptr);
+    m_window.reset(new Window{"Vulkan", Width, Height});
 }
 
 void HelloTriangleApplication::CreateInstance()
@@ -81,13 +76,7 @@ void HelloTriangleApplication::SetupDebugMessenger()
 
 void HelloTriangleApplication::CreateSurface()
 {
-    VkSurfaceKHR surface;
-    if (glfwCreateWindowSurface(m_instance.get(), m_window, nullptr, &surface) != VK_SUCCESS)
-    {
-        throw std::runtime_error("failed to create window surface!");
-    }
-
-    m_surface = vk::UniqueSurfaceKHR{surface, m_instance.get()};
+    m_surface = m_window->CreateSurface(m_instance.get());
 }
 
 bool HelloTriangleApplication::IsDeviceSuitable(vk::PhysicalDevice device)
@@ -176,16 +165,11 @@ void HelloTriangleApplication::InitVulkan()
 
 void HelloTriangleApplication::MainLoop()
 {
-    while (!glfwWindowShouldClose(m_window))
-    {
-        glfwPollEvents();
-    }
+    m_window->Loop();
 }
 
 void HelloTriangleApplication::Cleanup()
 {
-    glfwDestroyWindow(m_window);
-    glfwTerminate();
 }
 
 } // namespace zvk

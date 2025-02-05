@@ -4,6 +4,7 @@
 
 #include "DebugUtilsMessenger.h"
 #include "QueueFamilyIndices.h"
+#include "Window.h"
 
 namespace zvk
 {
@@ -15,7 +16,7 @@ struct HelloTriangleApplication
     void Run();
 
   private:
-    GLFWwindow *m_window;
+    std::unique_ptr<Window> m_window;
 
     std::unique_ptr<DebugUtilsMessenger> m_standaloneDebugMessenger;
     vk::UniqueInstance m_instance;

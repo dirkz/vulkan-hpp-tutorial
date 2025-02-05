@@ -12,6 +12,7 @@ struct Window
 
     std::vector<const char *> RequiredExtensions();
     vk::UniqueSurfaceKHR CreateSurface(vk::Instance instance);
+    void Loop();
 
   private:
     GLFWwindow *m_window;

@@ -46,4 +46,12 @@ vk::UniqueSurfaceKHR Window::CreateSurface(vk::Instance instance)
     return vk::UniqueSurfaceKHR{surface, instance};
 }
 
+void Window::Loop()
+{
+    while (!glfwWindowShouldClose(m_window))
+    {
+        glfwPollEvents();
+    }
+}
+
 } // namespace zvk
