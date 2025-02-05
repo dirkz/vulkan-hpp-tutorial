@@ -15,7 +15,7 @@ namespace zvk
 static const uint32_t Width = 800;
 static const uint32_t Height = 600;
 
-HelloTriangleApplication::HelloTriangleApplication() : m_window{nullptr}
+HelloTriangleApplication::HelloTriangleApplication()
 {
     glfwInit();
 }
