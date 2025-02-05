@@ -22,6 +22,7 @@ struct HelloTriangleApplication
     vk::UniqueSurfaceKHR m_surface;
     vk::PhysicalDevice m_physicalDevice;
     vk::UniqueDevice m_device;
+    vk::UniqueSwapchainKHR m_swapchain;
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;
 

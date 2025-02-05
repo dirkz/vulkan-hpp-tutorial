@@ -184,6 +184,8 @@ void HelloTriangleApplication::CreateSwapChain()
                                           presentMode,
                                           VK_TRUE /* clipped */,
                                           VK_NULL_HANDLE /* oldSwapchain */};
+
+    m_swapchain = m_device->createSwapchainKHRUnique(createInfo);
 }
 
 void HelloTriangleApplication::InitVulkan()
