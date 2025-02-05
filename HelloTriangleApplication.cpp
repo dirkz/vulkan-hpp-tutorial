@@ -93,10 +93,18 @@ void HelloTriangleApplication::CreateSurface()
 bool HelloTriangleApplication::IsDeviceSuitable(vk::PhysicalDevice device)
 {
     QueueFamilyIndices indices{device, m_surface.get()};
-    SwapChainSupportDetails swapChainDetails{device, m_surface.get()};
+    if (!indices.IsComplete())
+    {
+        return false;
+    }
 
-    return indices.IsComplete() && CheckDeviceExtensionSupport(device) &&
-           swapChainDetails.IsAdequate();
+    if (!CheckDeviceExtensionSupport(device))
+    {
+        return false;
+    }
+
+    SwapChainSupportDetails swapChainDetails{device, m_surface.get()};
+    return swapChainDetails.IsAdequate();
 }
 
 void HelloTriangleApplication::PickPhysicalDevice()
