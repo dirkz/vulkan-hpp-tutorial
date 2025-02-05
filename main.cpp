@@ -9,10 +9,13 @@ int main()
     }
     catch (const std::exception &e)
     {
-        std::cerr << e.what() << std::endl;
+        std::cerr << e.what() << "\n";
+#ifdef _WIN32
+        OutputDebugStringA(e.what());
+        OutputDebugString(L"\n");
+#endif
         return EXIT_FAILURE;
     }
 
     return EXIT_SUCCESS;
 }
-
