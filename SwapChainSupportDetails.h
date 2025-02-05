@@ -9,6 +9,7 @@ struct SwapChainSupportDetails
 {
     SwapChainSupportDetails(vk::PhysicalDevice device, vk::SurfaceKHR surface);
 
+    vk::SurfaceFormatKHR ChooseSurfaceFormat();
     bool IsAdequate();
 
   private:
