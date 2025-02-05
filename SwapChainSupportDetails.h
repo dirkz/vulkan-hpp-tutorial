@@ -12,6 +12,8 @@ struct SwapChainSupportDetails
     vk::SurfaceFormatKHR ChooseSurfaceFormat();
     vk::PresentModeKHR ChoosePresentMode();
     vk::Extent2D ChooseSwapExtent();
+    vk::SurfaceCapabilitiesKHR Capabilities();
+
     bool IsAdequate();
 
   private:

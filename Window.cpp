@@ -50,6 +50,24 @@ vk::UniqueSurfaceKHR Window::CreateSurface(vk::Instance instance)
     return vk::UniqueSurfaceKHR{surface, instance};
 }
 
+vk::Extent2D Window::ChooseSwapExtent(const vk::SurfaceCapabilitiesKHR &capabilities)
+{
+    if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max())
+    {
+        return capabilities.currentExtent;
+    }
+
+    int width, height;
+    glfwGetFramebufferSize(m_window, &width, &height);
+
+    uint32_t w = std::clamp(static_cast<uint32_t>(width), capabilities.minImageExtent.width,
+                            capabilities.maxImageExtent.width);
+    uint32_t h = std::clamp(static_cast<uint32_t>(height), capabilities.minImageExtent.height,
+                            capabilities.maxImageExtent.height);
+
+    return vk::Extent2D{w, h};
+}
+
 void Window::Loop()
 {
     while (!glfwWindowShouldClose(m_window))

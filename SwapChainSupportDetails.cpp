@@ -41,6 +41,11 @@ vk::Extent2D SwapChainSupportDetails::ChooseSwapExtent()
     return vk::Extent2D();
 }
 
+vk::SurfaceCapabilitiesKHR SwapChainSupportDetails::Capabilities()
+{
+    return m_capabilities;
+}
+
 bool SwapChainSupportDetails::IsAdequate()
 {
     return !m_formats.empty() && !m_presentModes.empty();

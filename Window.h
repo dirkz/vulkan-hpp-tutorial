@@ -12,6 +12,7 @@ struct Window
 
     std::vector<const char *> RequiredExtensions();
     vk::UniqueSurfaceKHR CreateSurface(vk::Instance instance);
+    vk::Extent2D ChooseSwapExtent(const vk::SurfaceCapabilitiesKHR &capabilities);
     void Loop();
 
   private:
