@@ -36,10 +36,15 @@ std::vector<const char *> RequiredInstanceExtensions()
     return extensions;
 }
 
-bool CheckDeviceExtensionSupport(vk::PhysicalDevice device)
+std::vector<const char *> RequiredDeviceExtensions()
 {
     static const vector<const char *> requiredDeviceExtensions{VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 
+    return requiredDeviceExtensions;
+}
+
+bool CheckDeviceExtensionSupport(vk::PhysicalDevice device)
+{
     vector<vk::ExtensionProperties> extensionProperties =
         device.enumerateDeviceExtensionProperties();
 
@@ -49,7 +54,7 @@ bool CheckDeviceExtensionSupport(vk::PhysicalDevice device)
         extensionNames.insert(properties.extensionName);
     }
 
-    for (const char *deviceExtension : requiredDeviceExtensions)
+    for (const char *deviceExtension : RequiredDeviceExtensions())
     {
         auto it = find(extensionNames.begin(), extensionNames.end(), deviceExtension);
         if (it == extensionNames.end())

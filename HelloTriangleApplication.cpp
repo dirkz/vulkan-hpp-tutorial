@@ -133,7 +133,9 @@ void HelloTriangleApplication::CreateLogicalDevice()
 
     vk::PhysicalDeviceFeatures deviceFeatures{};
 
-    vk::DeviceCreateInfo deviceCreateInfo{{}, deviceQueueCreateInfos, {}, {}, &deviceFeatures};
+    vector<const char *> extensions = RequiredDeviceExtensions();
+    vk::DeviceCreateInfo deviceCreateInfo{
+        {}, deviceQueueCreateInfos, {}, extensions, &deviceFeatures};
 
     m_device = m_physicalDevice.createDeviceUnique(deviceCreateInfo);
 
