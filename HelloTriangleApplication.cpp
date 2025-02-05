@@ -154,10 +154,19 @@ void HelloTriangleApplication::CreateSwapChain()
     std::array<uint32_t, 2> queueFamilyIndices = {indices.GraphicsFamily().value(),
                                                   indices.PresentFamily().value()};
     std::vector<uint32_t> combinedIndices = indices.UniqueGraphicsAndPresent();
-    bool isCombinedIndices = combinedIndices.size() == 1;
 
-    vk::SharingMode imageSharingMode =
-        isCombinedIndices ? vk::SharingMode::eExclusive : vk::SharingMode::eConcurrent;
+    // "Normal" case: both graphics and present use the same queue:
+    vk::SharingMode imageSharingMode = vk::SharingMode::eExclusive;
+    uint32_t queueFamilyIndexCount = 0;
+    const uint32_t *pQueueFamilyIndices = nullptr;
+
+    // Unless they are not using the same queue:
+    if (combinedIndices.size() > 1)
+    {
+        imageSharingMode = vk::SharingMode::eConcurrent;
+        queueFamilyIndexCount = queueFamilyIndices.size();
+        pQueueFamilyIndices = queueFamilyIndices.data();
+    }
 
     vk::SwapchainCreateInfoKHR createInfo{{},
                                           m_surface.get(),
@@ -168,8 +177,8 @@ void HelloTriangleApplication::CreateSwapChain()
                                           1 /* imageArrayLayers */,
                                           vk::ImageUsageFlagBits::eColorAttachment,
                                           imageSharingMode,
-                                          static_cast<uint32_t>(queueFamilyIndices.size()),
-                                          queueFamilyIndices.data(),
+                                          queueFamilyIndexCount,
+                                          pQueueFamilyIndices,
                                           support.Capabilities().currentTransform,
                                           vk::CompositeAlphaFlagBitsKHR::eOpaque,
                                           presentMode,
