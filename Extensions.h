@@ -5,6 +5,6 @@
 namespace zvk
 {
 
-std::vector<const char *> RequiredExtensions();
+std::vector<const char *> RequiredInstanceExtensions();
 
 }

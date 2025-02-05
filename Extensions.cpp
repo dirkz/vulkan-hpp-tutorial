@@ -24,7 +24,7 @@ static vector<const char *> RequiredWindowExtensions()
     return extensions;
 }
 
-std::vector<const char *> RequiredExtensions()
+std::vector<const char *> RequiredInstanceExtensions()
 {
     vector<const char *> extensions = RequiredWindowExtensions();
 
