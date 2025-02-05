@@ -43,9 +43,20 @@ bool CheckDeviceExtensionSupport(vk::PhysicalDevice device)
     vector<vk::ExtensionProperties> extensionProperties =
         device.enumerateDeviceExtensionProperties();
 
-    vector<const char *> extensionNames(extensionProperties.size());
-    transform(extensionProperties.begin(), extensionProperties.end(), extensionNames.begin(),
-              [](const vk::ExtensionProperties &properties) { return properties.extensionName; });
+    set<const char *> extensionNames{};
+    for (const vk::ExtensionProperties &properties : extensionProperties)
+    {
+        extensionNames.insert(properties.extensionName);
+    }
+
+    for (const char *deviceExtension : requiredDeviceExtensions)
+    {
+        auto it = find(extensionNames.begin(), extensionNames.end(), deviceExtension);
+        if (it == extensionNames.end())
+        {
+            return false;
+        }
+    }
 
     return true;
 }
