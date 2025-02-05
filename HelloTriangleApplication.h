@@ -11,9 +11,6 @@ namespace zvk
 
 struct HelloTriangleApplication
 {
-    HelloTriangleApplication();
-    ~HelloTriangleApplication();
-
     void Run();
 
   private:
