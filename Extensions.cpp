@@ -36,4 +36,18 @@ std::vector<const char *> RequiredInstanceExtensions()
     return extensions;
 }
 
+bool CheckDeviceExtensionSupport(vk::PhysicalDevice device)
+{
+    static const vector<const char *> requiredDeviceExtensions{VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+
+    vector<vk::ExtensionProperties> extensionProperties =
+        device.enumerateDeviceExtensionProperties();
+
+    vector<const char *> extensionNames(extensionProperties.size());
+    transform(extensionProperties.begin(), extensionProperties.end(), extensionNames.begin(),
+              [](const vk::ExtensionProperties &properties) { return properties.extensionName; });
+
+    return true;
+}
+
 } // namespace zvk

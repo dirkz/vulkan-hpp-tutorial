@@ -92,7 +92,7 @@ void HelloTriangleApplication::CreateSurface()
 bool HelloTriangleApplication::IsDeviceSuitable(vk::PhysicalDevice device)
 {
     QueueFamilyIndices indices{device, m_surface.get()};
-    return indices.IsComplete();
+    return indices.IsComplete() && CheckDeviceExtensionSupport(device);
 }
 
 void HelloTriangleApplication::PickPhysicalDevice()
