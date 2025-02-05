@@ -9,12 +9,13 @@ struct SwapChainSupportDetails
 {
     SwapChainSupportDetails(vk::PhysicalDevice device, vk::SurfaceKHR surface);
 
-    vk::SurfaceFormatKHR ChooseSurfaceFormat();
-    vk::PresentModeKHR ChoosePresentMode();
-    vk::Extent2D ChooseSwapExtent();
-    vk::SurfaceCapabilitiesKHR Capabilities();
+    vk::SurfaceFormatKHR ChooseSurfaceFormat() const;
+    vk::PresentModeKHR ChoosePresentMode() const;
+    vk::SurfaceCapabilitiesKHR Capabilities() const;
 
-    bool IsAdequate();
+    uint32_t ImageCount() const;
+
+    bool IsAdequate() const;
 
   private:
     vk::SurfaceCapabilitiesKHR m_capabilities;

@@ -147,6 +147,8 @@ void HelloTriangleApplication::CreateSwapChain()
     vk::SurfaceFormatKHR format = support.ChooseSurfaceFormat();
     vk::PresentModeKHR presentMode = support.ChoosePresentMode();
     vk::Extent2D extent = m_window->ChooseSwapExtent(support.Capabilities());
+
+    uint32_t imageCount = support.ImageCount();
 }
 
 void HelloTriangleApplication::InitVulkan()

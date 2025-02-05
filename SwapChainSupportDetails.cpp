@@ -10,7 +10,7 @@ SwapChainSupportDetails::SwapChainSupportDetails(vk::PhysicalDevice device, vk::
     m_presentModes = device.getSurfacePresentModesKHR(surface);
 }
 
-vk::SurfaceFormatKHR SwapChainSupportDetails::ChooseSurfaceFormat()
+vk::SurfaceFormatKHR SwapChainSupportDetails::ChooseSurfaceFormat() const
 {
     for (const vk::SurfaceFormatKHR &format : m_formats)
     {
@@ -24,7 +24,7 @@ vk::SurfaceFormatKHR SwapChainSupportDetails::ChooseSurfaceFormat()
     return m_formats[0];
 }
 
-vk::PresentModeKHR SwapChainSupportDetails::ChoosePresentMode()
+vk::PresentModeKHR SwapChainSupportDetails::ChoosePresentMode() const
 {
     for (const vk::PresentModeKHR &presentMode : m_presentModes)
     {
@@ -36,17 +36,25 @@ vk::PresentModeKHR SwapChainSupportDetails::ChoosePresentMode()
     return vk::PresentModeKHR::eFifo;
 }
 
-vk::Extent2D SwapChainSupportDetails::ChooseSwapExtent()
-{
-    return vk::Extent2D();
-}
-
-vk::SurfaceCapabilitiesKHR SwapChainSupportDetails::Capabilities()
+vk::SurfaceCapabilitiesKHR SwapChainSupportDetails::Capabilities() const
 {
     return m_capabilities;
 }
 
-bool SwapChainSupportDetails::IsAdequate()
+uint32_t SwapChainSupportDetails::ImageCount() const
+{
+    uint32_t imageCount = m_capabilities.minImageCount + 1;
+
+    uint32_t maxImageCount = m_capabilities.maxImageCount;
+    if (maxImageCount > 0 && imageCount > maxImageCount)
+    {
+        imageCount = maxImageCount;
+    }
+
+    return imageCount;
+}
+
+bool SwapChainSupportDetails::IsAdequate() const
 {
     return !m_formats.empty() && !m_presentModes.empty();
 }
