@@ -159,6 +159,7 @@ void HelloTriangleApplication::CreateSwapChain()
 {
     SwapChainSupportDetails support{m_physicalDevice, m_surface.get()};
     vk::SurfaceFormatKHR format = support.ChooseSurfaceFormat();
+    vk::PresentModeKHR presentMode = support.ChoosePresentMode();
 }
 
 void HelloTriangleApplication::InitVulkan()

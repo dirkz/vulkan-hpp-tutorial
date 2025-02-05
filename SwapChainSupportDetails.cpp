@@ -24,6 +24,18 @@ vk::SurfaceFormatKHR SwapChainSupportDetails::ChooseSurfaceFormat()
     return m_formats[0];
 }
 
+vk::PresentModeKHR SwapChainSupportDetails::ChoosePresentMode()
+{
+    for (const vk::PresentModeKHR &presentMode : m_presentModes)
+    {
+        if (presentMode == vk::PresentModeKHR::eMailbox)
+        {
+            return presentMode;
+        }
+    }
+    return vk::PresentModeKHR::eFifo;
+}
+
 bool SwapChainSupportDetails::IsAdequate()
 {
     return !m_formats.empty() && !m_presentModes.empty();

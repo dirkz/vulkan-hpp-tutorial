@@ -10,6 +10,7 @@ struct SwapChainSupportDetails
     SwapChainSupportDetails(vk::PhysicalDevice device, vk::SurfaceKHR surface);
 
     vk::SurfaceFormatKHR ChooseSurfaceFormat();
+    vk::PresentModeKHR ChoosePresentMode();
     bool IsAdequate();
 
   private:
