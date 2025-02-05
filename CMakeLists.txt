@@ -50,7 +50,9 @@ add_executable(${PROJECT_NAME}
 	"Strings.h"
 	"Strings.cpp"
 	"QueueFamilyIndices.h"
-	"QueueFamilyIndices.cpp")
+	"QueueFamilyIndices.cpp"
+	"SwapChainSupportDetails.h"
+	"SwapChainSupportDetails.cpp")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE common)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)

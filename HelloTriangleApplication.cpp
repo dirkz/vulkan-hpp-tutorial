@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 #include "Extensions.h"
+#include "SwapChainSupportDetails.h"
 #include "Validation.h"
 
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
@@ -92,7 +93,10 @@ void HelloTriangleApplication::CreateSurface()
 bool HelloTriangleApplication::IsDeviceSuitable(vk::PhysicalDevice device)
 {
     QueueFamilyIndices indices{device, m_surface.get()};
-    return indices.IsComplete() && CheckDeviceExtensionSupport(device);
+    SwapChainSupportDetails swapChainDetails{device, m_surface.get()};
+
+    return indices.IsComplete() && CheckDeviceExtensionSupport(device) &&
+           swapChainDetails.IsAdequate();
 }
 
 void HelloTriangleApplication::PickPhysicalDevice()
