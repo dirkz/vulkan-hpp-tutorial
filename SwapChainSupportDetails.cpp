@@ -36,6 +36,11 @@ vk::PresentModeKHR SwapChainSupportDetails::ChoosePresentMode()
     return vk::PresentModeKHR::eFifo;
 }
 
+vk::Extent2D SwapChainSupportDetails::ChooseSwapExtent()
+{
+    return vk::Extent2D();
+}
+
 bool SwapChainSupportDetails::IsAdequate()
 {
     return !m_formats.empty() && !m_presentModes.empty();
