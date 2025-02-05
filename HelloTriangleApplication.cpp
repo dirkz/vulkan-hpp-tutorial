@@ -75,7 +75,7 @@ void HelloTriangleApplication::CreateSurface()
     m_surface = m_window->CreateSurface(m_instance.get());
 }
 
-bool HelloTriangleApplication::IsDeviceSuitable(vk::PhysicalDevice device)
+bool HelloTriangleApplication::IsDeviceSuitable(vk::PhysicalDevice device) const
 {
     QueueFamilyIndices indices{device, m_surface.get()};
     if (!indices.IsComplete())

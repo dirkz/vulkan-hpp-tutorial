@@ -22,7 +22,7 @@ Window::~Window()
     glfwTerminate();
 }
 
-vector<const char *> Window::RequiredExtensions()
+vector<const char *> Window::RequiredExtensions() const
 {
     uint32_t glfwExtensionCount = 0;
     const char **glfwExtensions;
@@ -50,7 +50,7 @@ vk::UniqueSurfaceKHR Window::CreateSurface(vk::Instance instance)
     return vk::UniqueSurfaceKHR{surface, instance};
 }
 
-vk::Extent2D Window::ChooseSwapExtent(const vk::SurfaceCapabilitiesKHR &capabilities)
+vk::Extent2D Window::ChooseSwapExtent(const vk::SurfaceCapabilitiesKHR &capabilities) const
 {
     if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max())
     {

@@ -29,7 +29,7 @@ struct HelloTriangleApplication
     void CreateInstance();
     void SetupDebugMessenger();
     void CreateSurface();
-    bool IsDeviceSuitable(vk::PhysicalDevice device);
+    bool IsDeviceSuitable(vk::PhysicalDevice device) const;
     void PickPhysicalDevice();
     void CreateLogicalDevice();
     void CreateSwapChain();

@@ -30,22 +30,22 @@ QueueFamilyIndices::QueueFamilyIndices(vk::PhysicalDevice device, vk::SurfaceKHR
     }
 }
 
-bool QueueFamilyIndices::IsComplete()
+bool QueueFamilyIndices::IsComplete() const
 {
     return m_graphicsFamily.has_value() && m_presentFamily.has_value();
 }
 
-std::optional<uint32_t> QueueFamilyIndices::GraphicsFamily()
+std::optional<uint32_t> QueueFamilyIndices::GraphicsFamily() const
 {
     return m_graphicsFamily;
 }
 
-std::optional<uint32_t> QueueFamilyIndices::PresentFamily()
+std::optional<uint32_t> QueueFamilyIndices::PresentFamily() const
 {
     return m_presentFamily;
 }
 
-std::vector<uint32_t> QueueFamilyIndices::UniqueFamilies()
+std::vector<uint32_t> QueueFamilyIndices::UniqueFamilies() const
 {
     set<uint32_t> familySet{m_graphicsFamily.value(), m_presentFamily.value()};
     return vector<uint32_t>{familySet.begin(), familySet.end()};

@@ -9,12 +9,12 @@ struct QueueFamilyIndices
 {
     QueueFamilyIndices(vk::PhysicalDevice device, vk::SurfaceKHR surface);
 
-    bool IsComplete();
+    bool IsComplete() const;
 
-    std::optional<uint32_t> GraphicsFamily();
-    std::optional<uint32_t> PresentFamily();
+    std::optional<uint32_t> GraphicsFamily() const;
+    std::optional<uint32_t> PresentFamily() const;
 
-    std::vector<uint32_t> UniqueFamilies();
+    std::vector<uint32_t> UniqueFamilies() const;
 
   private:
     std::optional<uint32_t> m_graphicsFamily;
