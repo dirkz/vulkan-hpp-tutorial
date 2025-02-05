@@ -149,6 +149,15 @@ void HelloTriangleApplication::CreateSwapChain()
     vk::Extent2D extent = m_window->ChooseSwapExtent(support.Capabilities());
 
     uint32_t imageCount = support.ImageCount();
+
+    QueueFamilyIndices indices{m_physicalDevice, m_surface.get()};
+    std::array<uint32_t, 2> queueFamilyIndices = {indices.GraphicsFamily().value(),
+                                                  indices.PresentFamily().value()};
+    std::vector<uint32_t> combinedIndices = indices.UniqueGraphicsAndPresent();
+    bool isCombinedIndices = combinedIndices.size() == 1;
+
+    vk::SharingMode imageSharingMode =
+        isCombinedIndices ? vk::SharingMode::eExclusive : vk::SharingMode::eConcurrent;
 }
 
 void HelloTriangleApplication::InitVulkan()

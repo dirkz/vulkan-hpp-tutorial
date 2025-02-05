@@ -15,6 +15,7 @@ struct QueueFamilyIndices
     std::optional<uint32_t> PresentFamily() const;
 
     std::vector<uint32_t> UniqueFamilies() const;
+    std::vector<uint32_t> UniqueGraphicsAndPresent() const;
 
   private:
     std::optional<uint32_t> m_graphicsFamily;
