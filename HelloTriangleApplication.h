@@ -33,6 +33,7 @@ struct HelloTriangleApplication
     bool IsDeviceSuitable(vk::PhysicalDevice device);
     void PickPhysicalDevice();
     void CreateLogicalDevice();
+    void CreateSwapChain();
     void InitVulkan();
     void MainLoop();
     void Cleanup();

@@ -155,6 +155,12 @@ void HelloTriangleApplication::CreateLogicalDevice()
     m_presentQueue = m_device->getQueue(familyIndices.PresentFamily().value(), 0);
 }
 
+void HelloTriangleApplication::CreateSwapChain()
+{
+    SwapChainSupportDetails support{m_physicalDevice, m_surface.get()};
+    vk::SurfaceFormatKHR format = support.ChooseSurfaceFormat();
+}
+
 void HelloTriangleApplication::InitVulkan()
 {
     VULKAN_HPP_DEFAULT_DISPATCHER.init();
@@ -164,6 +170,7 @@ void HelloTriangleApplication::InitVulkan()
     CreateSurface();
     PickPhysicalDevice();
     CreateLogicalDevice();
+    CreateSwapChain();
 }
 
 void HelloTriangleApplication::MainLoop()
