@@ -17,12 +17,10 @@ static const uint32_t Height = 600;
 
 HelloTriangleApplication::HelloTriangleApplication()
 {
-    glfwInit();
 }
 
 HelloTriangleApplication::~HelloTriangleApplication()
 {
-    glfwTerminate();
 }
 
 void HelloTriangleApplication::Run()

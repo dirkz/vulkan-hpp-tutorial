@@ -7,6 +7,8 @@ namespace zvk
 
 Window::Window(const std::string &title, uint32_t width, uint32_t height)
 {
+    glfwInit();
+
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
@@ -16,6 +18,8 @@ Window::Window(const std::string &title, uint32_t width, uint32_t height)
 Window::~Window()
 {
     glfwDestroyWindow(m_window);
+
+    glfwTerminate();
 }
 
 vector<const char *> Window::RequiredExtensions()
