@@ -142,53 +142,8 @@ void HelloTriangleApplication::CreateLogicalDevice()
 
 void HelloTriangleApplication::CreateSwapChain()
 {
-    SwapChainSupportDetails support{m_physicalDevice, m_surface.get()};
-
-    vk::SurfaceFormatKHR format = support.ChooseSurfaceFormat();
-    vk::PresentModeKHR presentMode = support.ChoosePresentMode();
-    vk::Extent2D extent = m_window->ChooseSwapExtent(support.Capabilities());
-
-    uint32_t imageCount = support.ImageCount();
-
-    QueueFamilyIndices indices{m_physicalDevice, m_surface.get()};
-    std::array<uint32_t, 2> queueFamilyIndices = {indices.GraphicsFamily().value(),
-                                                  indices.PresentFamily().value()};
-    std::vector<uint32_t> combinedIndices = indices.UniqueGraphicsAndPresent();
-
-    // "Normal" case: both graphics and present use the same queue:
-    vk::SharingMode imageSharingMode = vk::SharingMode::eExclusive;
-    uint32_t queueFamilyIndexCount = 0;
-    const uint32_t *pQueueFamilyIndices = nullptr;
-
-    // Unless they are not using the same queue:
-    if (combinedIndices.size() > 1)
-    {
-        imageSharingMode = vk::SharingMode::eConcurrent;
-        queueFamilyIndexCount = queueFamilyIndices.size();
-        pQueueFamilyIndices = queueFamilyIndices.data();
-    }
-
-    vk::SwapchainCreateInfoKHR createInfo{{},
-                                          m_surface.get(),
-                                          imageCount,
-                                          format.format,
-                                          format.colorSpace,
-                                          extent,
-                                          1 /* imageArrayLayers */,
-                                          vk::ImageUsageFlagBits::eColorAttachment,
-                                          imageSharingMode,
-                                          queueFamilyIndexCount,
-                                          pQueueFamilyIndices,
-                                          support.Capabilities().currentTransform,
-                                          vk::CompositeAlphaFlagBitsKHR::eOpaque,
-                                          presentMode,
-                                          VK_TRUE /* clipped */,
-                                          VK_NULL_HANDLE /* oldSwapchain */};
-
-    m_swapchain = m_device->createSwapchainKHRUnique(createInfo);
-    m_swapchainImages = m_device->getSwapchainImagesKHR(m_swapchain.get());
-    m_swapchainImageFormat = format.format;
-    m_swapchainExtent = extent;
+    m_swapchain.reset(
+        new SwapChain{m_window.get(), m_physicalDevice, m_device.get(), m_surface.get()});
 }
 
 void HelloTriangleApplication::InitVulkan()

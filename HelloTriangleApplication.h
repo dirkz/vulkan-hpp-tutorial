@@ -4,6 +4,7 @@
 
 #include "DebugUtilsMessenger.h"
 #include "QueueFamilyIndices.h"
+#include "SwapChain.h"
 #include "Window.h"
 
 namespace zvk
@@ -25,10 +26,7 @@ struct HelloTriangleApplication
     vk::PhysicalDevice m_physicalDevice;
     vk::UniqueDevice m_device;
 
-    vk::UniqueSwapchainKHR m_swapchain;
-    std::vector<vk::Image> m_swapchainImages;
-    vk::Format m_swapchainImageFormat;
-    vk::Extent2D m_swapchainExtent;
+    std::unique_ptr<SwapChain> m_swapchain;
 
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;
