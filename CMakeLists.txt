@@ -19,12 +19,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_compile_definitions(_UNICODE UNICODE)
 
-find_package(Vulkan REQUIRED)
+find_package(Vulkan REQUIRED COMPONENTS glslc)
 
 if(NOT Vulkan_FOUND)
-    message(FATAL_ERROR "Vulkan SDK could not be found, have you set VULKAN_SDK correctly?")
+    message(FATAL_ERROR "The Vulkan SDK or a required component of it could not be found, have you set VULKAN_SDK correctly?")
 else()
     message(STATUS "Vulkan: Version ${Vulkan_VERSION}")
+	message(STATUS "glsl: ${Vulkan_GLSLC_EXECUTABLE}")
 endif()
 
 # precompiled header
