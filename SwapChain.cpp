@@ -56,6 +56,29 @@ SwapChain::SwapChain(const Window *pWindow, const vk::PhysicalDevice &physicalDe
     m_images = device.getSwapchainImagesKHR(m_swapchain.get());
     m_format = format.format;
     m_extent = extent;
+
+    CreateImageViews(device);
+}
+
+void SwapChain::CreateImageViews(const vk::Device &device)
+{
+    m_imageViews.resize(m_images.size());
+
+    constexpr uint32_t baseMipLevel = 0;
+    constexpr uint32_t levelCount = 1;
+    constexpr uint32_t baseArrayLayer = 0;
+    constexpr uint32_t layerCount = 1;
+    constexpr vk::ImageSubresourceRange subresourceRange{
+        vk::ImageAspectFlagBits::eColor, baseMipLevel, levelCount, baseArrayLayer, layerCount};
+
+    constexpr vk::ComponentMapping componentMapping{}; // all vk::ComponentSwizzle::eIdentity
+
+    for (int i = 0; i < m_images.size(); ++i)
+    {
+        vk::ImageViewCreateInfo createInfo{{},       m_images[i],      vk::ImageViewType::e2D,
+                                           m_format, componentMapping, subresourceRange};
+        m_imageViews[i] = device.createImageViewUnique(createInfo);
+    }
 }
 
 } // namespace zvk
