@@ -12,9 +12,13 @@ namespace zvk
 
 struct HelloTriangleApplication
 {
+    HelloTriangleApplication(std::filesystem::path shaderPath);
+
     void Run();
 
   private:
+    std::filesystem::path m_shaderPath;
+
     std::unique_ptr<Window> m_window;
 
     std::unique_ptr<DebugUtilsMessenger> m_standaloneDebugMessenger;

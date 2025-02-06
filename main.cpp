@@ -1,17 +1,19 @@
 #include "HelloTriangleApplication.h"
 
-namespace fs = std::filesystem;
-
 int main(int argc, char *argv[])
 {
+    std::filesystem::path shaderPath{};
+
     if (argc > 0 && argv[0])
     {
-        std::string executable{argv[0]};
+        std::filesystem::path executablePath{argv[0]};
+        executablePath.remove_filename();
+        shaderPath = executablePath / "shaders";
     }
-    
+
     try
     {
-        zvk::HelloTriangleApplication app{};
+        zvk::HelloTriangleApplication app{shaderPath};
         app.Run();
     }
 
