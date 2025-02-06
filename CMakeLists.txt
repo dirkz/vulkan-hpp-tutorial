@@ -54,7 +54,9 @@ add_executable(${PROJECT_NAME}
 	"SwapChainSupportDetails.h"
 	"SwapChainSupportDetails.cpp"
 	"Window.h"
-	"Window.cpp")
+	"Window.cpp"
+	"SwapChain.h"
+	"SwapChain.cpp")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE common)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
