@@ -146,6 +146,10 @@ void HelloTriangleApplication::CreateSwapChain()
         new SwapChain{m_window.get(), m_physicalDevice, m_device.get(), m_surface.get()});
 }
 
+void HelloTriangleApplication::CreateGraphicsPipeline()
+{
+}
+
 void HelloTriangleApplication::InitVulkan()
 {
     VULKAN_HPP_DEFAULT_DISPATCHER.init();
@@ -156,6 +160,7 @@ void HelloTriangleApplication::InitVulkan()
     PickPhysicalDevice();
     CreateLogicalDevice();
     CreateSwapChain();
+    CreateGraphicsPipeline();
 }
 
 void HelloTriangleApplication::MainLoop()

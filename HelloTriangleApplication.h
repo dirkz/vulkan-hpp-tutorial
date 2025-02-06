@@ -39,6 +39,7 @@ struct HelloTriangleApplication
     void PickPhysicalDevice();
     void CreateLogicalDevice();
     void CreateSwapChain();
+    void CreateGraphicsPipeline();
     void InitVulkan();
     void MainLoop();
     void Cleanup();
