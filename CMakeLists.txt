@@ -59,6 +59,9 @@ add_executable(${PROJECT_NAME}
 	"SwapChain.h"
 	"SwapChain.cpp")
 
+# Adds shader compilations as custom target to ${PROJECT_NAME}
+add_subdirectory(shaders)
+
 target_link_libraries(${PROJECT_NAME} PRIVATE common)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
