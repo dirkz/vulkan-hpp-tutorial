@@ -81,6 +81,17 @@ void SwapChain::CreateImageViews(const vk::Device &device)
     }
 }
 
+void SwapChain::CreateFrameBuffers(const vk::Device &device, const vk::RenderPass &renderPass)
+{
+    m_frameBuffers.resize(m_imageViews.size());
+    for (int i = 0; i < m_imageViews.size(); ++i)
+    {
+        vk::FramebufferCreateInfo createInfo{
+            {}, renderPass, {m_imageViews[i].get()}, m_extent.width, m_extent.height, 1};
+        m_frameBuffers[i] = device.createFramebufferUnique(createInfo);
+    }
+}
+
 vk::Format SwapChain::Format() const
 {
     return m_format;

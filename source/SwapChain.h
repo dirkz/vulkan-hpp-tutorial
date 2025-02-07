@@ -13,6 +13,7 @@ struct SwapChain
               const vk::Device &device, const vk::SurfaceKHR &surface);
 
     void CreateImageViews(const vk::Device &device);
+    void CreateFrameBuffers(const vk::Device &device, const vk::RenderPass &renderPass);
 
     vk::Format Format() const;
     vk::Extent2D Extent() const;
@@ -23,6 +24,7 @@ struct SwapChain
     vk::Format m_format;
     vk::Extent2D m_extent;
     std::vector<vk::UniqueImageView> m_imageViews;
+    std::vector<vk::UniqueFramebuffer> m_frameBuffers;
 };
 
 } // namespace zvk

@@ -49,6 +49,7 @@ struct HelloTriangleApplication
     void CreateSwapChain();
     void CreateRenderPass();
     void CreateGraphicsPipeline();
+    void CreateFrameBuffers();
     void InitVulkan();
     void MainLoop();
     void Cleanup();
