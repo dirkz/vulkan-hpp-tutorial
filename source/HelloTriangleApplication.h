@@ -31,6 +31,7 @@ struct HelloTriangleApplication
     vk::UniqueDevice m_device;
 
     std::unique_ptr<SwapChain> m_swapchain;
+    vk::UniquePipelineLayout m_pipelineLayout;
 
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;

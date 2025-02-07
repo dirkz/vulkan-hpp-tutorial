@@ -210,7 +210,7 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
 
     vk::PipelineLayoutCreateInfo layoutCreateInfo{};
 
-    vk::PipelineLayout layout = m_device->createPipelineLayout(layoutCreateInfo);
+    m_pipelineLayout = m_device->createPipelineLayoutUnique(layoutCreateInfo);
 }
 
 void HelloTriangleApplication::InitVulkan()
