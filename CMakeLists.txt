@@ -1,4 +1,4 @@
-# CMakeList.txt : CMake project for vk-hpp-tutorial, include source and define
+# CMakeList.txt : CMake project for vulkan-hpp-tutorial, include source and define
 # project specific logic here.
 #
 cmake_minimum_required (VERSION 3.29)
