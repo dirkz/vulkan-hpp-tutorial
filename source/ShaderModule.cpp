@@ -27,4 +27,9 @@ ShaderModule::ShaderModule(vk::Device device, std::filesystem::path basePath, st
     m_module = device.createShaderModuleUnique(createInfo);
 }
 
+vk::ShaderModule ShaderModule::Module()
+{
+    return m_module.get();
+}
+
 } // namespace zvk

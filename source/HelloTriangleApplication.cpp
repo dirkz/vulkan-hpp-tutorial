@@ -156,6 +156,11 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
 {
     ShaderModule vertexShader{m_device.get(), m_shaderPath, "shader.vert.spv"};
     ShaderModule fragmentShader{m_device.get(), m_shaderPath, "shader.frag.spv"};
+
+    vk::PipelineShaderStageCreateInfo vertexShaderStageCreateInfo{
+        {}, vk::ShaderStageFlagBits::eVertex, vertexShader.Module(), "main"};
+    vk::PipelineShaderStageCreateInfo fragmentShaderStageCreateInfo{
+        {}, vk::ShaderStageFlagBits::eFragment, fragmentShader.Module(), "main"};
 }
 
 void HelloTriangleApplication::InitVulkan()
