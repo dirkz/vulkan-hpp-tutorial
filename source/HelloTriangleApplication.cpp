@@ -204,6 +204,9 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
         vk::BlendOp::eAdd,
         vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG |
             vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA};
+
+    vk::PipelineColorBlendStateCreateInfo colorBlendCreateInfo{
+        {}, false, vk::LogicOp::eCopy, {colorBlendAttachment}, {0.f, 0.f, 0.f, 0.f}};
 }
 
 void HelloTriangleApplication::InitVulkan()
