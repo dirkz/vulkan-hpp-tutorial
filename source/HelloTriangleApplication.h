@@ -29,6 +29,7 @@ struct HelloTriangleApplication
 
     vk::PhysicalDevice m_physicalDevice;
     vk::UniqueDevice m_device;
+    std::unique_ptr<QueueFamilyIndices> m_familyIndices;
 
     std::unique_ptr<SwapChain> m_swapchain;
 

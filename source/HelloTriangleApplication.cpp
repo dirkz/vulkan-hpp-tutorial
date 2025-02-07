@@ -118,12 +118,12 @@ void HelloTriangleApplication::PickPhysicalDevice()
     }
 
     m_physicalDevice = result;
+    m_familyIndices.reset(new QueueFamilyIndices{m_physicalDevice, m_surface.get()});
 }
 
 void HelloTriangleApplication::CreateLogicalDevice()
 {
-    QueueFamilyIndices familyIndices{m_physicalDevice, m_surface.get()};
-    vector<uint32_t> queueFamilies = familyIndices.UniqueFamilies();
+    vector<uint32_t> queueFamilies = m_familyIndices->UniqueFamilies();
 
     float priority = 1.0f;
     vector<vk::DeviceQueueCreateInfo> deviceQueueCreateInfos(queueFamilies.size());
@@ -142,8 +142,8 @@ void HelloTriangleApplication::CreateLogicalDevice()
 
     m_device = m_physicalDevice.createDeviceUnique(deviceCreateInfo);
 
-    m_graphicsQueue = m_device->getQueue(familyIndices.GraphicsFamily().value(), 0);
-    m_presentQueue = m_device->getQueue(familyIndices.PresentFamily().value(), 0);
+    m_graphicsQueue = m_device->getQueue(m_familyIndices->GraphicsFamily().value(), 0);
+    m_presentQueue = m_device->getQueue(m_familyIndices->PresentFamily().value(), 0);
 }
 
 void HelloTriangleApplication::CreateSwapChain()
