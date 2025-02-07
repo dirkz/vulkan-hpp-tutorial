@@ -193,6 +193,17 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
                                                                      1};
 
     vk::PipelineMultisampleStateCreateInfo multisamplingCreateInfo{};
+
+    vk::PipelineColorBlendAttachmentState colorBlendAttachment{
+        VK_FALSE,
+        vk::BlendFactor::eOne,
+        vk::BlendFactor::eZero,
+        vk::BlendOp::eAdd,
+        vk::BlendFactor::eOne,
+        vk::BlendFactor::eZero,
+        vk::BlendOp::eAdd,
+        vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG |
+            vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA};
 }
 
 void HelloTriangleApplication::InitVulkan()
