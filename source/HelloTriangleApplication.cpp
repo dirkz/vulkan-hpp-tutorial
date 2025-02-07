@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 #include "Extensions.h"
+#include "ShaderModule.h"
 #include "SwapChainSupportDetails.h"
 #include "Validation.h"
 
@@ -153,6 +154,8 @@ void HelloTriangleApplication::CreateSwapChain()
 
 void HelloTriangleApplication::CreateGraphicsPipeline()
 {
+    ShaderModule vertexShader{m_device.get(), m_shaderPath, "shader.vert.spv"};
+    ShaderModule fragmentShader{m_device.get(), m_shaderPath, "shader.frag.spv"};
 }
 
 void HelloTriangleApplication::InitVulkan()
