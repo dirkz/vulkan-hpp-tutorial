@@ -183,6 +183,9 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
     vk::PipelineShaderStageCreateInfo fragmentShaderStageCreateInfo{
         {}, vk::ShaderStageFlagBits::eFragment, fragmentShader.Module(), "main"};
 
+    std::array<vk::PipelineShaderStageCreateInfo, 2> pipelineShaderStages{
+        vertexShaderStageCreateInfo, fragmentShaderStageCreateInfo};
+
     std::vector<vk::DynamicState> dynamicStates{vk::DynamicState::eViewport,
                                                 vk::DynamicState::eScissor};
     vk::PipelineDynamicStateCreateInfo dynamicCreateInfo{{}, dynamicStates};
@@ -232,6 +235,23 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
     vk::PipelineLayoutCreateInfo layoutCreateInfo{};
 
     m_pipelineLayout = m_device->createPipelineLayoutUnique(layoutCreateInfo);
+
+    vk::GraphicsPipelineCreateInfo pipelineCreateInfo{{},
+                                                      pipelineShaderStages,
+                                                      &vertexInputCreateInfo,
+                                                      &inputAssemblyCreateInfo,
+                                                      {},
+                                                      &viewportCreateInfo,
+                                                      &rasterizationCreateInfo,
+                                                      &multisamplingCreateInfo,
+                                                      {},
+                                                      &colorBlendCreateInfo,
+                                                      &dynamicCreateInfo,
+                                                      m_pipelineLayout.get(),
+                                                      m_renderPass.get(),
+                                                      0,
+                                                      {},
+                                                      -1};
 }
 
 void HelloTriangleApplication::InitVulkan()
