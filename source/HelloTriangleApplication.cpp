@@ -269,6 +269,10 @@ void HelloTriangleApplication::CreateFrameBuffers()
     m_swapchain->CreateFrameBuffers(m_device.get(), m_renderPass.get());
 }
 
+void HelloTriangleApplication::CreateCommandPool()
+{
+}
+
 void HelloTriangleApplication::InitVulkan()
 {
     VULKAN_HPP_DEFAULT_DISPATCHER.init();

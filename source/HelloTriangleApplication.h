@@ -40,6 +40,7 @@ struct HelloTriangleApplication
     vk::Queue m_presentQueue;
 
     void InitWindow();
+
     void CreateInstance();
     void SetupDebugMessenger();
     void CreateSurface();
@@ -50,6 +51,8 @@ struct HelloTriangleApplication
     void CreateRenderPass();
     void CreateGraphicsPipeline();
     void CreateFrameBuffers();
+    void CreateCommandPool();
+
     void InitVulkan();
     void MainLoop();
     void Cleanup();
