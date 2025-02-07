@@ -253,14 +253,14 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
                                                       {},
                                                       -1};
 
-    auto [result, pipeline] = m_device->createGraphicsPipeline({}, pipelineCreateInfo);
+    auto [result, pipeline] = m_device->createGraphicsPipelineUnique({}, pipelineCreateInfo);
     if (result != vk::Result::eSuccess)
     {
         throw std::runtime_error{"could not create the graphics pipeline"};
     }
     else
     {
-        m_graphicsPipeline.reset(pipeline);
+        m_graphicsPipeline = std::move(pipeline);
     }
 }
 
