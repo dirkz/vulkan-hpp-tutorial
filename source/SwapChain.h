@@ -14,6 +14,8 @@ struct SwapChain
 
     void CreateImageViews(const vk::Device &device);
 
+    vk::Extent2D Extent() const;
+
   private:
     vk::UniqueSwapchainKHR m_swapchain;
     std::vector<vk::Image> m_images;

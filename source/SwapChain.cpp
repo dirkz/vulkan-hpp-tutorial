@@ -81,4 +81,9 @@ void SwapChain::CreateImageViews(const vk::Device &device)
     }
 }
 
+vk::Extent2D SwapChain::Extent() const
+{
+    return m_extent;
+}
+
 } // namespace zvk

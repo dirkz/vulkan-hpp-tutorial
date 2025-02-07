@@ -170,6 +170,11 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
 
     vk::PipelineInputAssemblyStateCreateInfo inputAssemblyCreateInfo{
         {}, vk::PrimitiveTopology::eTriangleList, VK_FALSE};
+
+    vk::Extent2D swapchainExtent = m_swapchain->Extent();
+    vk::Viewport viewport{
+        0, 0, static_cast<float>(swapchainExtent.width), static_cast<float>(swapchainExtent.height),
+        0, 1};
 }
 
 void HelloTriangleApplication::InitVulkan()
