@@ -271,6 +271,9 @@ void HelloTriangleApplication::CreateFrameBuffers()
 
 void HelloTriangleApplication::CreateCommandPool()
 {
+    vk::CommandPoolCreateInfo createInfo{vk::CommandPoolCreateFlagBits::eResetCommandBuffer,
+                                         m_familyIndices->GraphicsFamily().value()};
+    m_commandPool = m_device->createCommandPoolUnique(createInfo);
 }
 
 void HelloTriangleApplication::InitVulkan()

@@ -37,6 +37,8 @@ struct HelloTriangleApplication
     vk::UniquePipelineLayout m_pipelineLayout;
     vk::UniquePipeline m_graphicsPipeline;
 
+    vk::UniqueCommandPool m_commandPool;
+
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;
 
