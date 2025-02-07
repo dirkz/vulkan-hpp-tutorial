@@ -165,6 +165,11 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
     std::vector<vk::DynamicState> dynamicStates{vk::DynamicState::eViewport,
                                                 vk::DynamicState::eScissor};
     vk::PipelineDynamicStateCreateInfo dynamicStateCreateInfo{{}, dynamicStates};
+
+    vk::PipelineVertexInputStateCreateInfo vertexInputStateCreateInfo{};
+
+    vk::PipelineInputAssemblyStateCreateInfo inputAssemblyCreateInfo{
+        {}, vk::PrimitiveTopology::eTriangleList, VK_FALSE};
 }
 
 void HelloTriangleApplication::InitVulkan()
