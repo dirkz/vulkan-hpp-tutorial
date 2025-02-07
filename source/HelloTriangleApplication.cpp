@@ -207,6 +207,10 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
 
     vk::PipelineColorBlendStateCreateInfo colorBlendCreateInfo{
         {}, false, vk::LogicOp::eCopy, {colorBlendAttachment}, {0.f, 0.f, 0.f, 0.f}};
+
+    vk::PipelineLayoutCreateInfo layoutCreateInfo{};
+
+    vk::PipelineLayout layout = m_device->createPipelineLayout(layoutCreateInfo);
 }
 
 void HelloTriangleApplication::InitVulkan()
