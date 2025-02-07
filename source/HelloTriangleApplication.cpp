@@ -163,6 +163,8 @@ void HelloTriangleApplication::CreateRenderPass()
                                               vk::AttachmentStoreOp::eDontCare,
                                               vk::ImageLayout::eUndefined,
                                               vk::ImageLayout::ePresentSrcKHR};
+
+    vk::AttachmentReference colorAttachmentRef{0, vk::ImageLayout::eColorAttachmentOptimal};
 }
 
 void HelloTriangleApplication::CreateGraphicsPipeline()
