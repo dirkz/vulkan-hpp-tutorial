@@ -81,6 +81,11 @@ void SwapChain::CreateImageViews(const vk::Device &device)
     }
 }
 
+vk::Format SwapChain::Format() const
+{
+    return m_format;
+}
+
 vk::Extent2D SwapChain::Extent() const
 {
     return m_extent;

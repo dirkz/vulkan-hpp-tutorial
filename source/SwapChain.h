@@ -14,6 +14,7 @@ struct SwapChain
 
     void CreateImageViews(const vk::Device &device);
 
+    vk::Format Format() const;
     vk::Extent2D Extent() const;
 
   private:

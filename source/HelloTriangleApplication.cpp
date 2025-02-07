@@ -152,6 +152,19 @@ void HelloTriangleApplication::CreateSwapChain()
         new SwapChain{m_window.get(), m_physicalDevice, m_device.get(), m_surface.get()});
 }
 
+void HelloTriangleApplication::CreateRenderPass()
+{
+    vk::AttachmentDescription colorAttachment{{},
+                                              m_swapchain->Format(),
+                                              vk::SampleCountFlagBits::e1,
+                                              vk::AttachmentLoadOp::eClear,
+                                              vk::AttachmentStoreOp::eStore,
+                                              vk::AttachmentLoadOp::eDontCare,
+                                              vk::AttachmentStoreOp::eDontCare,
+                                              vk::ImageLayout::eUndefined,
+                                              vk::ImageLayout::ePresentSrcKHR};
+}
+
 void HelloTriangleApplication::CreateGraphicsPipeline()
 {
     ShaderModule vertexShader{m_device.get(), m_shaderPath, "shader.vert.spv"};
@@ -223,6 +236,7 @@ void HelloTriangleApplication::InitVulkan()
     PickPhysicalDevice();
     CreateLogicalDevice();
     CreateSwapChain();
+    CreateRenderPass();
     CreateGraphicsPipeline();
 }
 
