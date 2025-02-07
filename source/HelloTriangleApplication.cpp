@@ -192,6 +192,8 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
         0,
         0,
         1};
+
+    vk::PipelineMultisampleStateCreateInfo multisamplingCreateInfo{};
 }
 
 void HelloTriangleApplication::InitVulkan()
