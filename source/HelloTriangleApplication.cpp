@@ -175,6 +175,8 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
     vk::Viewport viewport{
         0, 0, static_cast<float>(swapchainExtent.width), static_cast<float>(swapchainExtent.height),
         0, 1};
+
+    vk::Rect2D scissor{{0, 0}, swapchainExtent};
 }
 
 void HelloTriangleApplication::InitVulkan()
