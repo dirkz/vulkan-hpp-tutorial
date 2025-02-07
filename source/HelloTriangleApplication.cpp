@@ -179,6 +179,19 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
     vk::Rect2D scissor{{0, 0}, swapchainExtent};
 
     vk::PipelineViewportStateCreateInfo viewportStateCreateInfo{{}, 1, nullptr, 1, nullptr};
+
+    vk::PipelineRasterizationStateCreateInfo rasterizationStateCreateInfo{
+        {},
+        VK_FALSE,
+        VK_FALSE,
+        vk::PolygonMode::eFill,
+        vk::CullModeFlagBits::eBack,
+        vk::FrontFace::eClockwise,
+        VK_FALSE,
+        0,
+        0,
+        0,
+        1};
 }
 
 void HelloTriangleApplication::InitVulkan()
