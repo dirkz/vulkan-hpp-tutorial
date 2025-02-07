@@ -167,6 +167,10 @@ void HelloTriangleApplication::CreateRenderPass()
     vk::AttachmentReference colorAttachmentRef{0, vk::ImageLayout::eColorAttachmentOptimal};
 
     vk::SubpassDescription subpass{{}, vk::PipelineBindPoint::eGraphics, {}, {colorAttachmentRef}};
+
+    vk::RenderPassCreateInfo createInfo{{}, {colorAttachment}, {subpass}};
+
+    m_renderPass = m_device->createRenderPassUnique(createInfo);
 }
 
 void HelloTriangleApplication::CreateGraphicsPipeline()
