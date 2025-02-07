@@ -34,4 +34,4 @@ add_subdirectory(glm)
 add_subdirectory(glfw)
 
 # main sources
-add_subdirectory(main)
+add_subdirectory(source)
