@@ -161,6 +161,10 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
         {}, vk::ShaderStageFlagBits::eVertex, vertexShader.Module(), "main"};
     vk::PipelineShaderStageCreateInfo fragmentShaderStageCreateInfo{
         {}, vk::ShaderStageFlagBits::eFragment, fragmentShader.Module(), "main"};
+
+    std::vector<vk::DynamicState> dynamicStates{vk::DynamicState::eViewport,
+                                                vk::DynamicState::eScissor};
+    vk::PipelineDynamicStateCreateInfo dynamicStateCreateInfo{{}, dynamicStates};
 }
 
 void HelloTriangleApplication::InitVulkan()
