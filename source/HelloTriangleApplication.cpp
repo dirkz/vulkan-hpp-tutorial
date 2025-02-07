@@ -177,6 +177,8 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
         0, 1};
 
     vk::Rect2D scissor{{0, 0}, swapchainExtent};
+
+    vk::PipelineViewportStateCreateInfo viewportStateCreateInfo{{}, 1, nullptr, 1, nullptr};
 }
 
 void HelloTriangleApplication::InitVulkan()
