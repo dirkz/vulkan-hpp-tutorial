@@ -252,6 +252,16 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
                                                       0,
                                                       {},
                                                       -1};
+
+    auto [result, pipeline] = m_device->createGraphicsPipelineUnique({}, pipelineCreateInfo);
+    if (result != vk::Result::eSuccess)
+    {
+        throw std::runtime_error{"could not create the graphics pipeline"};
+    }
+    else
+    {
+        m_graphicsPipeline.reset(pipeline.get());
+    }
 }
 
 void HelloTriangleApplication::InitVulkan()

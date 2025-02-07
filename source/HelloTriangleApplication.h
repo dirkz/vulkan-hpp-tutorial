@@ -33,6 +33,7 @@ struct HelloTriangleApplication
     std::unique_ptr<SwapChain> m_swapchain;
     vk::UniqueRenderPass m_renderPass;
     vk::UniquePipelineLayout m_pipelineLayout;
+    vk::UniquePipeline m_graphicsPipeline;
 
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;
