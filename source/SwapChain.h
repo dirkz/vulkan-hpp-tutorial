@@ -17,6 +17,7 @@ struct SwapChain
 
     vk::Format Format() const;
     vk::Extent2D Extent() const;
+    vk::Framebuffer FrameBuffer(const uint32_t index);
 
   private:
     vk::UniqueSwapchainKHR m_swapchain;

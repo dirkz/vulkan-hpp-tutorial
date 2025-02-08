@@ -103,4 +103,9 @@ vk::Extent2D SwapChain::Extent() const
     return m_extent;
 }
 
+vk::Framebuffer SwapChain::FrameBuffer(const uint32_t index)
+{
+    return m_frameBuffers[index].get();
+}
+
 } // namespace zvk
