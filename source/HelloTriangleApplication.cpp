@@ -284,6 +284,13 @@ void HelloTriangleApplication::CreateCommandBuffer()
     m_commandBuffer = std::move(commandBuffers[0]);
 }
 
+void HelloTriangleApplication::RecordCommandBuffer(vk::CommandBuffer commandBuffer,
+                                                   uint32_t imageIndex)
+{
+    vk::CommandBufferBeginInfo beginInfo{};
+    commandBuffer.begin(beginInfo);
+}
+
 void HelloTriangleApplication::InitVulkan()
 {
     VULKAN_HPP_DEFAULT_DISPATCHER.init();
