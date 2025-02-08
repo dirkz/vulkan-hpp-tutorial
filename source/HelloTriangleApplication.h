@@ -38,6 +38,7 @@ struct HelloTriangleApplication
     vk::UniquePipeline m_graphicsPipeline;
 
     vk::UniqueCommandPool m_commandPool;
+    vk::UniqueCommandBuffer m_commandBuffer;
 
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;
@@ -55,6 +56,7 @@ struct HelloTriangleApplication
     void CreateGraphicsPipeline();
     void CreateFrameBuffers();
     void CreateCommandPool();
+    void CreateCommandBuffer();
 
     void InitVulkan();
     void MainLoop();

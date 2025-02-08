@@ -276,6 +276,14 @@ void HelloTriangleApplication::CreateCommandPool()
     m_commandPool = m_device->createCommandPoolUnique(createInfo);
 }
 
+void HelloTriangleApplication::CreateCommandBuffer()
+{
+    vk::CommandBufferAllocateInfo allocInfo{m_commandPool.get(), vk::CommandBufferLevel::ePrimary,
+                                            1};
+    auto commandBuffers = m_device->allocateCommandBuffersUnique(allocInfo);
+    m_commandBuffer = std::move(commandBuffers[0]);
+}
+
 void HelloTriangleApplication::InitVulkan()
 {
     VULKAN_HPP_DEFAULT_DISPATCHER.init();
