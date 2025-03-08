@@ -289,6 +289,11 @@ void HelloTriangleApplication::RecordCommandBuffer(vk::CommandBuffer commandBuff
 {
     vk::CommandBufferBeginInfo beginInfo{};
     commandBuffer.begin(beginInfo);
+
+    vk::ClearValue clearColor{vk::ClearColorValue{0.f, 0.f, 0.f, 1.f}};
+    vk::Rect2D area{{0, 0}, m_swapchain->Extent()};
+    vk::RenderPassBeginInfo renderPassInfo{
+        m_renderPass.get(), m_swapchain->FrameBuffer(imageIndex), area, {clearColor}};
 }
 
 void HelloTriangleApplication::InitVulkan()
