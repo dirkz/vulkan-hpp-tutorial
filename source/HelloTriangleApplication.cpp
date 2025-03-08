@@ -290,10 +290,29 @@ void HelloTriangleApplication::RecordCommandBuffer(vk::CommandBuffer commandBuff
     vk::CommandBufferBeginInfo beginInfo{};
     commandBuffer.begin(beginInfo);
 
+    vk::Extent2D extent = m_swapchain->Extent();
+
     vk::ClearValue clearColor{vk::ClearColorValue{0.f, 0.f, 0.f, 1.f}};
-    vk::Rect2D area{{0, 0}, m_swapchain->Extent()};
+    vk::Rect2D area{{0, 0}, extent};
     vk::RenderPassBeginInfo renderPassInfo{
         m_renderPass.get(), m_swapchain->FrameBuffer(imageIndex), area, {clearColor}};
+
+    commandBuffer.beginRenderPass(renderPassInfo, vk::SubpassContents::eInline);
+    commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, m_graphicsPipeline.get());
+
+    vk::Viewport viewport{
+        0, 0, static_cast<float>(extent.width), static_cast<float>(extent.height),
+        0, 1};
+    commandBuffer.setViewport(0, {viewport});
+
+    vk::Rect2D scissor{{0, 0}, extent};
+    commandBuffer.setScissor(0, {scissor});
+
+    commandBuffer.draw(3, 1, 0, 0);
+
+    commandBuffer.endRenderPass();
+
+    commandBuffer.end();
 }
 
 void HelloTriangleApplication::InitVulkan()
