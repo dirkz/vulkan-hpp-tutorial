@@ -304,6 +304,7 @@ void HelloTriangleApplication::InitVulkan()
     CreateRenderPass();
     CreateGraphicsPipeline();
     CreateFrameBuffers();
+    CreateCommandPool();
 }
 
 void HelloTriangleApplication::MainLoop()
