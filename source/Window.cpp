@@ -68,12 +68,4 @@ vk::Extent2D Window::ChooseSwapExtent(const vk::SurfaceCapabilitiesKHR &capabili
     return vk::Extent2D{w, h};
 }
 
-void Window::Loop()
-{
-    while (!glfwWindowShouldClose(m_window))
-    {
-        glfwPollEvents();
-    }
-}
-
 } // namespace zvk

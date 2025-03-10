@@ -334,7 +334,7 @@ void HelloTriangleApplication::InitVulkan()
 
 void HelloTriangleApplication::MainLoop()
 {
-    m_window->Loop();
+    m_window->Loop([this]() { this->DrawFrame(); });
 }
 
 void HelloTriangleApplication::DrawFrame()
