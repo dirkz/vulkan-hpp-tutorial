@@ -337,6 +337,10 @@ void HelloTriangleApplication::MainLoop()
     m_window->Loop();
 }
 
+void HelloTriangleApplication::DrawFrame()
+{
+}
+
 void HelloTriangleApplication::Cleanup()
 {
 }

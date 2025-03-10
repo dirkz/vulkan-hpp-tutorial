@@ -61,6 +61,7 @@ struct HelloTriangleApplication
 
     void InitVulkan();
     void MainLoop();
+    void DrawFrame();
     void Cleanup();
 };
 
