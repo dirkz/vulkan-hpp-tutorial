@@ -357,6 +357,13 @@ void HelloTriangleApplication::DrawFrame()
 
     frameData.CommandBuffer().reset();
     RecordCommandBuffer(frameData.CommandBuffer(), imageIndex);
+
+    vk::PipelineStageFlags pipelineStageFlags{vk::PipelineStageFlagBits::eColorAttachmentOutput};
+    vk::SubmitInfo submitInfo{{frameData.ImageAvailableSemaphore()},
+                              pipelineStageFlags,
+                              {frameData.CommandBuffer()},
+                              {frameData.RenderFinishedSemaphore()}};
+    m_graphicsQueue.submit(submitInfo, frameData.InFlightFence());
 }
 
 void HelloTriangleApplication::Cleanup()
