@@ -168,7 +168,15 @@ void HelloTriangleApplication::CreateRenderPass()
 
     vk::SubpassDescription subpass{{}, vk::PipelineBindPoint::eGraphics, {}, {colorAttachmentRef}};
 
-    vk::RenderPassCreateInfo createInfo{{}, {colorAttachment}, {subpass}};
+    vk::PipelineStageFlags srcPipelineStageFlags{vk::PipelineStageFlagBits::eColorAttachmentOutput};
+    vk::PipelineStageFlags dstPipelineStageFlags{vk::PipelineStageFlagBits::eColorAttachmentOutput};
+    vk::AccessFlags srcAccessFlags{vk::AccessFlagBits::eNone};
+    vk::AccessFlags dstAccessFlags{vk::AccessFlagBits::eColorAttachmentWrite};
+    vk::SubpassDependency dependency{vk::SubpassExternal,   0,
+                                     srcPipelineStageFlags, dstPipelineStageFlags,
+                                     srcAccessFlags,        dstAccessFlags};
+
+    vk::RenderPassCreateInfo createInfo{{}, {colorAttachment}, {subpass}, {dependency}};
 
     m_renderPass = m_device->createRenderPassUnique(createInfo);
 }
