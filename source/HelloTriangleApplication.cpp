@@ -380,6 +380,8 @@ void HelloTriangleApplication::DrawFrame()
 
     result = m_presentQueue.presentKHR(presentInfo);
     assert(result == vk::Result::eSuccess);
+
+    m_currentFrame = (m_currentFrame + 1) % MaxFramesInFlight;
 }
 
 void HelloTriangleApplication::Cleanup()
