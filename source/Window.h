@@ -18,6 +18,11 @@ struct Window
     {
         while (!glfwWindowShouldClose(m_window))
         {
+            int escapeStatus = glfwGetKey(m_window, GLFW_KEY_ESCAPE);
+            if (escapeStatus == GLFW_PRESS)
+            {
+                break;
+            }
             glfwPollEvents();
             drawCallback();
         }
