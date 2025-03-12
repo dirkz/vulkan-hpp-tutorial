@@ -17,7 +17,7 @@ static const uint32_t Width = 800;
 static const uint32_t Height = 600;
 
 HelloTriangleApplication::HelloTriangleApplication(std::filesystem::path shaderPath)
-    : m_shaderPath{shaderPath}, m_currentFrame{0}
+    : m_shaderPath{shaderPath}, m_currentFrame{0}, m_framebufferResized{false}
 {
 }
 
@@ -394,10 +394,11 @@ void HelloTriangleApplication::DrawFrame()
 
     result = m_presentQueue.presentKHR(presentInfo);
 
-    if (result == vk::Result::eErrorOutOfDateKHR || result == vk::Result::eSuboptimalKHR)
+    if (result == vk::Result::eErrorOutOfDateKHR || result == vk::Result::eSuboptimalKHR ||
+        m_framebufferResized)
     {
+        m_framebufferResized = false;
         ReCreateSwapChain();
-        return;
     }
 
     assert(result == vk::Result::eSuccess);

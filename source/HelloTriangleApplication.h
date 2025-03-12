@@ -48,6 +48,8 @@ struct HelloTriangleApplication
     std::array<std::optional<FrameData>, MaxFramesInFlight> m_frameDatas;
     uint32_t m_currentFrame;
 
+    bool m_framebufferResized;
+
     void InitWindow();
 
     void CreateInstance();
