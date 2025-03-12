@@ -159,7 +159,9 @@ void HelloTriangleApplication::CreateSwapChain()
 
 void HelloTriangleApplication::ReCreateSwapChain()
 {
+    m_window->WaitForDimensionsGreaterZero();
     m_device->waitIdle();
+
     CreateSwapChain();
     CreateFrameBuffers();
 }

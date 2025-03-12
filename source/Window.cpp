@@ -77,4 +77,17 @@ vk::Extent2D Window::ChooseSwapExtent(const vk::SurfaceCapabilitiesKHR &capabili
     return vk::Extent2D{w, h};
 }
 
+void Window::WaitForDimensionsGreaterZero()
+{
+    int width = 0;
+    int height = 0;
+    glfwGetFramebufferSize(m_window, &width, &height);
+
+    while (width == 0 || height == 0)
+    {
+        glfwWaitEvents();
+        glfwGetFramebufferSize(m_window, &width, &height);
+    }
+}
+
 } // namespace zvk

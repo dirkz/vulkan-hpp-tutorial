@@ -23,6 +23,8 @@ struct Window
     vk::UniqueSurfaceKHR CreateSurface(vk::Instance instance);
     vk::Extent2D ChooseSwapExtent(const vk::SurfaceCapabilitiesKHR &capabilities) const;
 
+    void WaitForDimensionsGreaterZero();
+
     template <class T> void Loop(const T &drawCallback)
     {
         while (!glfwWindowShouldClose(m_window))
