@@ -31,6 +31,7 @@ void HelloTriangleApplication::Run()
 
 void HelloTriangleApplication::Resize(int width, int height)
 {
+    m_framebufferResized = true;
 }
 
 void HelloTriangleApplication::InitWindow()
@@ -160,6 +161,7 @@ void HelloTriangleApplication::ReCreateSwapChain()
 {
     m_device->waitIdle();
     CreateSwapChain();
+    CreateFrameBuffers();
 }
 
 void HelloTriangleApplication::CreateRenderPass()
@@ -405,7 +407,8 @@ void HelloTriangleApplication::DrawFrame()
         ReCreateSwapChain();
     }
 
-    assert(result == vk::Result::eSuccess);
+    assert(result == vk::Result::eSuccess || result == vk::Result::eErrorOutOfDateKHR ||
+           result == vk::Result::eSuboptimalKHR);
 
     m_currentFrame = (m_currentFrame + 1) % MaxFramesInFlight;
 }
