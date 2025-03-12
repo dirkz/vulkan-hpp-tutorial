@@ -276,12 +276,17 @@ void HelloTriangleApplication::CreateCommandPool()
     m_commandPool = m_device->createCommandPoolUnique(createInfo);
 }
 
-void HelloTriangleApplication::CreateCommandBuffer()
+void HelloTriangleApplication::CreateFrameData()
 {
     vk::CommandBufferAllocateInfo allocInfo{m_commandPool.get(), vk::CommandBufferLevel::ePrimary,
                                             1};
     auto commandBuffers = m_device->allocateCommandBuffersUnique(allocInfo);
     m_commandBuffer = std::move(commandBuffers[0]);
+
+    for (auto i = 0; i < m_frameDatas.size(); ++i)
+    {
+        m_frameDatas[i] = FrameData{m_device.get(), m_commandPool.get()};
+    }
 }
 
 void HelloTriangleApplication::RecordCommandBuffer(vk::CommandBuffer commandBuffer,
@@ -300,9 +305,8 @@ void HelloTriangleApplication::RecordCommandBuffer(vk::CommandBuffer commandBuff
     commandBuffer.beginRenderPass(renderPassInfo, vk::SubpassContents::eInline);
     commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, m_graphicsPipeline.get());
 
-    vk::Viewport viewport{
-        0, 0, static_cast<float>(extent.width), static_cast<float>(extent.height),
-        0, 1};
+    vk::Viewport viewport{0, 0, static_cast<float>(extent.width), static_cast<float>(extent.height),
+                          0, 1};
     commandBuffer.setViewport(0, {viewport});
 
     vk::Rect2D scissor{{0, 0}, extent};
@@ -329,7 +333,7 @@ void HelloTriangleApplication::InitVulkan()
     CreateGraphicsPipeline();
     CreateFrameBuffers();
     CreateCommandPool();
-    CreateCommandBuffer();
+    CreateFrameData();
 }
 
 void HelloTriangleApplication::MainLoop()

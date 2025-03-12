@@ -60,7 +60,7 @@ struct HelloTriangleApplication
     void CreateGraphicsPipeline();
     void CreateFrameBuffers();
     void CreateCommandPool();
-    void CreateCommandBuffer();
+    void CreateFrameData();
     void RecordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t imageIndex);
 
     void InitVulkan();
