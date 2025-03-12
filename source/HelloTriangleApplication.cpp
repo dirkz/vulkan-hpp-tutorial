@@ -354,6 +354,9 @@ void HelloTriangleApplication::DrawFrame()
                                            frameData.ImageAvailableSemaphore(), VK_NULL_HANDLE,
                                            &imageIndex);
     assert(result == vk::Result::eSuccess);
+
+    frameData.CommandBuffer().reset();
+    RecordCommandBuffer(frameData.CommandBuffer(), imageIndex);
 }
 
 void HelloTriangleApplication::Cleanup()
