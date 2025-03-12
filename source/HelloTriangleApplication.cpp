@@ -17,7 +17,7 @@ static const uint32_t Width = 800;
 static const uint32_t Height = 600;
 
 HelloTriangleApplication::HelloTriangleApplication(std::filesystem::path shaderPath)
-    : m_shaderPath{shaderPath}
+    : m_shaderPath{shaderPath}, m_currentFrame{0}
 {
 }
 
@@ -343,6 +343,16 @@ void HelloTriangleApplication::MainLoop()
 
 void HelloTriangleApplication::DrawFrame()
 {
+    FrameData &frameData = m_frameDatas[m_currentFrame].value();
+    vk::Fence fence = frameData.InFlightFence().get();
+    auto result = m_device->waitForFences({fence}, VK_TRUE, UINT64_MAX);
+    assert(result == vk::Result::eSuccess);
+    m_device->resetFences({fence});
+
+    uint32_t imageIndex;
+    m_device->acquireNextImageKHR(**m_swapchain, UINT64_MAX,
+                                  frameData.ImageAvailableSemaphore().get(), VK_NULL_HANDLE,
+                                  &imageIndex);
 }
 
 void HelloTriangleApplication::Cleanup()

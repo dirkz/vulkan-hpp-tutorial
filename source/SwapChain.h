@@ -19,6 +19,11 @@ struct SwapChain
     vk::Extent2D Extent() const;
     vk::Framebuffer FrameBuffer(const uint32_t index);
 
+    inline vk::SwapchainKHR operator*()
+    {
+        return m_swapchain.get();
+    }
+
   private:
     vk::UniqueSwapchainKHR m_swapchain;
     std::vector<vk::Image> m_images;
