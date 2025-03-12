@@ -347,6 +347,7 @@ void HelloTriangleApplication::InitVulkan()
 void HelloTriangleApplication::MainLoop()
 {
     m_window->Loop([this]() { this->DrawFrame(); });
+    m_device->waitIdle();
 }
 
 void HelloTriangleApplication::DrawFrame()
