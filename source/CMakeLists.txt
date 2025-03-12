@@ -22,7 +22,7 @@ add_executable(${PROJECT_NAME}
 	"Window.h"
 	"Window.cpp"
 	"SwapChain.h"
-	"SwapChain.cpp" "ShaderModule.h" "ShaderModule.cpp")
+	"SwapChain.cpp" "ShaderModule.h" "ShaderModule.cpp" "FrameData.h" "FrameData.cpp")
 
 # Adds shader compilations as custom target to ${PROJECT_NAME}
 add_subdirectory(shaders)
