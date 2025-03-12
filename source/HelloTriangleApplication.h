@@ -45,6 +45,8 @@ struct HelloTriangleApplication
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;
 
+    std::array<std::optional<FrameData>, MaxFramesInFlight> m_frameDatas;
+
     void InitWindow();
 
     void CreateInstance();
