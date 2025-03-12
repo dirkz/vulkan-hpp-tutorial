@@ -353,14 +353,15 @@ void HelloTriangleApplication::DrawFrame()
 {
     FrameData &frameData = m_frameDatas[m_currentFrame].value();
     vk::Fence fence = frameData.InFlightFence();
-    auto result = m_device->waitForFences({fence}, VK_TRUE, UINT64_MAX);
+    vk::Result result = m_device->waitForFences({fence}, VK_TRUE, UINT64_MAX);
     assert(result == vk::Result::eSuccess);
     m_device->resetFences({fence});
 
+    vk::SwapchainKHR swapchain = **m_swapchain;
+
     uint32_t imageIndex;
-    result = m_device->acquireNextImageKHR(**m_swapchain, UINT64_MAX,
-                                           frameData.ImageAvailableSemaphore(), VK_NULL_HANDLE,
-                                           &imageIndex);
+    result = m_device->acquireNextImageKHR(
+        swapchain, UINT64_MAX, frameData.ImageAvailableSemaphore(), VK_NULL_HANDLE, &imageIndex);
     assert(result == vk::Result::eSuccess);
 
     frameData.CommandBuffer().reset();
@@ -372,6 +373,12 @@ void HelloTriangleApplication::DrawFrame()
                               {frameData.CommandBuffer()},
                               {frameData.RenderFinishedSemaphore()}};
     m_graphicsQueue.submit(submitInfo, frameData.InFlightFence());
+
+    vk::PresentInfoKHR presentInfo{
+        {frameData.RenderFinishedSemaphore()}, {swapchain}, {imageIndex}};
+
+    result = m_presentQueue.presentKHR(presentInfo);
+    assert(result == vk::Result::eSuccess);
 }
 
 void HelloTriangleApplication::Cleanup()
