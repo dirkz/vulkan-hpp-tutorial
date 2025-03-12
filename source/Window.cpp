@@ -5,6 +5,13 @@ using namespace std;
 namespace zvk
 {
 
+static void FramebufferSizeCallback(GLFWwindow *window, int width, int height)
+{
+    Window::Callback *callback =
+        reinterpret_cast<Window::Callback *>(glfwGetWindowUserPointer(window));
+    callback->Resize(width, height);
+}
+
 Window::Window(const std::string &title, Callback *callback, uint32_t width, uint32_t height)
     : m_callback{callback}
 {
@@ -14,6 +21,8 @@ Window::Window(const std::string &title, Callback *callback, uint32_t width, uin
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
     m_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+    glfwSetWindowUserPointer(m_window, callback);
+    glfwSetFramebufferSizeCallback(m_window, FramebufferSizeCallback);
 }
 
 Window::~Window()
