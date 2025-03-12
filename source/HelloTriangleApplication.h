@@ -57,6 +57,7 @@ struct HelloTriangleApplication
     void PickPhysicalDevice();
     void CreateLogicalDevice();
     void CreateSwapChain();
+    void ReCreateSwapChain();
     void CreateRenderPass();
     void CreateGraphicsPipeline();
     void CreateFrameBuffers();

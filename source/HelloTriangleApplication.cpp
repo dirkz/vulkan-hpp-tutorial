@@ -152,6 +152,12 @@ void HelloTriangleApplication::CreateSwapChain()
         new SwapChain{m_window.get(), m_physicalDevice, m_device.get(), m_surface.get()});
 }
 
+void HelloTriangleApplication::ReCreateSwapChain()
+{
+    m_device->waitIdle();
+    CreateSwapChain();
+}
+
 void HelloTriangleApplication::CreateRenderPass()
 {
     vk::AttachmentDescription colorAttachment{{},
@@ -356,14 +362,22 @@ void HelloTriangleApplication::DrawFrame()
     vk::Fence fence = frameData.InFlightFence();
     vk::Result result = m_device->waitForFences({fence}, VK_TRUE, UINT64_MAX);
     assert(result == vk::Result::eSuccess);
-    m_device->resetFences({fence});
 
     vk::SwapchainKHR swapchain = **m_swapchain;
 
     uint32_t imageIndex;
     result = m_device->acquireNextImageKHR(
         swapchain, UINT64_MAX, frameData.ImageAvailableSemaphore(), VK_NULL_HANDLE, &imageIndex);
-    assert(result == vk::Result::eSuccess);
+
+    if (result == vk::Result::eErrorOutOfDateKHR)
+    {
+        ReCreateSwapChain();
+        return;
+    }
+
+    assert(result == vk::Result::eSuccess || result == vk::Result::eSuboptimalKHR);
+
+    m_device->resetFences({fence});
 
     frameData.CommandBuffer().reset();
     RecordCommandBuffer(frameData.CommandBuffer(), imageIndex);
@@ -379,6 +393,13 @@ void HelloTriangleApplication::DrawFrame()
         {frameData.RenderFinishedSemaphore()}, {swapchain}, {imageIndex}};
 
     result = m_presentQueue.presentKHR(presentInfo);
+
+    if (result == vk::Result::eErrorOutOfDateKHR || result == vk::Result::eSuboptimalKHR)
+    {
+        ReCreateSwapChain();
+        return;
+    }
+
     assert(result == vk::Result::eSuccess);
 
     m_currentFrame = (m_currentFrame + 1) % MaxFramesInFlight;
