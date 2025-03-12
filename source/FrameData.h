@@ -9,19 +9,24 @@ struct FrameData
 {
     FrameData(const vk::Device &device, const vk::CommandPool &pool);
 
-    inline const vk::UniqueSemaphore &ImageAvailableSemaphore() const
+    inline const vk::CommandBuffer &CommandBuffer() const
     {
-        return m_imageAvailableSemaphore;
+        return m_commandBuffer.get();
     }
 
-    inline const vk::UniqueSemaphore &RenderFinishedSemaphore() const
+    inline const vk::Semaphore &ImageAvailableSemaphore() const
     {
-        return m_renderFinishedSemaphore;
+        return m_imageAvailableSemaphore.get();
     }
 
-    inline const vk::UniqueFence &InFlightFence() const
+    inline const vk::Semaphore &RenderFinishedSemaphore() const
     {
-        return m_inFlightFence;
+        return m_renderFinishedSemaphore.get();
+    }
+
+    inline const vk::Fence &InFlightFence() const
+    {
+        return m_inFlightFence.get();
     }
 
   private:
