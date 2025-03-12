@@ -7,7 +7,16 @@ namespace zvk
 
 struct Window
 {
-    Window(const std::string &title, uint32_t width, uint32_t height);
+
+    /// <summary>
+    /// Virtual calls for rare events, e.g. resizing.
+    /// </summary>
+    struct Callback
+    {
+        virtual void Resize(int width, int height) = 0;
+    };
+
+    Window(const std::string &title, Callback *callback, uint32_t width, uint32_t height);
     ~Window();
 
     std::vector<const char *> RequiredExtensions() const;
@@ -30,6 +39,7 @@ struct Window
 
   private:
     GLFWwindow *m_window;
+    Callback *m_callback;
 };
 
 } // namespace zvk

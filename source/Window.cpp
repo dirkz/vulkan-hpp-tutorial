@@ -5,7 +5,8 @@ using namespace std;
 namespace zvk
 {
 
-Window::Window(const std::string &title, uint32_t width, uint32_t height)
+Window::Window(const std::string &title, Callback *callback, uint32_t width, uint32_t height)
+    : m_callback{callback}
 {
     glfwInit();
 

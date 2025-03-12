@@ -12,11 +12,13 @@
 namespace zvk
 {
 
-struct HelloTriangleApplication
+struct HelloTriangleApplication : public Window::Callback
 {
     HelloTriangleApplication(std::filesystem::path shaderPath);
 
     void Run();
+
+    void Resize(int width, int height) override;
 
   private:
     std::filesystem::path m_shaderPath;

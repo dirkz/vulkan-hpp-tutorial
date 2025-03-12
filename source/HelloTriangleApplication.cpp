@@ -29,9 +29,13 @@ void HelloTriangleApplication::Run()
     Cleanup();
 }
 
+void HelloTriangleApplication::Resize(int width, int height)
+{
+}
+
 void HelloTriangleApplication::InitWindow()
 {
-    m_window.reset(new Window{"Vulkan", Width, Height});
+    m_window.reset(new Window{"Vulkan", this, Width, Height});
 }
 
 void HelloTriangleApplication::CreateInstance()
