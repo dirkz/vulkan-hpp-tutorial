@@ -11,4 +11,6 @@ constexpr bool EnableValidationLayers = false;
 constexpr bool EnableValidationLayers = true;
 #endif
 
+constexpr int MaxFramesInFlight = 2;
+
 } // namespace zvk

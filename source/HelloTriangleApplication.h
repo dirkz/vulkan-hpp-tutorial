@@ -2,7 +2,9 @@
 
 #include "stdafx.h"
 
+#include "Constants.h"
 #include "DebugUtilsMessenger.h"
+#include "FrameData.h"
 #include "QueueFamilyIndices.h"
 #include "SwapChain.h"
 #include "Window.h"
