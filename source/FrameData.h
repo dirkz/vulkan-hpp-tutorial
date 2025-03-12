@@ -11,6 +11,9 @@ struct FrameData
 
   private:
     vk::UniqueCommandBuffer m_commandBuffer;
+    vk::UniqueSemaphore m_imageAvailableSemaphore;
+    vk::UniqueSemaphore m_renderFinishedSemaphore;
+    vk::UniqueFence m_inFlightFence;
 };
 
 } // namespace zvk
