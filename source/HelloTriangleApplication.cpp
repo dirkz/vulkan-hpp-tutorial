@@ -28,7 +28,10 @@ HelloTriangleApplication::HelloTriangleApplication(std::filesystem::path shaderP
 
 HelloTriangleApplication::~HelloTriangleApplication()
 {
-    vmaDestroyAllocator(m_allocator);
+    if (m_allocator != VK_NULL_HANDLE)
+    {
+        vmaDestroyAllocator(m_allocator);
+    }
 }
 
 void HelloTriangleApplication::Run()
@@ -380,6 +383,7 @@ void HelloTriangleApplication::InitVulkan()
     CreateSurface();
     PickPhysicalDevice();
     CreateLogicalDevice();
+    CreateVma();
     CreateSwapChain();
     CreateRenderPass();
     CreateGraphicsPipeline();
