@@ -16,6 +16,10 @@ namespace zvk
 static const uint32_t Width = 800;
 static const uint32_t Height = 600;
 
+const std::vector<Vertex> Vertices = {{{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+                                      {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+                                      {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}};
+
 HelloTriangleApplication::HelloTriangleApplication(std::filesystem::path shaderPath)
     : m_shaderPath{shaderPath}, m_currentFrame{0}, m_framebufferResized{false}
 {
