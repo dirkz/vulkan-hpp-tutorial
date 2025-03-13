@@ -21,8 +21,14 @@ const std::vector<Vertex> Vertices = {{{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
                                       {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}};
 
 HelloTriangleApplication::HelloTriangleApplication(std::filesystem::path shaderPath)
-    : m_shaderPath{shaderPath}, m_currentFrame{0}, m_framebufferResized{false}
+    : m_shaderPath{shaderPath}, m_currentFrame{0}, m_framebufferResized{false},
+      m_allocator{VK_NULL_HANDLE}
 {
+}
+
+HelloTriangleApplication::~HelloTriangleApplication()
+{
+    vmaDestroyAllocator(m_allocator);
 }
 
 void HelloTriangleApplication::Run()
@@ -153,6 +159,18 @@ void HelloTriangleApplication::CreateLogicalDevice()
 
     m_graphicsQueue = m_device->getQueue(m_familyIndices->GraphicsFamily().value(), 0);
     m_presentQueue = m_device->getQueue(m_familyIndices->PresentFamily().value(), 0);
+}
+
+void HelloTriangleApplication::CreateVma()
+{
+    VmaAllocatorCreateInfo allocatorCreateInfo = {};
+    allocatorCreateInfo.vulkanApiVersion = VK_API_VERSION_1_2;
+    allocatorCreateInfo.physicalDevice = m_physicalDevice;
+    allocatorCreateInfo.device = m_device.get();
+    allocatorCreateInfo.instance = m_instance.get();
+
+    VmaAllocator allocator;
+    vmaCreateAllocator(&allocatorCreateInfo, &allocator);
 }
 
 void HelloTriangleApplication::CreateSwapChain()

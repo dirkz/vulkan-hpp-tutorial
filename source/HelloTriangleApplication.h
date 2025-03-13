@@ -8,6 +8,7 @@
 #include "QueueFamilyIndices.h"
 #include "SwapChain.h"
 #include "Vertex.h"
+#include "Vma.h"
 #include "Window.h"
 
 namespace zvk
@@ -16,6 +17,7 @@ namespace zvk
 struct HelloTriangleApplication : public Window::Callback
 {
     HelloTriangleApplication(std::filesystem::path shaderPath);
+    ~HelloTriangleApplication();
 
     void Run();
 
@@ -35,6 +37,8 @@ struct HelloTriangleApplication : public Window::Callback
     vk::PhysicalDevice m_physicalDevice;
     vk::UniqueDevice m_device;
     std::unique_ptr<QueueFamilyIndices> m_familyIndices;
+
+    VmaAllocator m_allocator;
 
     std::unique_ptr<SwapChain> m_swapchain;
 
@@ -61,6 +65,7 @@ struct HelloTriangleApplication : public Window::Callback
     bool IsDeviceSuitable(vk::PhysicalDevice device) const;
     void PickPhysicalDevice();
     void CreateLogicalDevice();
+    void CreateVma();
     void CreateSwapChain();
     void ReCreateSwapChain();
     void CreateRenderPass();
