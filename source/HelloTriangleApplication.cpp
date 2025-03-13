@@ -212,7 +212,10 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
                                                 vk::DynamicState::eScissor};
     vk::PipelineDynamicStateCreateInfo dynamicCreateInfo{{}, dynamicStates};
 
-    vk::PipelineVertexInputStateCreateInfo vertexInputCreateInfo{};
+    auto bindingDescriptions = {Vertex::BindingDescription()};
+    auto attributeDescriptions = Vertex::AttributeDescriptions();
+    vk::PipelineVertexInputStateCreateInfo vertexInputCreateInfo{
+        {}, bindingDescriptions, attributeDescriptions};
 
     vk::PipelineInputAssemblyStateCreateInfo inputAssemblyCreateInfo{
         {}, vk::PrimitiveTopology::eTriangleList, VK_FALSE};
