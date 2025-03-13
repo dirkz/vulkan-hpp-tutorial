@@ -13,6 +13,11 @@ struct MappedBuffer
                  vk::SharingMode sharingMode);
     ~MappedBuffer();
 
+    inline void *Mapped() const
+    {
+        return m_allocationInfo.pMappedData;
+    }
+
   private:
     VmaAllocator m_allocator;
     VkBuffer m_buffer;

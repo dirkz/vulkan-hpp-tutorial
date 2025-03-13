@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "DebugUtilsMessenger.h"
 #include "FrameData.h"
+#include "MappedBuffer.h"
 #include "QueueFamilyIndices.h"
 #include "SwapChain.h"
 #include "Vertex.h"
@@ -47,6 +48,7 @@ struct HelloTriangleApplication : public Window::Callback
     vk::UniquePipeline m_graphicsPipeline;
 
     vk::UniqueCommandPool m_commandPool;
+    std::unique_ptr<MappedBuffer> m_vertexBuffer;
     vk::UniqueCommandBuffer m_commandBuffer;
 
     vk::Queue m_graphicsQueue;

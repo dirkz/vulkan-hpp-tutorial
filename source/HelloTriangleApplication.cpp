@@ -328,6 +328,11 @@ void HelloTriangleApplication::CreateCommandPool()
 
 void HelloTriangleApplication::CreateVertexBuffer()
 {
+    auto verticesSize = sizeof(Vertex) * Vertices.size();
+    vk::BufferUsageFlags usageFlags{vk::BufferUsageFlagBits::eVertexBuffer};
+    m_vertexBuffer.reset(new MappedBuffer{m_allocator, verticesSize, usageFlags,
+                                          vk::SharingMode::eExclusive});
+    memcpy(m_vertexBuffer->Mapped(), Vertices.data(), verticesSize);
 }
 
 void HelloTriangleApplication::CreateFrameData()
