@@ -305,6 +305,11 @@ void HelloTriangleApplication::CreateCommandPool()
     m_commandPool = m_device->createCommandPoolUnique(createInfo);
 }
 
+void HelloTriangleApplication::CreateVertexBuffer()
+{
+    vk::MemoryRequirements reqs;
+}
+
 void HelloTriangleApplication::CreateFrameData()
 {
     vk::CommandBufferAllocateInfo allocInfo{m_commandPool.get(), vk::CommandBufferLevel::ePrimary,

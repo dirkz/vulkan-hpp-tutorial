@@ -67,6 +67,7 @@ struct HelloTriangleApplication : public Window::Callback
     void CreateGraphicsPipeline();
     void CreateFrameBuffers();
     void CreateCommandPool();
+    void CreateVertexBuffer();
     void CreateFrameData();
     void RecordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t imageIndex);
 
