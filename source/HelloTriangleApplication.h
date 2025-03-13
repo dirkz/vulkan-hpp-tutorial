@@ -7,6 +7,7 @@
 #include "FrameData.h"
 #include "QueueFamilyIndices.h"
 #include "SwapChain.h"
+#include "Vertex.h"
 #include "Window.h"
 
 namespace zvk

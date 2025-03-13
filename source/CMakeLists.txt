@@ -26,7 +26,9 @@ add_executable(${PROJECT_NAME}
 	ShaderModule.h
 	ShaderModule.cpp
 	FrameData.h
-	FrameData.cpp)
+	FrameData.cpp
+	Vertex.h
+	Vertex.cpp)
 
 # Adds shader compilations as custom target to ${PROJECT_NAME}
 add_subdirectory(shaders)
