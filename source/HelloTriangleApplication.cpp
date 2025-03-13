@@ -328,6 +328,9 @@ void HelloTriangleApplication::CreateCommandPool()
 
 void HelloTriangleApplication::CreateVertexBuffer()
 {
+    // TODO: Put into own separate class.
+    // https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/usage_patterns.html
+    // "Staging copy for upload"
     vk::BufferUsageFlags usageFlags{vk::BufferUsageFlagBits::eVertexBuffer};
     vk::BufferCreateInfo bufferCreateInfo{
         {}, Vertices.size() * sizeof(Vertex), usageFlags, vk::SharingMode::eExclusive};
