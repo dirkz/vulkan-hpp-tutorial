@@ -171,6 +171,7 @@ void HelloTriangleApplication::CreateVma()
     allocatorCreateInfo.physicalDevice = m_physicalDevice;
     allocatorCreateInfo.device = m_device.get();
     allocatorCreateInfo.instance = m_instance.get();
+    allocatorCreateInfo.flags = VMA_ALLOCATOR_CREATE_KHR_DEDICATED_ALLOCATION_BIT;
 
     vmaCreateAllocator(&allocatorCreateInfo, &m_allocator);
 }
@@ -329,8 +330,8 @@ void HelloTriangleApplication::CreateVertexBuffer()
 {
     auto verticesSize = sizeof(Vertex) * Vertices.size();
     vk::BufferUsageFlags usageFlags{vk::BufferUsageFlagBits::eVertexBuffer};
-    m_vertexBuffer.reset(new MappedBuffer{m_allocator, verticesSize, usageFlags,
-                                          vk::SharingMode::eExclusive});
+    m_vertexBuffer.reset(
+        new MappedBuffer{m_allocator, verticesSize, usageFlags, vk::SharingMode::eExclusive});
     memcpy(m_vertexBuffer->Mapped(), Vertices.data(), verticesSize);
 }
 

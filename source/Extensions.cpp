@@ -38,7 +38,9 @@ std::vector<const char *> RequiredInstanceExtensions()
 
 std::vector<const char *> RequiredDeviceExtensions()
 {
-    static const vector<const char *> requiredDeviceExtensions{VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+    static const vector<const char *> requiredDeviceExtensions{VK_KHR_SWAPCHAIN_EXTENSION_NAME,
+                                                               "VK_KHR_dedicated_allocation",
+                                                               "VK_KHR_get_memory_requirements2"};
 
     return requiredDeviceExtensions;
 }
