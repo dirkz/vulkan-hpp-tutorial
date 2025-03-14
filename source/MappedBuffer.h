@@ -18,6 +18,11 @@ struct MappedBuffer
         return m_allocationInfo.pMappedData;
     }
 
+    inline VkBuffer Buffer() const
+    {
+        return m_buffer;
+    }
+
   private:
     VmaAllocator m_allocator;
     VkBuffer m_buffer;
