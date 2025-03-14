@@ -21,6 +21,7 @@ struct Vma
 
     inline VmaAllocator Allocator() const
     {
+        assert(m_allocator != VK_NULL_HANDLE);
         return m_allocator;
     }
 
