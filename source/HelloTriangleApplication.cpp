@@ -172,8 +172,7 @@ void HelloTriangleApplication::CreateVma()
     allocatorCreateInfo.device = m_device.get();
     allocatorCreateInfo.instance = m_instance.get();
 
-    VmaAllocator allocator;
-    vmaCreateAllocator(&allocatorCreateInfo, &allocator);
+    vmaCreateAllocator(&allocatorCreateInfo, &m_allocator);
 }
 
 void HelloTriangleApplication::CreateSwapChain()
