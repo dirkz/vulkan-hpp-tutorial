@@ -21,19 +21,8 @@ const std::vector<Vertex> Vertices = {{{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
                                       {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}};
 
 HelloTriangleApplication::HelloTriangleApplication(std::filesystem::path shaderPath)
-    : m_shaderPath{shaderPath}, m_currentFrame{0}, m_framebufferResized{false},
-      m_allocator{VK_NULL_HANDLE}
+    : m_shaderPath{shaderPath}, m_currentFrame{0}, m_framebufferResized{false}
 {
-}
-
-HelloTriangleApplication::~HelloTriangleApplication()
-{
-    /*
-    if (m_allocator != VK_NULL_HANDLE)
-    {
-        vmaDestroyAllocator(m_allocator);
-    }
-    */
 }
 
 void HelloTriangleApplication::Run()
@@ -168,26 +157,7 @@ void HelloTriangleApplication::CreateLogicalDevice()
 
 void HelloTriangleApplication::CreateVma()
 {
-    auto getBufferMemoryRequirements2KHRFn =
-        m_device->getProcAddr("vkGetBufferMemoryRequirements2KHR");
-
-    VmaVulkanFunctions vulkanFunctions = {};
-    vulkanFunctions.vkGetInstanceProcAddr = &vkGetInstanceProcAddr;
-    vulkanFunctions.vkGetDeviceProcAddr = &vkGetDeviceProcAddr;
-    vulkanFunctions.vkGetBufferMemoryRequirements2KHR =
-        reinterpret_cast<PFN_vkGetBufferMemoryRequirements2KHR>(getBufferMemoryRequirements2KHRFn);
-
-    VmaAllocatorCreateInfo allocatorCreateInfo = {};
-    allocatorCreateInfo.vulkanApiVersion = VK_API_VERSION_1_2;
-    allocatorCreateInfo.physicalDevice = m_physicalDevice;
-    allocatorCreateInfo.device = m_device.get();
-    allocatorCreateInfo.instance = m_instance.get();
-    allocatorCreateInfo.flags = VMA_ALLOCATOR_CREATE_KHR_DEDICATED_ALLOCATION_BIT;
-    allocatorCreateInfo.pVulkanFunctions = &vulkanFunctions;
-
-    VmaAllocator allocator;
-    vmaCreateAllocator(&allocatorCreateInfo, &allocator);
-    m_allocator.reset(allocator);
+    m_vma.Reset(m_instance.get(), m_physicalDevice, m_device.get());
 }
 
 void HelloTriangleApplication::CreateSwapChain()
@@ -345,7 +315,7 @@ void HelloTriangleApplication::CreateVertexBuffer()
     auto verticesSize = sizeof(Vertex) * Vertices.size();
     vk::BufferUsageFlags usageFlags{vk::BufferUsageFlagBits::eVertexBuffer};
     m_vertexBuffer.reset(
-        new MappedBuffer{m_allocator.get(), verticesSize, usageFlags, vk::SharingMode::eExclusive});
+        new MappedBuffer{m_vma.Allocator(), verticesSize, usageFlags, vk::SharingMode::eExclusive});
     memcpy(m_vertexBuffer->Mapped(), Vertices.data(), verticesSize);
 }
 

@@ -15,18 +15,9 @@
 namespace zvk
 {
 
-struct VmaDelete
-{
-    void operator()(VmaAllocator allocator)
-    {
-        vmaDestroyAllocator(allocator);
-    }
-};
-
 struct HelloTriangleApplication : public Window::Callback
 {
     HelloTriangleApplication(std::filesystem::path shaderPath);
-    ~HelloTriangleApplication();
 
     void Run();
 
@@ -47,7 +38,7 @@ struct HelloTriangleApplication : public Window::Callback
     vk::UniqueDevice m_device;
     std::unique_ptr<QueueFamilyIndices> m_familyIndices;
 
-    std::unique_ptr<VmaAllocator_T, VmaDelete> m_allocator;
+    Vma m_vma;
 
     std::unique_ptr<SwapChain> m_swapchain;
 
