@@ -28,10 +28,12 @@ HelloTriangleApplication::HelloTriangleApplication(std::filesystem::path shaderP
 
 HelloTriangleApplication::~HelloTriangleApplication()
 {
+    /*
     if (m_allocator != VK_NULL_HANDLE)
     {
         vmaDestroyAllocator(m_allocator);
     }
+    */
 }
 
 void HelloTriangleApplication::Run()
@@ -166,7 +168,8 @@ void HelloTriangleApplication::CreateLogicalDevice()
 
 void HelloTriangleApplication::CreateVma()
 {
-    auto getBufferMemoryRequirements2KHRFn = m_device->getProcAddr("vkGetBufferMemoryRequirements2KHR");
+    auto getBufferMemoryRequirements2KHRFn =
+        m_device->getProcAddr("vkGetBufferMemoryRequirements2KHR");
 
     VmaVulkanFunctions vulkanFunctions = {};
     vulkanFunctions.vkGetInstanceProcAddr = &vkGetInstanceProcAddr;
@@ -182,7 +185,9 @@ void HelloTriangleApplication::CreateVma()
     allocatorCreateInfo.flags = VMA_ALLOCATOR_CREATE_KHR_DEDICATED_ALLOCATION_BIT;
     allocatorCreateInfo.pVulkanFunctions = &vulkanFunctions;
 
-    vmaCreateAllocator(&allocatorCreateInfo, &m_allocator);
+    VmaAllocator allocator;
+    vmaCreateAllocator(&allocatorCreateInfo, &allocator);
+    m_allocator.reset(allocator);
 }
 
 void HelloTriangleApplication::CreateSwapChain()
@@ -340,7 +345,7 @@ void HelloTriangleApplication::CreateVertexBuffer()
     auto verticesSize = sizeof(Vertex) * Vertices.size();
     vk::BufferUsageFlags usageFlags{vk::BufferUsageFlagBits::eVertexBuffer};
     m_vertexBuffer.reset(
-        new MappedBuffer{m_allocator, verticesSize, usageFlags, vk::SharingMode::eExclusive});
+        new MappedBuffer{m_allocator.get(), verticesSize, usageFlags, vk::SharingMode::eExclusive});
     memcpy(m_vertexBuffer->Mapped(), Vertices.data(), verticesSize);
 }
 
