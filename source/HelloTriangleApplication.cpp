@@ -166,20 +166,13 @@ void HelloTriangleApplication::CreateLogicalDevice()
 
 void HelloTriangleApplication::CreateVma()
 {
-    auto vkGetBufferMemoryRequirements2Fn =
-        vkGetDeviceProcAddr(m_device.get(), "vkGetBufferMemoryRequirements2");
-
-    auto vkGetBufferMemoryRequirements2KHRFn =
-        vkGetDeviceProcAddr(m_device.get(), "vkGetBufferMemoryRequirements2KHR");
-
-    auto getBufferMemoryRequirements2Fn = m_device->getProcAddr("vkGetBufferMemoryRequirements2");
     auto getBufferMemoryRequirements2KHRFn = m_device->getProcAddr("vkGetBufferMemoryRequirements2KHR");
 
     VmaVulkanFunctions vulkanFunctions = {};
     vulkanFunctions.vkGetInstanceProcAddr = &vkGetInstanceProcAddr;
     vulkanFunctions.vkGetDeviceProcAddr = &vkGetDeviceProcAddr;
     vulkanFunctions.vkGetBufferMemoryRequirements2KHR =
-        reinterpret_cast<PFN_vkGetBufferMemoryRequirements2KHR>(vkGetBufferMemoryRequirements2Fn);
+        reinterpret_cast<PFN_vkGetBufferMemoryRequirements2KHR>(getBufferMemoryRequirements2KHRFn);
 
     VmaAllocatorCreateInfo allocatorCreateInfo = {};
     allocatorCreateInfo.vulkanApiVersion = VK_API_VERSION_1_2;
@@ -187,6 +180,7 @@ void HelloTriangleApplication::CreateVma()
     allocatorCreateInfo.device = m_device.get();
     allocatorCreateInfo.instance = m_instance.get();
     allocatorCreateInfo.flags = VMA_ALLOCATOR_CREATE_KHR_DEDICATED_ALLOCATION_BIT;
+    allocatorCreateInfo.pVulkanFunctions = &vulkanFunctions;
 
     vmaCreateAllocator(&allocatorCreateInfo, &m_allocator);
 }
