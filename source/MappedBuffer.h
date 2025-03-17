@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 
-#include "Vma.h"
+#include "VmaIncludes.h"
 
 namespace zvk
 {
