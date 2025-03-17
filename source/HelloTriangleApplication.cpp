@@ -316,22 +316,20 @@ void HelloTriangleApplication::CreateVertexBuffer()
     auto verticesSize = sizeof(Vertex) * Vertices.size();
 
     vk::BufferUsageFlags stagingBufferUsageFlags{vk::BufferUsageFlagBits::eTransferSrc};
-    MappedBuffer *stagingBuffer = m_vma.CreateMappedBuffer(verticesSize, stagingBufferUsageFlags,
-                                                           vk::SharingMode::eExclusive);
-    memcpy(stagingBuffer->Mapped(), Vertices.data(), verticesSize);
+    MappedBuffer stagingBuffer = m_vma.CreateMappedBuffer(verticesSize, stagingBufferUsageFlags,
+                                                          vk::SharingMode::eExclusive);
+    memcpy(stagingBuffer.Mapped(), Vertices.data(), verticesSize);
 
     vk::BufferUsageFlags deviceLocalBufferUsageFlags{vk::BufferUsageFlagBits::eTransferDst |
                                                      vk::BufferUsageFlagBits::eVertexBuffer};
-    VmaBuffer *deviceLocalBuffer = m_vma.CreateDeviceLocalBuffer(
+    VmaBuffer deviceLocalBuffer = m_vma.CreateDeviceLocalBuffer(
         verticesSize, deviceLocalBufferUsageFlags, vk::SharingMode::eExclusive);
 
     BufferTransfer transfer{*m_device, m_familyIndices.get()};
-    transfer.Copy(*stagingBuffer, *deviceLocalBuffer);
+    transfer.Copy(stagingBuffer, deviceLocalBuffer);
     transfer.FinishAndWait();
 
-    m_vertexBuffer.reset(deviceLocalBuffer);
-
-    delete stagingBuffer;
+    m_vertexBuffer.reset(new VmaBuffer{deviceLocalBuffer});
 }
 
 void HelloTriangleApplication::CreateFrameData()

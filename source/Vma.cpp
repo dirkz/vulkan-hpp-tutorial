@@ -43,19 +43,18 @@ void Vma::Reset(vk::Instance instance, vk::PhysicalDevice physicalDevice, vk::De
     vmaCreateAllocator(&allocatorCreateInfo, &m_allocator);
 }
 
-MappedBuffer *Vma::CreateMappedBuffer(const vk::DeviceSize size,
-                                      const vk::BufferUsageFlags usageFlags,
-                                      const vk::SharingMode sharingMode)
+MappedBuffer Vma::CreateMappedBuffer(const vk::DeviceSize size,
+                                     const vk::BufferUsageFlags usageFlags,
+                                     const vk::SharingMode sharingMode)
 {
-    return new MappedBuffer{m_allocator, size, usageFlags, sharingMode};
+    return MappedBuffer{m_allocator, size, usageFlags, sharingMode};
 }
 
-VmaBuffer *Vma::CreateDeviceLocalBuffer(const vk::DeviceSize size,
-                                        const vk::BufferUsageFlags usageFlags,
-                                        const vk::SharingMode sharingMode)
+VmaBuffer Vma::CreateDeviceLocalBuffer(const vk::DeviceSize size,
+                                       const vk::BufferUsageFlags usageFlags,
+                                       const vk::SharingMode sharingMode)
 {
-    VmaBuffer *buffer = new VmaBuffer{m_allocator, size, usageFlags, 0, sharingMode};
-
+    VmaBuffer buffer = VmaBuffer{m_allocator, size, usageFlags, 0, sharingMode};
     return buffer;
 }
 
