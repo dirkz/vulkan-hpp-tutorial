@@ -329,7 +329,7 @@ void HelloTriangleApplication::CreateVertexBuffer()
     transfer.Copy(stagingBuffer, deviceLocalBuffer);
     transfer.FinishAndWait();
 
-    m_vertexBuffer.reset(new VmaBuffer{deviceLocalBuffer});
+    m_vertexBuffer.reset(new VmaBuffer{std::move(deviceLocalBuffer)});
 }
 
 void HelloTriangleApplication::CreateFrameData()

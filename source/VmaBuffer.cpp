@@ -19,6 +19,13 @@ VmaBuffer::VmaBuffer(const VmaAllocator allocator, vk::DeviceSize size,
     vk::detail::resultCheck(vk::Result{result}, "vmaCreateBuffer");
 }
 
+VmaBuffer::VmaBuffer(VmaBuffer &&buffer) noexcept
+    : m_allocator{buffer.m_allocator}, m_buffer{buffer.m_buffer}, m_allocation{buffer.m_allocation},
+      m_allocationInfo{buffer.m_allocationInfo}, m_size{buffer.m_size}
+{
+    buffer.m_allocator = VK_NULL_HANDLE;
+}
+
 VmaBuffer::~VmaBuffer()
 {
     if (m_allocator != VK_NULL_HANDLE)
