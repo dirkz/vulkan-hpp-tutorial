@@ -5,11 +5,11 @@
 #include "Constants.h"
 #include "DebugUtilsMessenger.h"
 #include "FrameData.h"
-#include "MappedBuffer.h"
 #include "QueueFamilyIndices.h"
 #include "SwapChain.h"
 #include "Vertex.h"
 #include "Vma.h"
+#include "VmaBuffer.h"
 #include "Window.h"
 
 namespace zvk
@@ -47,7 +47,7 @@ struct HelloTriangleApplication : public Window::Callback
     vk::UniquePipeline m_graphicsPipeline;
 
     vk::UniqueCommandPool m_commandPool;
-    std::unique_ptr<MappedBuffer> m_vertexBuffer;
+    std::unique_ptr<VmaBuffer> m_vertexBuffer;
 
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;
