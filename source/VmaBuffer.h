@@ -20,10 +20,11 @@ struct VmaBuffer
 
     inline vk::DeviceSize Size() const
     {
-        return m_allocationInfo.size;
+        return m_size;
     }
 
   protected:
+    vk::DeviceSize m_size;
     VmaAllocator m_allocator;
     VkBuffer m_buffer;
     VmaAllocation m_allocation;

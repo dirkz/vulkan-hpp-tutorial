@@ -6,7 +6,7 @@ namespace zvk
 VmaBuffer::VmaBuffer(const VmaAllocator allocator, vk::DeviceSize size,
                      vk::BufferUsageFlags usageFlags,
                      VmaAllocationCreateFlags allocationCreateFlags, vk::SharingMode sharingMode)
-    : m_allocator{allocator}
+    : m_size{size}, m_allocator{allocator}
 {
     vk::BufferCreateInfo bufferCreateInfo{{}, size, usageFlags, sharingMode};
 
