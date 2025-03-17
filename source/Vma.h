@@ -28,6 +28,9 @@ struct Vma
     MappedBuffer *CreateMappedBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
                                      vk::SharingMode sharingMode);
 
+    VmaBuffer *CreateDeviceLocalBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
+                                       vk::SharingMode sharingMode);
+
   private:
     VmaAllocator m_allocator;
 

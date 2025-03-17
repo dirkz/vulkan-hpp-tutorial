@@ -49,6 +49,14 @@ MappedBuffer *Vma::CreateMappedBuffer(vk::DeviceSize size, vk::BufferUsageFlags 
     return new MappedBuffer{m_allocator, size, usageFlags, sharingMode};
 }
 
+VmaBuffer *Vma::CreateDeviceLocalBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
+                                        vk::SharingMode sharingMode)
+{
+    VmaBuffer *buffer = new VmaBuffer{m_allocator, size, usageFlags, 0, sharingMode};
+
+    return buffer;
+}
+
 void Vma::Delete()
 {
     if (m_allocator != VK_NULL_HANDLE)
