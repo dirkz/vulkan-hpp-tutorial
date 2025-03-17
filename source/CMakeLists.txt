@@ -32,7 +32,9 @@ add_executable(${PROJECT_NAME}
 	Vma.h
 	Vma.cpp
 	MappedBuffer.h
-	MappedBuffer.cpp)
+	MappedBuffer.cpp
+	VmaBuffer.h
+	VmaBuffer.cpp)
 
 # Adds shader compilations as custom target to ${PROJECT_NAME}
 add_subdirectory(shaders)
