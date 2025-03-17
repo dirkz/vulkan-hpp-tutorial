@@ -62,6 +62,11 @@ std::optional<uint32_t> QueueFamilyIndices::PresentFamily() const
     return m_presentFamily;
 }
 
+std::optional<uint32_t> QueueFamilyIndices::TransferFamily() const
+{
+    return m_transferFamily;
+}
+
 std::vector<uint32_t> QueueFamilyIndices::UniqueFamilies() const
 {
     set<uint32_t> familySet{m_graphicsFamily.value(), m_presentFamily.value()};

@@ -13,6 +13,7 @@ struct QueueFamilyIndices
 
     std::optional<uint32_t> GraphicsFamily() const;
     std::optional<uint32_t> PresentFamily() const;
+    std::optional<uint32_t> TransferFamily() const;
 
     std::vector<uint32_t> UniqueFamilies() const;
     std::vector<uint32_t> UniqueGraphicsAndPresent() const;
