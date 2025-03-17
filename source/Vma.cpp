@@ -52,9 +52,10 @@ MappedBuffer Vma::CreateMappedBuffer(const vk::DeviceSize size,
 
 VmaBuffer Vma::CreateDeviceLocalBuffer(const vk::DeviceSize size,
                                        const vk::BufferUsageFlags usageFlags,
-                                       const vk::SharingMode sharingMode)
+                                       const vk::SharingMode sharingMode,
+                                       const std::vector<uint32_t> &queues)
 {
-    VmaBuffer buffer = VmaBuffer{m_allocator, size, usageFlags, 0, sharingMode};
+    VmaBuffer buffer = VmaBuffer{m_allocator, size, usageFlags, 0, sharingMode, queues};
     return buffer;
 }
 

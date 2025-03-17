@@ -5,10 +5,11 @@ namespace zvk
 
 VmaBuffer::VmaBuffer(const VmaAllocator allocator, vk::DeviceSize size,
                      vk::BufferUsageFlags usageFlags,
-                     VmaAllocationCreateFlags allocationCreateFlags, vk::SharingMode sharingMode)
+                     VmaAllocationCreateFlags allocationCreateFlags, vk::SharingMode sharingMode,
+                     const std::vector<uint32_t> &queues)
     : m_size{size}, m_allocator{allocator}
 {
-    vk::BufferCreateInfo bufferCreateInfo{{}, size, usageFlags, sharingMode};
+    vk::BufferCreateInfo bufferCreateInfo{{}, size, usageFlags, sharingMode, queues};
 
     VmaAllocationCreateInfo allocationCreateInfo{allocationCreateFlags, VMA_MEMORY_USAGE_AUTO};
 

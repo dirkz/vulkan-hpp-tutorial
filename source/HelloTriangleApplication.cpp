@@ -324,7 +324,8 @@ void HelloTriangleApplication::CreateVertexBuffer()
     vk::BufferUsageFlags deviceLocalBufferUsageFlags{vk::BufferUsageFlagBits::eTransferDst |
                                                      vk::BufferUsageFlagBits::eVertexBuffer};
     VmaBuffer deviceLocalBuffer = m_vma.CreateDeviceLocalBuffer(
-        verticesSize, deviceLocalBufferUsageFlags, vk::SharingMode::eExclusive);
+        verticesSize, deviceLocalBufferUsageFlags, vk::SharingMode::eConcurrent,
+        m_familyIndices->UniqueGraphicsAndTransfer());
 
     BufferTransfer transfer{*m_device, m_familyIndices.get()};
     transfer.Copy(stagingBuffer, deviceLocalBuffer);

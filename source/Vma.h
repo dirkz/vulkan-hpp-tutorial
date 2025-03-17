@@ -31,7 +31,8 @@ struct Vma
                                     vk::SharingMode sharingMode);
 
     VmaBuffer CreateDeviceLocalBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
-                                      vk::SharingMode sharingMode);
+                                      vk::SharingMode sharingMode,
+                                      const std::vector<uint32_t> &queues = {});
 
   private:
     VmaAllocator m_allocator;
