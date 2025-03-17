@@ -314,8 +314,9 @@ void HelloTriangleApplication::CreateVertexBuffer()
 {
     auto verticesSize = sizeof(Vertex) * Vertices.size();
     vk::BufferUsageFlags usageFlags{vk::BufferUsageFlagBits::eVertexBuffer};
-    m_vertexBuffer.reset(
-        new MappedBuffer{m_vma.Allocator(), verticesSize, usageFlags, vk::SharingMode::eExclusive});
+    MappedBuffer *buffer =
+        m_vma.CreateMappedBuffer(verticesSize, usageFlags, vk::SharingMode::eExclusive);
+    m_vertexBuffer.reset(buffer);
     memcpy(m_vertexBuffer->Mapped(), Vertices.data(), verticesSize);
 }
 

@@ -11,7 +11,6 @@ struct VmaBuffer
 {
     VmaBuffer(VmaAllocator allocator, vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
               VmaAllocationCreateFlags allocationCreateFlags, vk::SharingMode sharingMode);
-    VmaBuffer(VmaBuffer &&buffer) noexcept;
     ~VmaBuffer();
 
     inline void *Mapped() const

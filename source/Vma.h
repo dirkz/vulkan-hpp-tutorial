@@ -25,8 +25,8 @@ struct Vma
         return m_allocator;
     }
 
-    MappedBuffer CreateMappedBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
-                                    vk::SharingMode sharingMode);
+    MappedBuffer *CreateMappedBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
+                                     vk::SharingMode sharingMode);
 
   private:
     VmaAllocator m_allocator;
