@@ -13,17 +13,12 @@ struct VmaBuffer
               VmaAllocationCreateFlags allocationCreateFlags, vk::SharingMode sharingMode);
     ~VmaBuffer();
 
-    inline void *Mapped() const
-    {
-        return m_allocationInfo.pMappedData;
-    }
-
     inline VkBuffer Buffer() const
     {
         return m_buffer;
     }
 
-  private:
+  protected:
     VmaAllocator m_allocator;
     VkBuffer m_buffer;
     VmaAllocation m_allocation;
