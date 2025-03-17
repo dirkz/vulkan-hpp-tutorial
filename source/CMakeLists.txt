@@ -29,6 +29,7 @@ add_executable(${PROJECT_NAME}
 	FrameData.cpp
 	Vertex.h
 	Vertex.cpp
+	VmaIncludes.h
 	Vma.h
 	Vma.cpp
 	MappedBuffer.h
