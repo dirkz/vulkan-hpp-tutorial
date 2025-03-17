@@ -17,9 +17,12 @@ namespace zvk
 static const uint32_t Width = 800;
 static const uint32_t Height = 600;
 
-const std::vector<Vertex> Vertices = {{{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-                                      {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
-                                      {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}};
+const std::vector<Vertex> Vertices = {{{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+                                      {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
+                                      {{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
+                                      {{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}};
+
+const std::vector<uint16_t> Indices = {0, 1, 2, 2, 3, 0};
 
 HelloTriangleApplication::HelloTriangleApplication(std::filesystem::path shaderPath)
     : m_shaderPath{shaderPath}, m_currentFrame{0}, m_framebufferResized{false}
@@ -315,23 +318,35 @@ void HelloTriangleApplication::CreateCommandPool()
 void HelloTriangleApplication::CreateVertexBuffer()
 {
     auto verticesSize = sizeof(Vertex) * Vertices.size();
+    auto indicesSize = sizeof(uint16_t) * Indices.size();
 
     vk::BufferUsageFlags stagingBufferUsageFlags{vk::BufferUsageFlagBits::eTransferSrc};
-    MappedBuffer stagingBuffer = m_vma.CreateMappedBuffer(verticesSize, stagingBufferUsageFlags,
-                                                          vk::SharingMode::eExclusive);
-    memcpy(stagingBuffer.Mapped(), Vertices.data(), verticesSize);
-
     vk::BufferUsageFlags deviceLocalBufferUsageFlags{vk::BufferUsageFlagBits::eTransferDst |
                                                      vk::BufferUsageFlagBits::eVertexBuffer};
-    VmaBuffer deviceLocalBuffer = m_vma.CreateDeviceLocalBuffer(
+
+    MappedBuffer stagingVertexBuffer = m_vma.CreateMappedBuffer(
+        verticesSize, stagingBufferUsageFlags, vk::SharingMode::eExclusive);
+    memcpy(stagingVertexBuffer.Mapped(), Vertices.data(), verticesSize);
+
+    MappedBuffer stagingIndexBuffer =
+        m_vma.CreateMappedBuffer(indicesSize, stagingBufferUsageFlags, vk::SharingMode::eExclusive);
+    memcpy(stagingIndexBuffer.Mapped(), Indices.data(), indicesSize);
+
+    VmaBuffer deviceLocalVertexBuffer = m_vma.CreateDeviceLocalBuffer(
         verticesSize, deviceLocalBufferUsageFlags, vk::SharingMode::eConcurrent,
         m_familyIndices->UniqueGraphicsAndTransfer());
 
+    VmaBuffer deviceLocalIndexBuffer = m_vma.CreateDeviceLocalBuffer(
+        indicesSize, deviceLocalBufferUsageFlags, vk::SharingMode::eConcurrent,
+        m_familyIndices->UniqueGraphicsAndTransfer());
+
     BufferTransfer transfer{*m_device, m_familyIndices.get()};
-    transfer.Copy(stagingBuffer, deviceLocalBuffer);
+    transfer.Copy(stagingVertexBuffer, deviceLocalVertexBuffer);
+    transfer.Copy(stagingIndexBuffer, deviceLocalIndexBuffer);
     transfer.FinishAndWait();
 
-    m_vertexBuffer.reset(new VmaBuffer{std::move(deviceLocalBuffer)});
+    m_vertexBuffer.reset(new VmaBuffer{std::move(deviceLocalVertexBuffer)});
+    m_indexBuffer.reset(new VmaBuffer{std::move(deviceLocalIndexBuffer)});
 }
 
 void HelloTriangleApplication::CreateFrameData()

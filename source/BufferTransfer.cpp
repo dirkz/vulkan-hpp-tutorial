@@ -22,13 +22,13 @@ BufferTransfer::BufferTransfer(const vk::Device device, const QueueFamilyIndices
                                             1};
     auto commandBuffers = device.allocateCommandBuffersUnique(allocInfo);
     m_commandBuffer = std::move(commandBuffers[0]);
+
+    vk::CommandBufferBeginInfo beginInfo{};
+    m_commandBuffer->begin(beginInfo);
 }
 
 void BufferTransfer::Copy(const VmaBuffer &srcBuffer, const VmaBuffer &dstBuffer)
 {
-    vk::CommandBufferBeginInfo beginInfo{};
-    m_commandBuffer->begin(beginInfo);
-
     vk::BufferCopy copyRegion{0, 0, srcBuffer.Size()};
     m_commandBuffer->copyBuffer(srcBuffer.Buffer(), dstBuffer.Buffer(), {copyRegion});
 }
