@@ -2,6 +2,7 @@
 
 #include "stdafx.h"
 
+#include "MappedBuffer.h"
 #include "VmaIncludes.h"
 
 namespace zvk
@@ -23,6 +24,9 @@ struct Vma
         assert(m_allocator != VK_NULL_HANDLE);
         return m_allocator;
     }
+
+    MappedBuffer CreateMappedBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
+                                    vk::SharingMode sharingMode);
 
   private:
     VmaAllocator m_allocator;

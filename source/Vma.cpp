@@ -43,6 +43,13 @@ void Vma::Reset(vk::Instance instance, vk::PhysicalDevice physicalDevice, vk::De
     vmaCreateAllocator(&allocatorCreateInfo, &m_allocator);
 }
 
+MappedBuffer Vma::CreateMappedBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
+                                     vk::SharingMode sharingMode)
+{
+    MappedBuffer buffer = MappedBuffer{m_allocator, size, usageFlags, sharingMode};
+    return buffer;
+}
+
 void Vma::Delete()
 {
     if (m_allocator != VK_NULL_HANDLE)
