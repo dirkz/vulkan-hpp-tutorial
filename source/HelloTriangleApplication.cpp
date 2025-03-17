@@ -313,11 +313,17 @@ void HelloTriangleApplication::CreateCommandPool()
 void HelloTriangleApplication::CreateVertexBuffer()
 {
     auto verticesSize = sizeof(Vertex) * Vertices.size();
-    vk::BufferUsageFlags usageFlags{vk::BufferUsageFlagBits::eVertexBuffer};
+
+    vk::BufferUsageFlags vertexBufferUsageFlags{vk::BufferUsageFlagBits::eVertexBuffer};
     MappedBuffer *vertexBuffer =
-        m_vma.CreateMappedBuffer(verticesSize, usageFlags, vk::SharingMode::eExclusive);
+        m_vma.CreateMappedBuffer(verticesSize, vertexBufferUsageFlags, vk::SharingMode::eExclusive);
     memcpy(vertexBuffer->Mapped(), Vertices.data(), verticesSize);
     m_vertexBuffer.reset(vertexBuffer);
+
+    vk::BufferUsageFlags stagingBufferUsageFlags{vk::BufferUsageFlagBits::eTransferSrc};
+    MappedBuffer *stagingBuffer = m_vma.CreateMappedBuffer(verticesSize, stagingBufferUsageFlags,
+                                                           vk::SharingMode::eExclusive);
+    delete stagingBuffer;
 }
 
 void HelloTriangleApplication::CreateFrameData()
