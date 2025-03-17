@@ -333,11 +333,6 @@ void HelloTriangleApplication::CreateVertexBuffer()
 
 void HelloTriangleApplication::CreateFrameData()
 {
-    vk::CommandBufferAllocateInfo allocInfo{m_commandPool.get(), vk::CommandBufferLevel::ePrimary,
-                                            1};
-    auto commandBuffers = m_device->allocateCommandBuffersUnique(allocInfo);
-    m_commandBuffer = std::move(commandBuffers[0]);
-
     for (auto i = 0; i < m_frameDatas.size(); ++i)
     {
         m_frameDatas[i] = FrameData{m_device.get(), m_commandPool.get()};

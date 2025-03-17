@@ -48,7 +48,6 @@ struct HelloTriangleApplication : public Window::Callback
 
     vk::UniqueCommandPool m_commandPool;
     std::unique_ptr<MappedBuffer> m_vertexBuffer;
-    vk::UniqueCommandBuffer m_commandBuffer;
 
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;
