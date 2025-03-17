@@ -8,7 +8,7 @@ BufferTransfer::BufferTransfer(const vk::Device device, const QueueFamilyIndices
 {
     m_queue = device.getQueue(familyIndices->GraphicsFamily().value(), 0);
 
-    vk::FenceCreateInfo fenceCreateInfo{vk::FenceCreateFlagBits::eSignaled};
+    vk::FenceCreateInfo fenceCreateInfo{};
     m_fence = device.createFenceUnique(fenceCreateInfo);
 
     vk::CommandPoolCreateFlags commandPoolCreateFlags =
@@ -35,6 +35,7 @@ void BufferTransfer::Copy(const VmaBuffer &srcBuffer, const VmaBuffer &dstBuffer
 
 void BufferTransfer::FinishAndWait()
 {
+    m_commandBuffer->end();
     vk::SubmitInfo submitInfo{{}, {}, {*m_commandBuffer}, {}};
     m_queue.submit({submitInfo}, *m_fence);
     vk::Result result = m_device.waitForFences({*m_fence}, VK_TRUE, UINT64_MAX);
