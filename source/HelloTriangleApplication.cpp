@@ -375,6 +375,7 @@ void HelloTriangleApplication::RecordCommandBuffer(vk::CommandBuffer commandBuff
     commandBuffer.beginRenderPass(renderPassInfo, vk::SubpassContents::eInline);
     commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, m_graphicsPipeline.get());
     commandBuffer.bindVertexBuffers(0, {m_vertexBuffer->Buffer()}, {0});
+    commandBuffer.bindIndexBuffer(m_indexBuffer->Buffer(), 0, vk::IndexType::eUint16);
 
     vk::Viewport viewport{0, 0, static_cast<float>(extent.width), static_cast<float>(extent.height),
                           0, 1};
@@ -383,7 +384,7 @@ void HelloTriangleApplication::RecordCommandBuffer(vk::CommandBuffer commandBuff
     vk::Rect2D scissor{{0, 0}, extent};
     commandBuffer.setScissor(0, {scissor});
 
-    commandBuffer.draw(Vertices.size(), 1, 0, 0);
+    commandBuffer.drawIndexed(Indices.size(), 1, 0, 0, 0);
 
     commandBuffer.endRenderPass();
 
