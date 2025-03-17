@@ -321,8 +321,10 @@ void HelloTriangleApplication::CreateVertexBuffer()
     auto indicesSize = sizeof(uint16_t) * Indices.size();
 
     vk::BufferUsageFlags stagingBufferUsageFlags{vk::BufferUsageFlagBits::eTransferSrc};
-    vk::BufferUsageFlags deviceLocalBufferUsageFlags{vk::BufferUsageFlagBits::eTransferDst |
-                                                     vk::BufferUsageFlagBits::eVertexBuffer};
+    vk::BufferUsageFlags deviceLocalVertexBufferUsageFlags{vk::BufferUsageFlagBits::eTransferDst |
+                                                           vk::BufferUsageFlagBits::eVertexBuffer};
+    vk::BufferUsageFlags deviceLocalIndexBufferUsageFlags{vk::BufferUsageFlagBits::eTransferDst |
+                                                          vk::BufferUsageFlagBits::eIndexBuffer};
 
     MappedBuffer stagingVertexBuffer = m_vma.CreateMappedBuffer(
         verticesSize, stagingBufferUsageFlags, vk::SharingMode::eExclusive);
@@ -333,11 +335,11 @@ void HelloTriangleApplication::CreateVertexBuffer()
     memcpy(stagingIndexBuffer.Mapped(), Indices.data(), indicesSize);
 
     VmaBuffer deviceLocalVertexBuffer = m_vma.CreateDeviceLocalBuffer(
-        verticesSize, deviceLocalBufferUsageFlags, vk::SharingMode::eConcurrent,
+        verticesSize, deviceLocalVertexBufferUsageFlags, vk::SharingMode::eConcurrent,
         m_familyIndices->UniqueGraphicsAndTransfer());
 
     VmaBuffer deviceLocalIndexBuffer = m_vma.CreateDeviceLocalBuffer(
-        indicesSize, deviceLocalBufferUsageFlags, vk::SharingMode::eConcurrent,
+        indicesSize, deviceLocalIndexBufferUsageFlags, vk::SharingMode::eConcurrent,
         m_familyIndices->UniqueGraphicsAndTransfer());
 
     BufferTransfer transfer{*m_device, m_familyIndices.get()};
