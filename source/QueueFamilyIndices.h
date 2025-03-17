@@ -20,6 +20,7 @@ struct QueueFamilyIndices
   private:
     std::optional<uint32_t> m_graphicsFamily;
     std::optional<uint32_t> m_presentFamily;
+    std::optional<uint32_t> m_transferFamily;
 };
 
 } // namespace zvk

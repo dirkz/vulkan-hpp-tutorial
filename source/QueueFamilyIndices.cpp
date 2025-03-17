@@ -16,6 +16,10 @@ QueueFamilyIndices::QueueFamilyIndices(const vk::PhysicalDevice device,
         {
             m_graphicsFamily = i;
         }
+        else if (queueFamilies[i].queueFlags & vk::QueueFlagBits::eTransfer)
+        {
+            m_transferFamily = i;
+        }
 
         VkBool32 surfaceSupport = device.getSurfaceSupportKHR(i, surface);
 
@@ -33,7 +37,8 @@ QueueFamilyIndices::QueueFamilyIndices(const vk::PhysicalDevice device,
 
 bool QueueFamilyIndices::IsComplete() const
 {
-    return m_graphicsFamily.has_value() && m_presentFamily.has_value();
+    return m_graphicsFamily.has_value() && m_presentFamily.has_value() &&
+           m_transferFamily.has_value();
 }
 
 std::optional<uint32_t> QueueFamilyIndices::GraphicsFamily() const
