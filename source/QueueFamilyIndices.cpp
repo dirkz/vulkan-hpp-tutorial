@@ -22,7 +22,8 @@ QueueFamilyIndices::QueueFamilyIndices(const vk::PhysicalDevice device,
 
         if (!m_transferFamily.has_value())
         {
-            if (queueFamilies[i].queueFlags & vk::QueueFlagBits::eTransfer)
+            if (queueFamilies[i].queueFlags & vk::QueueFlagBits::eTransfer &&
+                !(queueFamilies[i].queueFlags & vk::QueueFlagBits::eGraphics))
             {
                 m_transferFamily = i;
             }
