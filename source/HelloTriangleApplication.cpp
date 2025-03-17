@@ -1,5 +1,6 @@
 #include "HelloTriangleApplication.h"
 
+#include "BufferTransfer.h"
 #include "Constants.h"
 #include "Extensions.h"
 #include "ShaderModule.h"
@@ -323,11 +324,16 @@ void HelloTriangleApplication::CreateVertexBuffer()
     vk::BufferUsageFlags stagingBufferUsageFlags{vk::BufferUsageFlagBits::eTransferSrc};
     MappedBuffer *stagingBuffer = m_vma.CreateMappedBuffer(verticesSize, stagingBufferUsageFlags,
                                                            vk::SharingMode::eExclusive);
-    delete stagingBuffer;
 
     vk::BufferUsageFlags deviceLocalBufferUsageFlags{vk::BufferUsageFlagBits::eTransferDst};
     VmaBuffer *deviceLocalBuffer = m_vma.CreateDeviceLocalBuffer(
         verticesSize, deviceLocalBufferUsageFlags, vk::SharingMode::eExclusive);
+
+    BufferTransfer transfer{*m_device, m_familyIndices.get()};
+    transfer.Copy(*stagingBuffer, *deviceLocalBuffer);
+    transfer.FinishAndWait();
+
+    delete stagingBuffer;
     delete deviceLocalBuffer;
 }
 
