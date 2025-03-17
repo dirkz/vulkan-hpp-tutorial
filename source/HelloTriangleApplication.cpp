@@ -326,7 +326,7 @@ void HelloTriangleApplication::CreateVertexBuffer()
     delete stagingBuffer;
 
     vk::BufferUsageFlags deviceLocalBufferUsageFlags{vk::BufferUsageFlagBits::eTransferDst};
-    MappedBuffer *deviceLocalBuffer = m_vma.CreateMappedBuffer(
+    VmaBuffer *deviceLocalBuffer = m_vma.CreateDeviceLocalBuffer(
         verticesSize, deviceLocalBufferUsageFlags, vk::SharingMode::eExclusive);
     delete deviceLocalBuffer;
 }
