@@ -12,20 +12,30 @@ QueueFamilyIndices::QueueFamilyIndices(const vk::PhysicalDevice device,
 
     for (int i = 0; i < queueFamilies.size(); ++i)
     {
-        if (queueFamilies[i].queueFlags & vk::QueueFlagBits::eGraphics)
+        if (!m_graphicsFamily.has_value())
         {
-            m_graphicsFamily = i;
-        }
-        else if (queueFamilies[i].queueFlags & vk::QueueFlagBits::eTransfer)
-        {
-            m_transferFamily = i;
+            if (queueFamilies[i].queueFlags & vk::QueueFlagBits::eGraphics)
+            {
+                m_graphicsFamily = i;
+            }
         }
 
-        VkBool32 surfaceSupport = device.getSurfaceSupportKHR(i, surface);
-
-        if (surfaceSupport)
+        if (!m_transferFamily.has_value())
         {
-            m_presentFamily = i;
+            if (queueFamilies[i].queueFlags & vk::QueueFlagBits::eTransfer)
+            {
+                m_transferFamily = i;
+            }
+        }
+
+        if (!m_presentFamily.has_value())
+        {
+            VkBool32 surfaceSupport = device.getSurfaceSupportKHR(i, surface);
+
+            if (surfaceSupport)
+            {
+                m_presentFamily = i;
+            }
         }
 
         if (IsComplete())
