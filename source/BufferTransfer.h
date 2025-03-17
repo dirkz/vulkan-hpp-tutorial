@@ -13,6 +13,7 @@ struct BufferTransfer
 
   private:
     vk::UniqueCommandPool m_commandPool;
+    vk::UniqueCommandBuffer m_commandBuffer;
 };
 
 } // namespace zvk
