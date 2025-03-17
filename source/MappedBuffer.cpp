@@ -3,7 +3,7 @@
 namespace zvk
 {
 
-MappedBuffer::MappedBuffer(VmaAllocator allocator, vk::DeviceSize size,
+MappedBuffer::MappedBuffer(const VmaAllocator allocator, vk::DeviceSize size,
                            vk::BufferUsageFlags usageFlags, vk::SharingMode sharingMode)
     : VmaBuffer{allocator, size, usageFlags,
                 VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT |

@@ -7,7 +7,8 @@ namespace zvk
 
 struct ShaderModule
 {
-    ShaderModule(vk::Device device, std::filesystem::path basePath, std::string filename);
+    ShaderModule(const vk::Device device, const std::filesystem::path basePath,
+                 const std::string filename);
 
     vk::ShaderModule Module();
 

@@ -11,13 +11,15 @@ namespace zvk
 struct Vma
 {
     Vma();
-    Vma(vk::Instance instance, vk::PhysicalDevice physicalDevice, vk::Device device);
+    Vma(const vk::Instance instance, const vk::PhysicalDevice physicalDevice,
+        const vk::Device device);
     Vma(const Vma &vma) = delete;
     Vma(Vma &&vma) = delete;
 
     ~Vma();
 
-    void Reset(vk::Instance instance, vk::PhysicalDevice physicalDevice, vk::Device device);
+    void Reset(const vk::Instance instance, const vk::PhysicalDevice physicalDevice,
+               const vk::Device device);
 
     inline VmaAllocator Allocator() const
     {

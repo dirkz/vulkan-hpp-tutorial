@@ -3,7 +3,8 @@
 namespace zvk
 {
 
-ShaderModule::ShaderModule(vk::Device device, std::filesystem::path basePath, std::string filename)
+ShaderModule::ShaderModule(const vk::Device device, const std::filesystem::path basePath,
+                           const std::string filename)
 {
     std::filesystem::path filePath = basePath / filename;
     std::ifstream file{filePath, std::ios::ate | std::ios::binary};

@@ -9,7 +9,7 @@ namespace zvk
 
 struct VmaBuffer
 {
-    VmaBuffer(VmaAllocator allocator, vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
+    VmaBuffer(const VmaAllocator allocator, vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
               VmaAllocationCreateFlags allocationCreateFlags, vk::SharingMode sharingMode);
     ~VmaBuffer();
 

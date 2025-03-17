@@ -3,7 +3,8 @@
 namespace zvk
 {
 
-SwapChainSupportDetails::SwapChainSupportDetails(vk::PhysicalDevice device, vk::SurfaceKHR surface)
+SwapChainSupportDetails::SwapChainSupportDetails(const vk::PhysicalDevice device,
+                                                 const vk::SurfaceKHR surface)
 {
     m_capabilities = device.getSurfaceCapabilitiesKHR(surface);
     m_formats = device.getSurfaceFormatsKHR(surface);

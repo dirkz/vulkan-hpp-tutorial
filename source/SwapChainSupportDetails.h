@@ -7,7 +7,7 @@ namespace zvk
 
 struct SwapChainSupportDetails
 {
-    SwapChainSupportDetails(vk::PhysicalDevice device, vk::SurfaceKHR surface);
+    SwapChainSupportDetails(const vk::PhysicalDevice device, const vk::SurfaceKHR surface);
 
     vk::SurfaceFormatKHR ChooseSurfaceFormat() const;
     vk::PresentModeKHR ChoosePresentMode() const;

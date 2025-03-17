@@ -48,7 +48,7 @@ vector<const char *> Window::RequiredExtensions() const
     return extensions;
 }
 
-vk::UniqueSurfaceKHR Window::CreateSurface(vk::Instance instance)
+vk::UniqueSurfaceKHR Window::CreateSurface(const vk::Instance instance)
 {
     VkSurfaceKHR surface;
     if (glfwCreateWindowSurface(instance, m_window, nullptr, &surface) != VK_SUCCESS)

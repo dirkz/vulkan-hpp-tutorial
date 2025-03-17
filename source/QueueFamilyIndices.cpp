@@ -5,7 +5,8 @@ using namespace std;
 namespace zvk
 {
 
-QueueFamilyIndices::QueueFamilyIndices(vk::PhysicalDevice device, vk::SurfaceKHR surface)
+QueueFamilyIndices::QueueFamilyIndices(const vk::PhysicalDevice device,
+                                       const vk::SurfaceKHR surface)
 {
     vector<vk::QueueFamilyProperties> queueFamilies = device.getQueueFamilyProperties();
 

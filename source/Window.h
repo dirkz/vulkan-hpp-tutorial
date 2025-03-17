@@ -20,7 +20,7 @@ struct Window
     ~Window();
 
     std::vector<const char *> RequiredExtensions() const;
-    vk::UniqueSurfaceKHR CreateSurface(vk::Instance instance);
+    vk::UniqueSurfaceKHR CreateSurface(const vk::Instance instance);
     vk::Extent2D ChooseSwapExtent(const vk::SurfaceCapabilitiesKHR &capabilities) const;
 
     void WaitForDimensionsGreaterZero();

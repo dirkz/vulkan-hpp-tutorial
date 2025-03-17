@@ -18,7 +18,7 @@ DebugUtilsMessenger::DebugUtilsMessenger()
 {
 }
 
-DebugUtilsMessenger::DebugUtilsMessenger(vk::Instance instance)
+DebugUtilsMessenger::DebugUtilsMessenger(const vk::Instance instance)
 {
     m_instanceDebugMessenger = instance.createDebugUtilsMessengerEXTUnique(CreateInfo());
 }

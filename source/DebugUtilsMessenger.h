@@ -17,7 +17,7 @@ struct DebugUtilsMessenger
     /// Create a debug utils messenger tied to an (already created) instance.
     /// </summary>
     /// <param name="instance">The instance to receive messages from</param>
-    DebugUtilsMessenger(vk::Instance instance);
+    DebugUtilsMessenger(const vk::Instance instance);
 
     /// <summary>
     /// Shared method for creating a <code>DebugUtilsMessengerCreateInfoEXT</code>.

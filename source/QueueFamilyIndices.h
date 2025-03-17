@@ -7,7 +7,7 @@ namespace zvk
 
 struct QueueFamilyIndices
 {
-    QueueFamilyIndices(vk::PhysicalDevice device, vk::SurfaceKHR surface);
+    QueueFamilyIndices(const vk::PhysicalDevice device, const vk::SurfaceKHR surface);
 
     bool IsComplete() const;
 
