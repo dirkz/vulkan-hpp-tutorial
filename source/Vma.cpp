@@ -50,6 +50,14 @@ MappedBuffer Vma::CreateMappedBuffer(const vk::DeviceSize size,
     return MappedBuffer{m_allocator, size, usageFlags, sharingMode};
 }
 
+MappedBuffer *Vma::NewMappedBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
+                                   vk::SharingMode sharingMode)
+{
+    // Re-use, even though it means we have to move, which is cheap.
+    MappedBuffer buffer = CreateMappedBuffer(size, usageFlags, sharingMode);
+    return new MappedBuffer{std::move(buffer)};
+}
+
 VmaBuffer Vma::CreateDeviceLocalBuffer(const vk::DeviceSize size,
                                        const vk::BufferUsageFlags usageFlags,
                                        const vk::SharingMode sharingMode,
@@ -57,6 +65,15 @@ VmaBuffer Vma::CreateDeviceLocalBuffer(const vk::DeviceSize size,
 {
     VmaBuffer buffer = VmaBuffer{m_allocator, size, usageFlags, 0, sharingMode, queues};
     return buffer;
+}
+
+VmaBuffer *Vma::NewDeviceLocalBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
+                                     vk::SharingMode sharingMode,
+                                     const std::vector<uint32_t> &queues)
+{
+    // Re-use, even though it means we have to move, which is cheap.
+    VmaBuffer buffer = CreateDeviceLocalBuffer(size, usageFlags, sharingMode, queues);
+    return new VmaBuffer{std::move(buffer)};
 }
 
 void Vma::Delete()
