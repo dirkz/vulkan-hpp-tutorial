@@ -318,9 +318,9 @@ void HelloTriangleApplication::CreateCommandPool()
 void HelloTriangleApplication::CreateVertexBuffer()
 {
     std::vector<uint32_t> qs = m_familyIndices->UniqueGraphicsAndTransfer();
-    std::span<uint32_t> queues{qs.data(), qs.size()};
+    std::span<uint32_t> queues{qs};
     std::vector<Vertex> vs = Vertices;
-    std::span<Vertex> vertices{vs.data(), vs.size()};
+    std::span<Vertex> vertices{vs};
 
     auto verticesSize = sizeof(Vertex) * Vertices.size();
     auto indicesSize = sizeof(uint16_t) * Indices.size();
