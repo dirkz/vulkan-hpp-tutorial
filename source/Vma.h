@@ -28,18 +28,18 @@ struct Vma
     }
 
     MappedBuffer CreateMappedBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
-                                    vk::SharingMode sharingMode);
+                                    vk::SharingMode sharingMode) const;
 
     MappedBuffer *NewMappedBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
-                                  vk::SharingMode sharingMode);
+                                  vk::SharingMode sharingMode) const;
 
     VmaBuffer CreateDeviceLocalBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
                                       vk::SharingMode sharingMode,
-                                      const std::vector<uint32_t> &queues = {});
+                                      const std::span<uint32_t> &queues = {}) const;
 
     VmaBuffer *NewDeviceLocalBuffer(vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
                                     vk::SharingMode sharingMode,
-                                    const std::vector<uint32_t> &queues = {});
+                                    const std::span<uint32_t> &queues = {}) const;
 
   private:
     VmaAllocator m_allocator;

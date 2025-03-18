@@ -25,12 +25,14 @@ struct BufferTransfer
         vk::BufferUsageFlags stagingBufferUsageFlags{vk::BufferUsageFlagBits::eTransferSrc};
         MappedBuffer *stagingBuffer =
             vma.NewMappedBuffer(contentsSize, stagingBufferUsageFlags, vk::SharingMode::eExclusive);
-        memcpy(stagingBuffer.Mapped(), contents.data(), contentsSize);
+        memcpy(stagingBuffer->Mapped(), contents.data(), contentsSize);
 
+        usageFlags |= vk::BufferUsageFlagBits::eTransferDst;
         VmaBuffer *deviceLocalBuffer = vma.NewDeviceLocalBuffer(
             contentsSize, usageFlags, vk::SharingMode::eConcurrent, queues);
 
-        m_stagingBuffers.push_back(std::unique_ptr{stagingBuffer});
+        std::unique_ptr<MappedBuffer> uniqueBuffer{stagingBuffer};
+        //m_stagingBuffers.push_back(uniqueBuffer);
 
         Copy(*stagingBuffer, *deviceLocalBuffer);
 
