@@ -320,9 +320,9 @@ void HelloTriangleApplication::CreateVertexBuffer()
     std::vector<uint32_t> qs = m_familyIndices->UniqueGraphicsAndTransfer();
     std::span<uint32_t> queuesGraphicsAndTransfer{qs};
     std::vector<Vertex> vs = Vertices;
-    std::span<Vertex> vertices{vs};
+    const std::span<Vertex> vertices{vs};
     std::vector<uint16_t> is = Indices;
-    std::span<uint16_t> indices{is};
+    const std::span<uint16_t> indices{is};
 
     BufferTransfer transfer{*m_device, m_familyIndices.get()};
 
