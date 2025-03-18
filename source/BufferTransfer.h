@@ -32,7 +32,7 @@ struct BufferTransfer
             contentsSize, usageFlags, vk::SharingMode::eConcurrent, queues);
 
         std::unique_ptr<MappedBuffer> uniqueBuffer{stagingBuffer};
-        //m_stagingBuffers.push_back(uniqueBuffer);
+        m_stagingBuffers.push_back(std::move(uniqueBuffer));
 
         Copy(*stagingBuffer, *deviceLocalBuffer);
 
