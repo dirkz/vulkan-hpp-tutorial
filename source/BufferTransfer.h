@@ -13,6 +13,7 @@ namespace zvk
 struct BufferTransfer
 {
     BufferTransfer(const vk::Device device, const QueueFamilyIndices *familyIndices);
+
     void Copy(const VmaBuffer &srcBuffer, const VmaBuffer &dstBuffer);
     void FinishAndWait();
 
