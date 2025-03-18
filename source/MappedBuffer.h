@@ -12,6 +12,9 @@ struct MappedBuffer : public VmaBuffer
 {
     MappedBuffer(const VmaAllocator allocator, vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
                  vk::SharingMode sharingMode);
+    MappedBuffer(MappedBuffer &&) = default;
+
+    ~MappedBuffer() = default;
 
     inline void *Mapped() const
     {
