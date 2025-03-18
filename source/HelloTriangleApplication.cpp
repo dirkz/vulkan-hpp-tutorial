@@ -321,6 +321,8 @@ void HelloTriangleApplication::CreateVertexBuffer()
     std::span<uint32_t> queuesGraphicsAndTransfer{qs};
     std::vector<Vertex> vs = Vertices;
     std::span<Vertex> vertices{vs};
+    std::vector<uint16_t> is = Indices;
+    std::span<uint16_t> indices{is};
 
     BufferTransfer transfer{*m_device, m_familyIndices.get()};
 
@@ -328,26 +330,11 @@ void HelloTriangleApplication::CreateVertexBuffer()
         transfer.Upload(m_vma, vertices, vk::BufferUsageFlagBits::eVertexBuffer, qs);
     m_vertexBuffer.reset(vertexBuffer);
 
-    auto indicesSize = sizeof(uint16_t) * Indices.size();
+    VmaBuffer *indexBuffer =
+        transfer.Upload(m_vma, indices, vk::BufferUsageFlagBits::eIndexBuffer, qs);
+    m_indexBuffer.reset(indexBuffer);
 
-    vk::BufferUsageFlags stagingBufferUsageFlags{vk::BufferUsageFlagBits::eTransferSrc};
-    vk::BufferUsageFlags deviceLocalVertexBufferUsageFlags{vk::BufferUsageFlagBits::eTransferDst |
-                                                           vk::BufferUsageFlagBits::eVertexBuffer};
-    vk::BufferUsageFlags deviceLocalIndexBufferUsageFlags{vk::BufferUsageFlagBits::eTransferDst |
-                                                          vk::BufferUsageFlagBits::eIndexBuffer};
-
-    MappedBuffer stagingIndexBuffer =
-        m_vma.CreateMappedBuffer(indicesSize, stagingBufferUsageFlags, vk::SharingMode::eExclusive);
-    memcpy(stagingIndexBuffer.Mapped(), Indices.data(), indicesSize);
-
-    VmaBuffer deviceLocalIndexBuffer =
-        m_vma.CreateDeviceLocalBuffer(indicesSize, deviceLocalIndexBufferUsageFlags,
-                                      vk::SharingMode::eConcurrent, queuesGraphicsAndTransfer);
-
-    transfer.Copy(stagingIndexBuffer, deviceLocalIndexBuffer);
     transfer.FinishAndWait();
-
-    m_indexBuffer.reset(new VmaBuffer{std::move(deviceLocalIndexBuffer)});
 }
 
 void HelloTriangleApplication::CreateFrameData()
