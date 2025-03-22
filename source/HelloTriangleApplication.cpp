@@ -365,6 +365,18 @@ void HelloTriangleApplication::CreateDescriptorPool()
     m_descriptorPool = m_device->createDescriptorPoolUnique(poolInfo);
 }
 
+void HelloTriangleApplication::CreateDescriptorSets()
+{
+    std::array<vk::DescriptorSetLayout, MaxFramesInFlight> layouts;
+    for (vk::DescriptorSetLayout &layout : layouts)
+    {
+        layout = m_descriptorSetLayout.get();
+    }
+
+    vk::DescriptorSetAllocateInfo allocInfo{m_descriptorPool.get(), layouts};
+    m_descriptorSets = m_device->allocateDescriptorSetsUnique(allocInfo);
+}
+
 void HelloTriangleApplication::RecordCommandBuffer(vk::CommandBuffer commandBuffer,
                                                    uint32_t imageIndex)
 {
@@ -416,6 +428,7 @@ void HelloTriangleApplication::InitVulkan()
     CreateVertexBuffer();
     CreateFrameData();
     CreateDescriptorPool();
+    CreateDescriptorSets();
 }
 
 void HelloTriangleApplication::MainLoop()

@@ -52,6 +52,7 @@ struct HelloTriangleApplication : public Window::Callback
     std::unique_ptr<VmaBuffer> m_vertexBuffer;
     std::unique_ptr<VmaBuffer> m_indexBuffer;
     vk::UniqueDescriptorPool m_descriptorPool;
+    std::vector<vk::UniqueDescriptorSet> m_descriptorSets;
 
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;
@@ -80,6 +81,7 @@ struct HelloTriangleApplication : public Window::Callback
     void CreateVertexBuffer();
     void CreateFrameData();
     void CreateDescriptorPool();
+    void CreateDescriptorSets();
     void RecordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t imageIndex);
 
     void InitVulkan();
