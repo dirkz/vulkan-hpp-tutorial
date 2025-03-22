@@ -356,6 +356,15 @@ void HelloTriangleApplication::CreateFrameData()
     }
 }
 
+void HelloTriangleApplication::CreateDescriptorPool()
+{
+    vk::DescriptorPoolSize poolSize{vk::DescriptorType::eUniformBuffer, MaxFramesInFlight};
+
+    vk::DescriptorPoolCreateFlags flags{};
+    vk::DescriptorPoolCreateInfo poolInfo{flags, MaxFramesInFlight, {poolSize}};
+    m_descriptorPool = m_device->createDescriptorPoolUnique(poolInfo);
+}
+
 void HelloTriangleApplication::RecordCommandBuffer(vk::CommandBuffer commandBuffer,
                                                    uint32_t imageIndex)
 {
@@ -406,6 +415,7 @@ void HelloTriangleApplication::InitVulkan()
     CreateCommandPool();
     CreateVertexBuffer();
     CreateFrameData();
+    CreateDescriptorPool();
 }
 
 void HelloTriangleApplication::MainLoop()
