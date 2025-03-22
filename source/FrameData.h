@@ -2,12 +2,16 @@
 
 #include "stdafx.h"
 
+#include "UniformBuffer.h"
+
 namespace zvk
 {
 
 template <class T> struct FrameData
 {
-    FrameData(const vk::Device &device, const vk::CommandPool &pool)
+    FrameData(const vk::Device &device, const VmaAllocator allocator, const vk::CommandPool &pool)
+        : m_uniformBuffer{allocator, vk::BufferUsageFlags{vk::BufferUsageFlagBits::eUniformBuffer},
+                          vk::SharingMode::eExclusive}
     {
         vk::CommandBufferAllocateInfo commandBufferAllocateInfo{
             pool, vk::CommandBufferLevel::ePrimary, 1};
@@ -47,6 +51,7 @@ template <class T> struct FrameData
     vk::UniqueSemaphore m_imageAvailableSemaphore;
     vk::UniqueSemaphore m_renderFinishedSemaphore;
     vk::UniqueFence m_inFlightFence;
+    UniformBuffer<T> m_uniformBuffer;
 };
 
 } // namespace zvk

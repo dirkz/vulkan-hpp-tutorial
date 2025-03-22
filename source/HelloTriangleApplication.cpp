@@ -352,7 +352,7 @@ void HelloTriangleApplication::CreateFrameData()
 {
     for (auto i = 0; i < m_frameDatas.size(); ++i)
     {
-        m_frameDatas[i] = FrameData<UniformBufferObject>{m_device.get(), m_commandPool.get()};
+        m_frameDatas[i].emplace(m_device.get(), m_vma.Allocator(), m_commandPool.get());
     }
 }
 
