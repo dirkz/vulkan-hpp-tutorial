@@ -43,6 +43,7 @@ struct HelloTriangleApplication : public Window::Callback
     std::unique_ptr<SwapChain> m_swapchain;
 
     vk::UniqueRenderPass m_renderPass;
+    vk::UniqueDescriptorSetLayout m_descriptorSetLayout;
     vk::UniquePipelineLayout m_pipelineLayout;
     vk::UniquePipeline m_graphicsPipeline;
 
@@ -70,6 +71,7 @@ struct HelloTriangleApplication : public Window::Callback
     void CreateSwapChain();
     void ReCreateSwapChain();
     void CreateRenderPass();
+    void CreateDescriptorSetLayout();
     void CreateGraphicsPipeline();
     void CreateFrameBuffers();
     void CreateCommandPool();

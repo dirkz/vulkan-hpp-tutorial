@@ -5,6 +5,7 @@
 #include "Extensions.h"
 #include "ShaderModule.h"
 #include "SwapChainSupportDetails.h"
+#include "Uniform.h"
 #include "Validation.h"
 
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
@@ -209,6 +210,17 @@ void HelloTriangleApplication::CreateRenderPass()
     m_renderPass = m_device->createRenderPassUnique(createInfo);
 }
 
+void HelloTriangleApplication::CreateDescriptorSetLayout()
+{
+    vk::ShaderStageFlags shaderStageFlags = vk::ShaderStageFlagBits::eVertex;
+    vk::DescriptorSetLayoutBinding uboLayoutBinding{
+        0, vk::DescriptorType::eUniformBuffer, shaderStageFlags, {}};
+
+    vk::DescriptorSetLayoutCreateInfo layoutInfo{{}, {uboLayoutBinding}};
+
+    m_descriptorSetLayout = m_device->createDescriptorSetLayoutUnique(layoutInfo);
+}
+
 void HelloTriangleApplication::CreateGraphicsPipeline()
 {
     ShaderModule vertexShader{m_device.get(), m_shaderPath, "shader.vert.spv"};
@@ -389,6 +401,7 @@ void HelloTriangleApplication::InitVulkan()
     CreateVma();
     CreateSwapChain();
     CreateRenderPass();
+    CreateDescriptorSetLayout();
     CreateGraphicsPipeline();
     CreateFrameBuffers();
     CreateCommandPool();
