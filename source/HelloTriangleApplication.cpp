@@ -283,7 +283,7 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
     vk::PipelineColorBlendStateCreateInfo colorBlendCreateInfo{
         {}, false, vk::LogicOp::eCopy, {colorBlendAttachment}, {0.f, 0.f, 0.f, 0.f}};
 
-    vk::PipelineLayoutCreateInfo layoutCreateInfo{};
+    vk::PipelineLayoutCreateInfo layoutCreateInfo{{}, {m_descriptorSetLayout.get()}};
 
     m_pipelineLayout = m_device->createPipelineLayoutUnique(layoutCreateInfo);
 
