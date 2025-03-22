@@ -412,6 +412,8 @@ void HelloTriangleApplication::RecordCommandBuffer(vk::CommandBuffer commandBuff
     vk::Rect2D scissor{{0, 0}, extent};
     commandBuffer.setScissor(0, {scissor});
 
+    commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, m_pipelineLayout.get(), 0,
+                                     m_descriptorSets[m_currentFrame].get(), {});
     commandBuffer.drawIndexed(Indices.size(), 1, 0, 0, 0);
 
     commandBuffer.endRenderPass();
