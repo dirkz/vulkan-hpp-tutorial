@@ -364,7 +364,7 @@ void HelloTriangleApplication::CreateDescriptorPool()
 {
     vk::DescriptorPoolSize poolSize{vk::DescriptorType::eUniformBuffer, MaxFramesInFlight};
 
-    vk::DescriptorPoolCreateFlags flags{};
+    vk::DescriptorPoolCreateFlags flags{vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet};
     vk::DescriptorPoolCreateInfo poolInfo{flags, MaxFramesInFlight, {poolSize}};
     m_descriptorPool = m_device->createDescriptorPoolUnique(poolInfo);
 }
