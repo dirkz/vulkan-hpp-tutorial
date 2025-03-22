@@ -22,7 +22,7 @@ const std::vector<Vertex> Vertices = {{{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
                                       {{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
                                       {{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}};
 
-const std::vector<uint16_t> Indices = {0, 1, 2, 2, 3, 0};
+const std::vector<uint16_t> Indices = {0, 3, 2, 0, 2, 1};
 
 HelloTriangleApplication::HelloTriangleApplication(std::filesystem::path shaderPath)
     : m_shaderPath{shaderPath}, m_currentFrame{0}, m_framebufferResized{false}
@@ -409,8 +409,8 @@ void HelloTriangleApplication::RecordCommandBuffer(vk::CommandBuffer commandBuff
     commandBuffer.bindVertexBuffers(0, {m_vertexBuffer->Buffer()}, {0});
     commandBuffer.bindIndexBuffer(m_indexBuffer->Buffer(), 0, vk::IndexType::eUint16);
 
-    vk::Viewport viewport{0, 0, static_cast<float>(extent.width), static_cast<float>(extent.height),
-                          0, 1};
+    vk::Viewport viewport{
+        0, 0, static_cast<float>(extent.width), -static_cast<float>(extent.height), 0, 1};
     commandBuffer.setViewport(0, {viewport});
 
     vk::Rect2D scissor{{0, 0}, extent};
@@ -464,7 +464,7 @@ void HelloTriangleApplication::UpdateUniformBuffer(FrameData<UniformBufferObject
     glm::mat4 model =
         glm::rotate(glm::mat4(1.f), time * glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
     glm::mat4 view =
-        glm::lookAt(glm::vec3(2.f, 2.f, 2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f));
+        glm::lookAt(glm::vec3(2.f, 2.f, -2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f));
     glm::mat4 projection = glm::perspective(glm::radians(45.f), m_swapchain->Ratio(), 0.1f, 10.f);
 
     UniformBufferObject ubo{model, view, projection};
