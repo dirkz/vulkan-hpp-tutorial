@@ -46,9 +46,14 @@ template <class T> struct FrameData
         return m_inFlightFence.get();
     }
 
-    void UpdateUniform(const T &uniform) const
+    inline void UpdateUniform(const T &uniform) const
     {
         m_uniformBuffer.Update(uniform);
+    }
+
+    inline VkBuffer GetUniformBuffer() const
+    {
+        return m_uniformBuffer.Buffer();
     }
 
   private:

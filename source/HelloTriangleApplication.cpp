@@ -375,6 +375,16 @@ void HelloTriangleApplication::CreateDescriptorSets()
 
     vk::DescriptorSetAllocateInfo allocInfo{m_descriptorPool.get(), layouts};
     m_descriptorSets = m_device->allocateDescriptorSetsUnique(allocInfo);
+
+    for (auto i = 0; i < m_descriptorSets.size(); ++i)
+    {
+        vk::DescriptorBufferInfo bufferInfo{m_frameDatas[i]->GetUniformBuffer(), 0,
+                                            sizeof(UniformBufferObject)};
+        vk::WriteDescriptorSet descriptorWrites{
+            m_descriptorSets[i].get(), 0, 0, vk::DescriptorType::eUniformBuffer, {}, {bufferInfo}};
+
+        m_device->updateDescriptorSets({descriptorWrites}, {});
+    }
 }
 
 void HelloTriangleApplication::RecordCommandBuffer(vk::CommandBuffer commandBuffer,
