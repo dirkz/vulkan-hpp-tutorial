@@ -7,6 +7,7 @@
 #include "FrameData.h"
 #include "QueueFamilyIndices.h"
 #include "SwapChain.h"
+#include "Uniform.h"
 #include "Vertex.h"
 #include "Vma.h"
 #include "VmaBuffer.h"
@@ -54,7 +55,7 @@ struct HelloTriangleApplication : public Window::Callback
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;
 
-    std::array<std::optional<FrameData>, MaxFramesInFlight> m_frameDatas;
+    std::array<std::optional<FrameData<UniformBufferObject>>, MaxFramesInFlight> m_frameDatas;
     uint32_t m_currentFrame;
 
     bool m_framebufferResized;

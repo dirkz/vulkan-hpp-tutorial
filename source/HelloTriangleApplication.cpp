@@ -5,7 +5,6 @@
 #include "Extensions.h"
 #include "ShaderModule.h"
 #include "SwapChainSupportDetails.h"
-#include "Uniform.h"
 #include "Validation.h"
 
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
@@ -353,7 +352,7 @@ void HelloTriangleApplication::CreateFrameData()
 {
     for (auto i = 0; i < m_frameDatas.size(); ++i)
     {
-        m_frameDatas[i] = FrameData{m_device.get(), m_commandPool.get()};
+        m_frameDatas[i] = FrameData<UniformBufferObject>{m_device.get(), m_commandPool.get()};
     }
 }
 
@@ -417,7 +416,7 @@ void HelloTriangleApplication::MainLoop()
 
 void HelloTriangleApplication::DrawFrame()
 {
-    FrameData &frameData = m_frameDatas[m_currentFrame].value();
+    auto &frameData = m_frameDatas[m_currentFrame].value();
     vk::Fence fence = frameData.InFlightFence();
     vk::Result result = m_device->waitForFences({fence}, VK_TRUE, UINT64_MAX);
     assert(result == vk::Result::eSuccess);

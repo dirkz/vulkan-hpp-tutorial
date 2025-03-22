@@ -26,7 +26,6 @@ add_executable(${PROJECT_NAME}
 	ShaderModule.h
 	ShaderModule.cpp
 	FrameData.h
-	FrameData.cpp
 	Vertex.h
 	Vertex.cpp
 	VmaIncludes.h
