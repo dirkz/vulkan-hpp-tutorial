@@ -1,6 +1,8 @@
 // Make GLM suitable for vulkan
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 
+#define GLM_FORCE_LEFT_HANDED
+
 // Include all GLM core / GLSL features
 #include <glm/glm.hpp> // vec2, vec3, mat4, radians
 
