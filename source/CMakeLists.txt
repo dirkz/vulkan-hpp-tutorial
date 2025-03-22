@@ -39,7 +39,7 @@ add_executable(${PROJECT_NAME}
 	BufferTransfer.cpp
 	UniformBuffer.h
 	UniformBuffer.cpp
-	Uniform.h)
+	UniformBufferObject.h)
 
 # Adds shader compilations as custom target to ${PROJECT_NAME}
 add_subdirectory(shaders)

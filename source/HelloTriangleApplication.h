@@ -7,7 +7,7 @@
 #include "FrameData.h"
 #include "QueueFamilyIndices.h"
 #include "SwapChain.h"
-#include "Uniform.h"
+#include "UniformBufferObject.h"
 #include "Vertex.h"
 #include "Vma.h"
 #include "VmaBuffer.h"
