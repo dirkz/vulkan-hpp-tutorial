@@ -24,6 +24,11 @@ struct SwapChain
         return m_swapchain.get();
     }
 
+    inline float Ratio() const
+    {
+        return static_cast<float>(m_extent.width) / static_cast<float>(m_extent.height);
+    }
+
   private:
     vk::UniqueSwapchainKHR m_swapchain;
     std::vector<vk::Image> m_images;

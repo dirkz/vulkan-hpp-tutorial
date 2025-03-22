@@ -414,12 +414,32 @@ void HelloTriangleApplication::MainLoop()
     m_device->waitIdle();
 }
 
+void HelloTriangleApplication::UpdateUniformBuffer(FrameData<UniformBufferObject> &frameData)
+{
+    static auto startTime = std::chrono::high_resolution_clock::now();
+
+    auto currentTime = std::chrono::high_resolution_clock::now();
+    float time =
+        std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
+
+    glm::mat4 model =
+        glm::rotate(glm::mat4(1.f), time * glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
+    glm::mat4 view =
+        glm::lookAt(glm::vec3(2.f, 2.f, 2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f));
+    glm::mat4 projection = glm::perspective(glm::radians(45.f), m_swapchain->Ratio(), 0.1f, 10.f);
+
+    UniformBufferObject ubo{model, view, projection};
+    frameData.UpdateUniform(ubo);
+}
+
 void HelloTriangleApplication::DrawFrame()
 {
     auto &frameData = m_frameDatas[m_currentFrame].value();
     vk::Fence fence = frameData.InFlightFence();
     vk::Result result = m_device->waitForFences({fence}, VK_TRUE, UINT64_MAX);
     assert(result == vk::Result::eSuccess);
+
+    UpdateUniformBuffer(frameData);
 
     vk::SwapchainKHR swapchain = **m_swapchain;
 

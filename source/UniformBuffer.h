@@ -20,6 +20,11 @@ template <class T> struct UniformBuffer : VmaBuffer
     {
         return static_cast<T *>(m_allocationInfo.pMappedData);
     }
+
+    inline void Update(const T &uniform) const
+    {
+        memcpy(Mapped(), &uniform, sizeof(T));
+    }
 };
 
 } // namespace zvk

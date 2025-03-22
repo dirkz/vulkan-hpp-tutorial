@@ -82,6 +82,7 @@ struct HelloTriangleApplication : public Window::Callback
 
     void InitVulkan();
     void MainLoop();
+    void UpdateUniformBuffer(FrameData<UniformBufferObject> &frameData);
     void DrawFrame();
     void Cleanup();
 };

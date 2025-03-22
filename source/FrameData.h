@@ -46,6 +46,11 @@ template <class T> struct FrameData
         return m_inFlightFence.get();
     }
 
+    void UpdateUniform(const T &uniform) const
+    {
+        m_uniformBuffer.Update(uniform);
+    }
+
   private:
     vk::UniqueCommandBuffer m_commandBuffer;
     vk::UniqueSemaphore m_imageAvailableSemaphore;
