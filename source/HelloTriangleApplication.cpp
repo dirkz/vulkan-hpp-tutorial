@@ -212,8 +212,12 @@ void HelloTriangleApplication::CreateRenderPass()
 void HelloTriangleApplication::CreateDescriptorSetLayout()
 {
     vk::ShaderStageFlags shaderStageFlags = vk::ShaderStageFlagBits::eVertex;
+
+    // Note: Using the "unenhanced" constructor here because
+    // the "enhanced" one binds `descriptorCount` to the number of immutable samplers,
+    // which leads to 0, which is wrong.
     vk::DescriptorSetLayoutBinding uboLayoutBinding{
-        0, vk::DescriptorType::eUniformBuffer, shaderStageFlags, {}};
+        0, vk::DescriptorType::eUniformBuffer, 1, shaderStageFlags, {}};
 
     vk::DescriptorSetLayoutCreateInfo layoutInfo{{}, {uboLayoutBinding}};
 
