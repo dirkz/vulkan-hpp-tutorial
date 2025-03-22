@@ -263,7 +263,7 @@ void HelloTriangleApplication::CreateGraphicsPipeline()
                                                                      VK_FALSE,
                                                                      vk::PolygonMode::eFill,
                                                                      vk::CullModeFlagBits::eBack,
-                                                                     vk::FrontFace::eClockwise,
+                                                                     vk::FrontFace::eCounterClockwise,
                                                                      VK_FALSE,
                                                                      0,
                                                                      0,
@@ -464,8 +464,10 @@ void HelloTriangleApplication::UpdateUniformBuffer(FrameData<UniformBufferObject
     glm::mat4 model =
         glm::rotate(glm::mat4(1.f), time * glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
     glm::mat4 view =
-        glm::lookAt(glm::vec3(2.f, 2.f, -2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f));
+        glm::lookAt(glm::vec3(2.f, 2.f, 2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f));
     glm::mat4 projection = glm::perspective(glm::radians(45.f), m_swapchain->Ratio(), 0.1f, 10.f);
+
+    projection[1][1] *= -1;
 
     UniformBufferObject ubo{model, view, projection};
     frameData.UpdateUniform(ubo);
