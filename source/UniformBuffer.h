@@ -9,7 +9,9 @@ namespace zvk
 
 template <class T> struct UniformBuffer
 {
-    UniformBuffer(const VmaAllocator allocator) : m_allocator{allocator}
+    UniformBuffer(const VmaAllocator allocator)
+        : m_allocator{allocator}, m_stagingBuffer{VK_NULL_HANDLE},
+          m_stagingAllocation{VK_NULL_HANDLE}, m_stagingAllocationInfo{}
     {
         vk::BufferUsageFlags bufferUsageFlags =
             vk::BufferUsageFlagBits::eUniformBuffer | vk::BufferUsageFlagBits::eTransferDst;
@@ -32,6 +34,28 @@ template <class T> struct UniformBuffer
         vmaGetAllocationMemoryProperties(allocator, m_allocation, &memPropFlags);
 
         m_isHostVisible = memPropFlags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
+        m_isHostVisible = false;
+
+        if (!m_isHostVisible)
+        {
+            // Allocation ended up in a non-mappable memory - a transfer using a staging buffer is
+            // required.
+            VkBufferCreateInfo stagingBufCreateInfo = {VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO};
+            stagingBufCreateInfo.size = 65536;
+            stagingBufCreateInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+
+            VmaAllocationCreateInfo stagingAllocCreateInfo = {};
+            stagingAllocCreateInfo.usage = VMA_MEMORY_USAGE_AUTO;
+            stagingAllocCreateInfo.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT |
+                                           VMA_ALLOCATION_CREATE_MAPPED_BIT;
+
+            VkResult result =
+                vmaCreateBuffer(m_allocator, &stagingBufCreateInfo, &stagingAllocCreateInfo,
+                                &m_stagingBuffer, &m_stagingAllocation, &m_stagingAllocationInfo);
+
+            vk::detail::resultCheck(vk::Result{result},
+                                    "UniformBuffer(): vmaCreateBuffer failed (staging buffer)");
+        }
     }
 
     ~UniformBuffer()
@@ -39,6 +63,10 @@ template <class T> struct UniformBuffer
         if (m_allocator != VK_NULL_HANDLE)
         {
             vmaDestroyBuffer(m_allocator, m_buffer, m_allocation);
+        }
+        if (m_stagingAllocation != VK_NULL_HANDLE)
+        {
+            vmaDestroyBuffer(m_allocator, m_stagingBuffer, m_stagingAllocation);
         }
     }
 
@@ -70,36 +98,19 @@ template <class T> struct UniformBuffer
         }
         else
         {
-            // Allocation ended up in a non-mappable memory - a transfer using a staging buffer is
-            // required.
-            VkBufferCreateInfo stagingBufCreateInfo = {VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO};
-            stagingBufCreateInfo.size = 65536;
-            stagingBufCreateInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
-
-            VmaAllocationCreateInfo stagingAllocCreateInfo = {};
-            stagingAllocCreateInfo.usage = VMA_MEMORY_USAGE_AUTO;
-            stagingAllocCreateInfo.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT |
-                                           VMA_ALLOCATION_CREATE_MAPPED_BIT;
-
-            VkBuffer stagingBuf;
-            VmaAllocation stagingAlloc;
-            VmaAllocationInfo stagingAllocInfo;
+            memcpy(m_stagingAllocationInfo.pMappedData, &uniform, sizeof(T));
             VkResult result =
-                vmaCreateBuffer(m_allocator, &stagingBufCreateInfo, &stagingAllocCreateInfo,
-                                &stagingBuf, &stagingAlloc, &stagingAllocInfo);
-            // Check result...
+                vmaFlushAllocation(m_allocator, m_stagingAllocation, 0, VK_WHOLE_SIZE);
 
-            // [Executed in runtime]:
-            memcpy(stagingAllocInfo.pMappedData, &uniform, sizeof(T));
-            result = vmaFlushAllocation(m_allocator, stagingAlloc, 0, VK_WHOLE_SIZE);
-            // Check result...
+            vk::detail::resultCheck(vk::Result{result},
+                                    "UniformBuffer::Update(): vmaFlushAllocation failed");
 
             VkBufferMemoryBarrier bufMemBarrier = {VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER};
             bufMemBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
             bufMemBarrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
             bufMemBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
             bufMemBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-            bufMemBarrier.buffer = stagingBuf;
+            bufMemBarrier.buffer = m_stagingBuffer;
             bufMemBarrier.offset = 0;
             bufMemBarrier.size = VK_WHOLE_SIZE;
 
@@ -113,7 +124,7 @@ template <class T> struct UniformBuffer
                 sizeof(T), // size
             };
 
-            vkCmdCopyBuffer(commandBuffer, stagingBuf, m_buffer, 1, &bufCopy);
+            vkCmdCopyBuffer(commandBuffer, m_stagingBuffer, m_buffer, 1, &bufCopy);
 
             VkBufferMemoryBarrier bufMemBarrier2 = {VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER};
             bufMemBarrier2.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
@@ -142,6 +153,10 @@ template <class T> struct UniformBuffer
     VmaAllocation m_allocation;
     VmaAllocationInfo m_allocInfo;
     bool m_isHostVisible;
+
+    VkBuffer m_stagingBuffer;
+    VmaAllocation m_stagingAllocation;
+    VmaAllocationInfo m_stagingAllocationInfo;
 };
 
 } // namespace zvk
