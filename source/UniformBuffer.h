@@ -37,8 +37,9 @@ template <class T> struct UniformBuffer
 
         if (!m_isHostVisible)
         {
-            // Allocation ended up in a non-mappable memory - a transfer using a staging buffer is
-            // required.
+            // Allocation ended up in a non-mappable memory -
+            // a transfer using a staging buffer is required.
+
             vk::BufferUsageFlags stagingBufferUsageFlags = vk::BufferUsageFlagBits::eTransferSrc;
             vk::BufferCreateInfo stagingBufferCreateInfo{{}, sizeof(T), stagingBufferUsageFlags};
             VkBufferCreateInfo stagingBufCreateInfo = stagingBufferCreateInfo;
@@ -91,8 +92,8 @@ template <class T> struct UniformBuffer
     {
         if (m_isHostVisible)
         {
-            // Allocation ended up in a mappable memory and is already mapped - write to it
-            // directly.
+            // Allocation ended up in a mappable memory and is already mapped -
+            // write to it directly.
 
             memcpy(m_allocInfo.pMappedData, &uniform, sizeof(T));
             VkResult result = vmaFlushAllocation(m_allocator, m_allocation, 0, VK_WHOLE_SIZE);
@@ -109,6 +110,9 @@ template <class T> struct UniformBuffer
         }
         else
         {
+            // Allocation ended up in a non-mappable memory -
+            // a transfer using a staging buffer is
+
             memcpy(m_stagingAllocationInfo.pMappedData, &uniform, sizeof(T));
             VkResult result =
                 vmaFlushAllocation(m_allocator, m_stagingAllocation, 0, VK_WHOLE_SIZE);
