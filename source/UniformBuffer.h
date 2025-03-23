@@ -42,11 +42,6 @@ template <class T> struct UniformBuffer
         }
     }
 
-    inline T *Mapped() const
-    {
-        return nullptr;
-    }
-
     inline void Update(const T &uniform) const
     {
     }
