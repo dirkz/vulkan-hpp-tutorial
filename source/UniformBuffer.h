@@ -34,7 +34,6 @@ template <class T> struct UniformBuffer
         vmaGetAllocationMemoryProperties(allocator, m_allocation, &memPropFlags);
 
         m_isHostVisible = memPropFlags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
-        m_isHostVisible = false;
 
         if (!m_isHostVisible)
         {
@@ -70,6 +69,24 @@ template <class T> struct UniformBuffer
         }
     }
 
+    static void MemoryBarrier(vk::CommandBuffer commandBuffer, vk::AccessFlags srcAccessMask,
+                              vk::AccessFlags dstAccessMask, VkBuffer buffer,
+                              vk::PipelineStageFlags srcStageMask,
+                              vk::PipelineStageFlags dstStageMask)
+    {
+        vk::BufferMemoryBarrier bufferMemoryBarrier{srcAccessMask,
+                                                    dstAccessMask,
+                                                    VK_QUEUE_FAMILY_IGNORED,
+                                                    VK_QUEUE_FAMILY_IGNORED,
+                                                    buffer,
+                                                    0,
+                                                    VK_WHOLE_SIZE};
+
+        vk::DependencyFlags dependencyFlags{};
+        commandBuffer.pipelineBarrier(srcStageMask, dstStageMask, dependencyFlags, {},
+                                      {bufferMemoryBarrier}, {});
+    }
+
     inline void Update(vk::CommandBuffer commandBuffer, const T &uniform) const
     {
         if (m_isHostVisible)
@@ -83,18 +100,12 @@ template <class T> struct UniformBuffer
             vk::detail::resultCheck(vk::Result{result},
                                     "UniformBuffer::Update(): vmaFlushAllocation failed");
 
-            VkBufferMemoryBarrier bufMemBarrier = {VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER};
-            bufMemBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
-            bufMemBarrier.dstAccessMask = VK_ACCESS_UNIFORM_READ_BIT;
-            bufMemBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-            bufMemBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-            bufMemBarrier.buffer = m_buffer;
-            bufMemBarrier.offset = 0;
-            bufMemBarrier.size = VK_WHOLE_SIZE;
-
-            vkCmdPipelineBarrier(commandBuffer, VK_PIPELINE_STAGE_HOST_BIT,
-                                 VK_PIPELINE_STAGE_VERTEX_SHADER_BIT, 0, 0, nullptr, 1,
-                                 &bufMemBarrier, 0, nullptr);
+            vk::AccessFlags srcAccessMask = vk::AccessFlagBits::eHostWrite;
+            vk::AccessFlags dstAccessMask = vk::AccessFlagBits::eUniformRead;
+            vk::PipelineStageFlags srcStageMask = vk::PipelineStageFlagBits::eHost;
+            vk::PipelineStageFlags dstStageMask = vk::PipelineStageFlagBits::eVertexShader;
+            MemoryBarrier(commandBuffer, srcAccessMask, dstAccessMask, m_buffer, srcStageMask,
+                          dstStageMask);
         }
         else
         {
@@ -107,19 +118,10 @@ template <class T> struct UniformBuffer
 
             vk::AccessFlags srcAccessMask = vk::AccessFlagBits::eHostWrite;
             vk::AccessFlags dstAccessMask = vk::AccessFlagBits::eTransferRead;
-            vk::BufferMemoryBarrier bufferMemoryBarrier{srcAccessMask,
-                                                        dstAccessMask,
-                                                        VK_QUEUE_FAMILY_IGNORED,
-                                                        VK_QUEUE_FAMILY_IGNORED,
-                                                        m_stagingBuffer,
-                                                        0,
-                                                        VK_WHOLE_SIZE};
-
             vk::PipelineStageFlags srcStageMask = vk::PipelineStageFlagBits::eHost;
             vk::PipelineStageFlags dstStageMask = vk::PipelineStageFlagBits::eTransfer;
-            vk::DependencyFlags dependencyFlags{};
-            commandBuffer.pipelineBarrier(srcStageMask, dstStageMask, dependencyFlags, {},
-                                          {bufferMemoryBarrier}, {});
+            MemoryBarrier(commandBuffer, srcAccessMask, dstAccessMask, m_stagingBuffer,
+                          srcStageMask, dstStageMask);
 
             vk::BufferCopy bufCopy{
                 0,         // srcOffset
@@ -131,19 +133,10 @@ template <class T> struct UniformBuffer
 
             vk::AccessFlags srcAccessMask2 = vk::AccessFlagBits::eTransferWrite;
             vk::AccessFlags dstAccessMask2 = vk::AccessFlagBits::eUniformRead;
-            vk::BufferMemoryBarrier bufferMemoryBarrier2{srcAccessMask2,
-                                                         dstAccessMask2,
-                                                         VK_QUEUE_FAMILY_IGNORED,
-                                                         VK_QUEUE_FAMILY_IGNORED,
-                                                         m_buffer,
-                                                         0,
-                                                         VK_WHOLE_SIZE};
-
             vk::PipelineStageFlags srcStageMask2 = vk::PipelineStageFlagBits::eTransfer;
             vk::PipelineStageFlags dstStageMask2 = vk::PipelineStageFlagBits::eVertexShader;
-            vk::DependencyFlags dependencyFlags2{};
-            commandBuffer.pipelineBarrier(srcStageMask2, dstStageMask2, dependencyFlags2, {},
-                                          {bufferMemoryBarrier2}, {});
+            MemoryBarrier(commandBuffer, srcAccessMask2, dstAccessMask2, m_buffer, srcStageMask2,
+                          dstStageMask2);
         }
     }
 
