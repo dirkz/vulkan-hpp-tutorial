@@ -84,6 +84,7 @@ template <class T> struct UniformBuffer
                                                     VK_WHOLE_SIZE};
 
         vk::DependencyFlags dependencyFlags{};
+
         commandBuffer.pipelineBarrier(srcStageMask, dstStageMask, dependencyFlags, {},
                                       {bufferMemoryBarrier}, {});
     }
