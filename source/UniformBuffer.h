@@ -40,9 +40,9 @@ template <class T> struct UniformBuffer
         {
             // Allocation ended up in a non-mappable memory - a transfer using a staging buffer is
             // required.
-            VkBufferCreateInfo stagingBufCreateInfo = {VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO};
-            stagingBufCreateInfo.size = sizeof(T);
-            stagingBufCreateInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+            vk::BufferUsageFlags stagingBufferUsageFlags = vk::BufferUsageFlagBits::eTransferSrc;
+            vk::BufferCreateInfo stagingBufferCreateInfo{{}, sizeof(T), stagingBufferUsageFlags};
+            VkBufferCreateInfo stagingBufCreateInfo = stagingBufferCreateInfo;
 
             VmaAllocationCreateInfo stagingAllocCreateInfo = {};
             stagingAllocCreateInfo.usage = VMA_MEMORY_USAGE_AUTO;
@@ -105,40 +105,45 @@ template <class T> struct UniformBuffer
             vk::detail::resultCheck(vk::Result{result},
                                     "UniformBuffer::Update(): vmaFlushAllocation failed");
 
-            VkBufferMemoryBarrier bufMemBarrier = {VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER};
-            bufMemBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
-            bufMemBarrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-            bufMemBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-            bufMemBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-            bufMemBarrier.buffer = m_stagingBuffer;
-            bufMemBarrier.offset = 0;
-            bufMemBarrier.size = VK_WHOLE_SIZE;
+            vk::AccessFlags srcAccessMask = vk::AccessFlagBits::eHostWrite;
+            vk::AccessFlags dstAccessMask = vk::AccessFlagBits::eTransferRead;
+            vk::BufferMemoryBarrier bufferMemoryBarrier{srcAccessMask,
+                                                        dstAccessMask,
+                                                        VK_QUEUE_FAMILY_IGNORED,
+                                                        VK_QUEUE_FAMILY_IGNORED,
+                                                        m_stagingBuffer,
+                                                        0,
+                                                        VK_WHOLE_SIZE};
 
-            vkCmdPipelineBarrier(commandBuffer, VK_PIPELINE_STAGE_HOST_BIT,
-                                 VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 1, &bufMemBarrier,
-                                 0, nullptr);
+            vk::PipelineStageFlags srcStageMask = vk::PipelineStageFlagBits::eHost;
+            vk::PipelineStageFlags dstStageMask = vk::PipelineStageFlagBits::eTransfer;
+            vk::DependencyFlags dependencyFlags{};
+            commandBuffer.pipelineBarrier(srcStageMask, dstStageMask, dependencyFlags, {},
+                                          {bufferMemoryBarrier}, {});
 
-            VkBufferCopy bufCopy = {
+            vk::BufferCopy bufCopy{
                 0,         // srcOffset
                 0,         // dstOffset,
                 sizeof(T), // size
             };
 
-            vkCmdCopyBuffer(commandBuffer, m_stagingBuffer, m_buffer, 1, &bufCopy);
+            commandBuffer.copyBuffer(m_stagingBuffer, m_buffer, {bufCopy});
 
-            VkBufferMemoryBarrier bufMemBarrier2 = {VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER};
-            bufMemBarrier2.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-            bufMemBarrier2.dstAccessMask =
-                VK_ACCESS_UNIFORM_READ_BIT; // We created a uniform buffer
-            bufMemBarrier2.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-            bufMemBarrier2.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-            bufMemBarrier2.buffer = m_buffer;
-            bufMemBarrier2.offset = 0;
-            bufMemBarrier2.size = VK_WHOLE_SIZE;
+            vk::AccessFlags srcAccessMask2 = vk::AccessFlagBits::eTransferWrite;
+            vk::AccessFlags dstAccessMask2 = vk::AccessFlagBits::eUniformRead;
+            vk::BufferMemoryBarrier bufferMemoryBarrier2{srcAccessMask2,
+                                                         dstAccessMask2,
+                                                         VK_QUEUE_FAMILY_IGNORED,
+                                                         VK_QUEUE_FAMILY_IGNORED,
+                                                         m_buffer,
+                                                         0,
+                                                         VK_WHOLE_SIZE};
 
-            vkCmdPipelineBarrier(commandBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT,
-                                 VK_PIPELINE_STAGE_VERTEX_SHADER_BIT, 0, 0, nullptr, 1,
-                                 &bufMemBarrier2, 0, nullptr);
+            vk::PipelineStageFlags srcStageMask2 = vk::PipelineStageFlagBits::eTransfer;
+            vk::PipelineStageFlags dstStageMask2 = vk::PipelineStageFlagBits::eVertexShader;
+            vk::DependencyFlags dependencyFlags2{};
+            commandBuffer.pipelineBarrier(srcStageMask2, dstStageMask2, dependencyFlags2, {},
+                                          {bufferMemoryBarrier2}, {});
         }
     }
 
