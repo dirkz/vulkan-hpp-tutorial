@@ -481,8 +481,6 @@ void HelloTriangleApplication::DrawFrame()
     vk::Result result = m_device->waitForFences({fence}, VK_TRUE, UINT64_MAX);
     assert(result == vk::Result::eSuccess);
 
-    UpdateUniformBuffer(frameData);
-
     vk::SwapchainKHR swapchain = **m_swapchain;
 
     uint32_t imageIndex;
@@ -500,6 +498,9 @@ void HelloTriangleApplication::DrawFrame()
     m_device->resetFences({fence});
 
     frameData.CommandBuffer().reset();
+
+    UpdateUniformBuffer(frameData);
+
     RecordCommandBuffer(frameData.CommandBuffer(), imageIndex);
 
     vk::PipelineStageFlags pipelineStageFlags{vk::PipelineStageFlagBits::eColorAttachmentOutput};

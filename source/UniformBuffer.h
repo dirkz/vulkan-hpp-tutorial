@@ -44,11 +44,35 @@ template <class T> struct UniformBuffer
 
     inline void Update(vk::CommandBuffer commandBuffer, const T &uniform) const
     {
+        if (m_isHostVisible)
+        {
+            // Allocation ended up in a mappable memory and is already mapped - write to it
+            // directly.
+
+            memcpy(m_allocInfo.pMappedData, &uniform, sizeof(T));
+            VkResult result = vmaFlushAllocation(m_allocator, m_allocation, 0, VK_WHOLE_SIZE);
+
+            vk::detail::resultCheck(vk::Result{result},
+                                    "UniformBuffer::Update(): vmaFlushAllocation failed");
+
+            VkBufferMemoryBarrier bufMemBarrier = {VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER};
+            bufMemBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
+            bufMemBarrier.dstAccessMask = VK_ACCESS_UNIFORM_READ_BIT;
+            bufMemBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            bufMemBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            bufMemBarrier.buffer = m_buffer;
+            bufMemBarrier.offset = 0;
+            bufMemBarrier.size = VK_WHOLE_SIZE;
+
+            vkCmdPipelineBarrier(commandBuffer, VK_PIPELINE_STAGE_HOST_BIT,
+                                 VK_PIPELINE_STAGE_VERTEX_SHADER_BIT, 0, 0, nullptr, 1,
+                                 &bufMemBarrier, 0, nullptr);
+        }
     }
 
     inline VkBuffer Buffer() const
     {
-        return VK_NULL_HANDLE;
+        return m_buffer;
     }
 
   private:
