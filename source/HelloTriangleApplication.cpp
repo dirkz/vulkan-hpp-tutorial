@@ -392,11 +392,15 @@ void HelloTriangleApplication::CreateDescriptorSets()
     }
 }
 
-void HelloTriangleApplication::RecordCommandBuffer(vk::CommandBuffer commandBuffer,
+void HelloTriangleApplication::RecordCommandBuffer(FrameData<UniformBufferObject> &frameData,
                                                    uint32_t imageIndex)
 {
+    vk::CommandBuffer commandBuffer = frameData.CommandBuffer();
+
     vk::CommandBufferBeginInfo beginInfo{};
     commandBuffer.begin(beginInfo);
+
+    UpdateUniformBuffer(frameData);
 
     vk::Extent2D extent = m_swapchain->Extent();
 
@@ -499,9 +503,7 @@ void HelloTriangleApplication::DrawFrame()
 
     frameData.CommandBuffer().reset();
 
-    UpdateUniformBuffer(frameData);
-
-    RecordCommandBuffer(frameData.CommandBuffer(), imageIndex);
+    RecordCommandBuffer(frameData, imageIndex);
 
     vk::PipelineStageFlags pipelineStageFlags{vk::PipelineStageFlagBits::eColorAttachmentOutput};
     vk::SubmitInfo submitInfo{{frameData.ImageAvailableSemaphore()},
