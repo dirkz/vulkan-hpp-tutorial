@@ -15,7 +15,6 @@ struct BufferTransfer
     BufferTransfer(const vk::Device device, const QueueFamilyIndices *familyIndices);
 
     void Copy(const VmaBuffer &srcBuffer, const VmaBuffer &dstBuffer);
-    void FinishAndWait();
 
     template <class T>
     VmaBuffer *Upload(const Vma &vma, const std::span<T> contents, vk::BufferUsageFlags usageFlags,
@@ -39,6 +38,8 @@ struct BufferTransfer
 
         return deviceLocalBuffer;
     }
+
+    void FinishAndWait();
 
   private:
     vk::Device m_device;
