@@ -9,8 +9,30 @@ namespace zvk
 
 template <class T> struct UniformBuffer
 {
-    UniformBuffer(const VmaAllocator allocator)
+    UniformBuffer(const VmaAllocator allocator) : m_allocator{allocator}
     {
+        vk::BufferUsageFlags bufferUsageFlags =
+            vk::BufferUsageFlagBits::eUniformBuffer | vk::BufferUsageFlagBits::eTransferDst;
+        vk::BufferCreateInfo bufferCreateInfo{{}, sizeof(T), bufferUsageFlags};
+
+        VkBufferCreateInfo vkBufferCreateInfo = bufferCreateInfo;
+
+        VmaAllocationCreateInfo allocCreateInfo = {};
+        allocCreateInfo.usage = VMA_MEMORY_USAGE_AUTO;
+        allocCreateInfo.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT |
+                                VMA_ALLOCATION_CREATE_HOST_ACCESS_ALLOW_TRANSFER_INSTEAD_BIT |
+                                VMA_ALLOCATION_CREATE_MAPPED_BIT;
+
+        VkResult result = vmaCreateBuffer(allocator, &vkBufferCreateInfo, &allocCreateInfo,
+                                          &m_buffer, &m_allocation, &m_allocInfo);
+    }
+
+    ~UniformBuffer()
+    {
+        if (m_allocator != VK_NULL_HANDLE)
+        {
+            vmaDestroyBuffer(m_allocator, m_buffer, m_allocation);
+        }
     }
 
     inline T *Mapped() const
@@ -26,6 +48,12 @@ template <class T> struct UniformBuffer
     {
         return VK_NULL_HANDLE;
     }
+
+  private:
+    VmaAllocator m_allocator;
+    VkBuffer m_buffer;
+    VmaAllocation m_allocation;
+    VmaAllocationInfo m_allocInfo;
 };
 
 } // namespace zvk
