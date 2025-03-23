@@ -47,7 +47,7 @@ template <class T> struct FrameData
 
     inline void UpdateUniform(const T &uniform) const
     {
-        m_uniformBuffer.Update(uniform);
+        m_uniformBuffer.Update(m_commandBuffer.get(), uniform);
     }
 
     inline VkBuffer GetUniformBuffer() const

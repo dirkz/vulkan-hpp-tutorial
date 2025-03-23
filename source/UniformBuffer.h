@@ -42,7 +42,7 @@ template <class T> struct UniformBuffer
         }
     }
 
-    inline void Update(const T &uniform) const
+    inline void Update(vk::CommandBuffer commandBuffer, const T &uniform) const
     {
     }
 
