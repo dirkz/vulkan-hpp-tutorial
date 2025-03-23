@@ -41,7 +41,7 @@ template <class T> struct UniformBuffer
             // Allocation ended up in a non-mappable memory - a transfer using a staging buffer is
             // required.
             VkBufferCreateInfo stagingBufCreateInfo = {VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO};
-            stagingBufCreateInfo.size = 65536;
+            stagingBufCreateInfo.size = sizeof(T);
             stagingBufCreateInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
 
             VmaAllocationCreateInfo stagingAllocCreateInfo = {};
