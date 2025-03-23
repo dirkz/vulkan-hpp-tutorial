@@ -25,6 +25,13 @@ template <class T> struct UniformBuffer
 
         VkResult result = vmaCreateBuffer(allocator, &vkBufferCreateInfo, &allocCreateInfo,
                                           &m_buffer, &m_allocation, &m_allocInfo);
+
+        vk::detail::resultCheck(vk::Result{result}, "UniformBuffer(): vmaCreateBuffer failed");
+
+        VkMemoryPropertyFlags memPropFlags;
+        vmaGetAllocationMemoryProperties(allocator, m_allocation, &memPropFlags);
+
+        m_isHostVisible = memPropFlags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
     }
 
     ~UniformBuffer()
@@ -54,6 +61,7 @@ template <class T> struct UniformBuffer
     VkBuffer m_buffer;
     VmaAllocation m_allocation;
     VmaAllocationInfo m_allocInfo;
+    bool m_isHostVisible;
 };
 
 } // namespace zvk

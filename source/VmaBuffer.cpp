@@ -17,7 +17,7 @@ VmaBuffer::VmaBuffer(const VmaAllocator allocator, vk::DeviceSize size,
     VkResult result = vmaCreateBuffer(allocator, &vkBufferCreateInfo, &allocationCreateInfo,
                                       &m_buffer, &m_allocation, &m_allocationInfo);
 
-    vk::detail::resultCheck(vk::Result{result}, "vmaCreateBuffer");
+    vk::detail::resultCheck(vk::Result{result}, "VmaBuffer(): vmaCreateBuffer failed");
 }
 
 VmaBuffer::VmaBuffer(VmaBuffer &&buffer) noexcept
