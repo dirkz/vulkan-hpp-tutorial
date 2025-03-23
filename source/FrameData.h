@@ -10,8 +10,7 @@ namespace zvk
 template <class T> struct FrameData
 {
     FrameData(const vk::Device &device, const VmaAllocator allocator, const vk::CommandPool &pool)
-        : m_uniformBuffer{allocator, vk::BufferUsageFlags{vk::BufferUsageFlagBits::eUniformBuffer},
-                          vk::SharingMode::eExclusive}
+        : m_uniformBuffer{allocator}
     {
         vk::CommandBufferAllocateInfo commandBufferAllocateInfo{
             pool, vk::CommandBufferLevel::ePrimary, 1};

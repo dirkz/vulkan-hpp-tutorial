@@ -7,23 +7,24 @@
 namespace zvk
 {
 
-template <class T> struct UniformBuffer : VmaBuffer
+template <class T> struct UniformBuffer
 {
-    UniformBuffer(const VmaAllocator allocator, vk::BufferUsageFlags usageFlags,
-                  vk::SharingMode sharingMode)
-        : VmaBuffer{allocator, sizeof(T), usageFlags,
-                    VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT |
-                        VMA_ALLOCATION_CREATE_MAPPED_BIT,
-                    sharingMode} {};
+    UniformBuffer(const VmaAllocator allocator)
+    {
+    }
 
     inline T *Mapped() const
     {
-        return static_cast<T *>(m_allocationInfo.pMappedData);
+        return nullptr;
     }
 
     inline void Update(const T &uniform) const
     {
-        memcpy(Mapped(), &uniform, sizeof(T));
+    }
+
+    inline VkBuffer Buffer() const
+    {
+        return VK_NULL_HANDLE;
     }
 };
 
