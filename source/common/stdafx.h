@@ -1,3 +1,12 @@
+#ifdef _WIN32
+
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <comdef.h>
+#include <windows.h>
+
+#endif
+
 // Make GLM suitable for vulkan
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 
@@ -9,19 +18,11 @@
 
 #define VULKAN_HPP_DISPATCH_LOADER_DYNAMIC 1
 
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
-
 #include <vulkan/vulkan.hpp>
 
-#ifdef _WIN32
+#include <GLFW/glfw3.h>
 
-#define NOMINMAX
-#define WIN32_LEAN_AND_MEAN
-#include <comdef.h>
-#include <windows.h>
-
-#endif
+#include <stb_image.h>
 
 #include <algorithm>
 #include <chrono>

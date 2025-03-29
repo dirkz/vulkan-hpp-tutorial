@@ -1,6 +1,7 @@
 add_library(common INTERFACE)
 
 target_include_directories(common INTERFACE ${Vulkan_INCLUDE_DIRS})
+target_include_directories(common INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../../stb)
 
 target_sources(common PUBLIC
   FILE_SET HEADERS
