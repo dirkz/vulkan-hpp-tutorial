@@ -12,7 +12,7 @@ struct VmaBuffer
     VmaBuffer(const VmaAllocator allocator, vk::DeviceSize size, vk::BufferUsageFlags usageFlags,
               VmaAllocationCreateFlags allocationCreateFlags, vk::SharingMode sharingMode,
               const std::span<uint32_t> &queues = {});
-    VmaBuffer(VmaBuffer &&buffer) noexcept;
+    VmaBuffer(VmaBuffer &&other) noexcept;
 
     ~VmaBuffer();
 
