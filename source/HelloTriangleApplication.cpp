@@ -335,6 +335,10 @@ void HelloTriangleApplication::CreateCommandPool()
 
 void HelloTriangleApplication::CreateTextureImage()
 {
+    int width = 0, height = 0, channels = 0;
+    std::filesystem::path texturePath = m_texturePath / "texture.jpg";
+    auto filepath = texturePath.c_str();
+    //stbi_uc *pixels = stbi_load(filepath, &width, &height, &channels);
 }
 
 void HelloTriangleApplication::CreateVertexBuffer()
