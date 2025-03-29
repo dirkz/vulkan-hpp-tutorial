@@ -26,11 +26,16 @@ void Vma::Reset(vk::Instance instance, vk::PhysicalDevice physicalDevice, vk::De
     auto getBufferMemoryRequirements2KHRFn =
         device.getProcAddr("vkGetBufferMemoryRequirements2KHR");
 
+    auto getImageMemoryRequirements2KHRFn =
+        device.getProcAddr("vkGetImageMemoryRequirements2KHR");
+
     VmaVulkanFunctions vulkanFunctions = {};
     vulkanFunctions.vkGetInstanceProcAddr = &vkGetInstanceProcAddr;
     vulkanFunctions.vkGetDeviceProcAddr = &vkGetDeviceProcAddr;
     vulkanFunctions.vkGetBufferMemoryRequirements2KHR =
         reinterpret_cast<PFN_vkGetBufferMemoryRequirements2KHR>(getBufferMemoryRequirements2KHRFn);
+    vulkanFunctions.vkGetImageMemoryRequirements2KHR =
+        reinterpret_cast<PFN_vkGetImageMemoryRequirements2KHR>(getImageMemoryRequirements2KHRFn);
 
     VmaAllocatorCreateInfo allocatorCreateInfo = {};
     allocatorCreateInfo.vulkanApiVersion = VK_API_VERSION_1_2;
