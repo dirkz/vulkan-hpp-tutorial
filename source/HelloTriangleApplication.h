@@ -18,7 +18,7 @@ namespace zvk
 
 struct HelloTriangleApplication : public Window::Callback
 {
-    HelloTriangleApplication(std::filesystem::path shaderPath);
+    HelloTriangleApplication(std::filesystem::path shaderPath, std::filesystem::path texturePath);
 
     void Run();
 
@@ -26,6 +26,7 @@ struct HelloTriangleApplication : public Window::Callback
 
   private:
     std::filesystem::path m_shaderPath;
+    std::filesystem::path m_texturePath;
 
     std::unique_ptr<Window> m_window;
 

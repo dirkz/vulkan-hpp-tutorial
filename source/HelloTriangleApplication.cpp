@@ -24,8 +24,10 @@ const std::vector<Vertex> Vertices = {{{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
 
 const std::vector<uint16_t> Indices = {0, 1, 2, 2, 3, 0};
 
-HelloTriangleApplication::HelloTriangleApplication(std::filesystem::path shaderPath)
-    : m_shaderPath{shaderPath}, m_currentFrame{0}, m_framebufferResized{false}
+HelloTriangleApplication::HelloTriangleApplication(std::filesystem::path shaderPath,
+                                                   std::filesystem::path texturePath)
+    : m_shaderPath{shaderPath}, m_texturePath{texturePath}, m_currentFrame{0},
+      m_framebufferResized{false}
 {
 }
 
