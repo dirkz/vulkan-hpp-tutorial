@@ -4,6 +4,7 @@
 #include "Constants.h"
 #include "Extensions.h"
 #include "ShaderModule.h"
+#include "Strings.h"
 #include "SwapChainSupportDetails.h"
 #include "Validation.h"
 
@@ -337,8 +338,15 @@ void HelloTriangleApplication::CreateTextureImage()
 {
     int width = 0, height = 0, channels = 0;
     std::filesystem::path texturePath = m_texturePath / "texture.jpg";
-    auto filepath = texturePath.c_str();
-    //stbi_uc *pixels = stbi_load(filepath, &width, &height, &channels);
+
+#ifdef _WIN32
+    std::string filepath = WideCharToUTF8(texturePath);
+    const char *pFilePath = filepath.c_str();
+#else
+    const char *pFilePath = texturePath.c_str();
+#endif
+
+    stbi_uc *pixels = stbi_load(pFilePath, &width, &height, &channels, STBI_rgb_alpha);
 }
 
 void HelloTriangleApplication::CreateVertexBuffer()
