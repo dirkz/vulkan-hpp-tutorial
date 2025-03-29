@@ -347,6 +347,7 @@ void HelloTriangleApplication::CreateTextureImage()
 #endif
 
     stbi_uc *pixels = stbi_load(pFilePath, &width, &height, &channels, STBI_rgb_alpha);
+    vk::DeviceSize imageSize = width * height * 4;
 }
 
 void HelloTriangleApplication::CreateVertexBuffer()
@@ -464,6 +465,7 @@ void HelloTriangleApplication::InitVulkan()
     CreateGraphicsPipeline();
     CreateFrameBuffers();
     CreateCommandPool();
+    CreateTextureImage();
     CreateVertexBuffer();
     CreateFrameData();
     CreateDescriptorPool();
