@@ -78,6 +78,7 @@ struct HelloTriangleApplication : public Window::Callback
     void CreateGraphicsPipeline();
     void CreateFrameBuffers();
     void CreateCommandPool();
+    void CreateTextureImage();
     void CreateVertexBuffer();
     void CreateFrameData();
     void CreateDescriptorPool();

@@ -331,6 +331,10 @@ void HelloTriangleApplication::CreateCommandPool()
     m_commandPool = m_device->createCommandPoolUnique(createInfo);
 }
 
+void HelloTriangleApplication::CreateTextureImage()
+{
+}
+
 void HelloTriangleApplication::CreateVertexBuffer()
 {
     std::vector<uint32_t> qs = m_familyIndices->UniqueGraphicsAndTransfer();
