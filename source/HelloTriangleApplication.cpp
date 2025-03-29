@@ -6,6 +6,7 @@
 #include "ShaderModule.h"
 #include "Strings.h"
 #include "SwapChainSupportDetails.h"
+#include "UploadQueue.h"
 #include "Validation.h"
 #include "VmaImage.h"
 
@@ -349,30 +350,8 @@ void HelloTriangleApplication::CreateTextureImage()
 
     stbi_uc *pixels = stbi_load(pFilePath, &width, &height, &channels, STBI_rgb_alpha);
 
-    vk::DeviceSize imageSize = static_cast<vk::DeviceSize>(width) * height * 4;
-
-    MappedBuffer stagingBuffer = m_vma.CreateMappedBuffer(
-        imageSize, vk::BufferUsageFlagBits::eTransferSrc, vk::SharingMode::eExclusive);
-    memcpy(stagingBuffer.Mapped(), pixels, imageSize);
-
-    vk::Extent3D imageExtent{static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1};
-    constexpr uint32_t mipLayers = 1;
-    constexpr uint32_t arrayLayers = 1;
-    vk::ImageCreateInfo imageCreateInfo{{},
-                                        vk::ImageType::e2D,
-                                        vk::Format::eR8G8B8A8Srgb,
-                                        imageExtent,
-                                        mipLayers,
-                                        arrayLayers,
-                                        vk::SampleCountFlagBits::e1,
-                                        vk::ImageTiling::eOptimal,
-                                        vk::ImageUsageFlagBits::eTransferDst |
-                                            vk::ImageUsageFlagBits::eSampled,
-                                        vk::SharingMode::eExclusive,
-                                        {},
-                                        vk::ImageLayout::eUndefined};
-
-    VmaImage image{m_vma.Allocator(), imageCreateInfo};
+    UploadQueue uploadQueue{m_vma, m_device.get(), m_familyIndices->GraphicsFamily().value()};
+    VmaImage image = uploadQueue.UploadImage(width, height, width * height * 4, pixels);
 
     stbi_image_free(pixels);
 }

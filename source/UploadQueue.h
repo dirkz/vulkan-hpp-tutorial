@@ -3,17 +3,22 @@
 #include "stdafx.h"
 
 #include "MappedBuffer.h"
+#include "Vma.h"
+#include "VmaImage.h"
 
 namespace zvk
 {
 
 struct UploadQueue
 {
-    UploadQueue(const vk::Device device, uint32_t uploadQueue);
+    UploadQueue(const Vma &vma, const vk::Device device, uint32_t uploadQueue);
+
+    VmaImage UploadImage(int width, int height, int size, void *pImageData);
 
     void FinishAndWait();
 
   private:
+    const Vma &m_vma;
     vk::Device m_device;
     vk::UniqueFence m_fence;
     vk::Queue m_queue;
