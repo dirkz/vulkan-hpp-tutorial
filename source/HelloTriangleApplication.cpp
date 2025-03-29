@@ -354,6 +354,23 @@ void HelloTriangleApplication::CreateTextureImage()
         imageSize, vk::BufferUsageFlagBits::eTransferSrc, vk::SharingMode::eExclusive);
     memcpy(stagingBuffer.Mapped(), pixels, imageSize);
 
+    vk::Extent3D imageExtent{static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1};
+    constexpr uint32_t mipLayers = 1;
+    constexpr uint32_t arrayLayers = 1;
+    vk::ImageCreateInfo imageCreateInfo{{},
+                                        vk::ImageType::e2D,
+                                        vk::Format::eR8G8B8A8Srgb,
+                                        imageExtent,
+                                        mipLayers,
+                                        arrayLayers,
+                                        vk::SampleCountFlagBits::e1,
+                                        vk::ImageTiling::eOptimal,
+                                        vk::ImageUsageFlagBits::eTransferDst |
+                                            vk::ImageUsageFlagBits::eSampled,
+                                        vk::SharingMode::eExclusive,
+                                        {},
+                                        vk::ImageLayout::eUndefined};
+
     stbi_image_free(pixels);
 }
 
