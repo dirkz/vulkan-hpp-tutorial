@@ -377,7 +377,6 @@ void HelloTriangleApplication::CreateTextureImage()
 void HelloTriangleApplication::CreateVertexBuffer()
 {
     std::vector<uint32_t> qs = m_familyIndices->UniqueGraphicsAndTransfer();
-    std::span<uint32_t> queuesGraphicsAndTransfer{qs};
     std::vector<Vertex> vs = Vertices;
     const std::span<Vertex> vertices{vs};
     std::vector<uint16_t> is = Indices;
