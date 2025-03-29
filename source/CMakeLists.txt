@@ -44,6 +44,10 @@ add_executable(${PROJECT_NAME}
 # Adds shader compilations as custom target to ${PROJECT_NAME}
 add_subdirectory(shaders)
 
+message(STATUS "CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}")
+
+add_subdirectory(textures)
+
 target_link_libraries(${PROJECT_NAME} PRIVATE common)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)

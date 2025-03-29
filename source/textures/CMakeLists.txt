@@ -1,0 +1,1 @@
+file(COPY texture.jpg DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
