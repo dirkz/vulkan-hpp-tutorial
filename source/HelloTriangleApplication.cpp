@@ -347,7 +347,14 @@ void HelloTriangleApplication::CreateTextureImage()
 #endif
 
     stbi_uc *pixels = stbi_load(pFilePath, &width, &height, &channels, STBI_rgb_alpha);
+
     vk::DeviceSize imageSize = width * height * 4;
+
+    MappedBuffer stagingBuffer = m_vma.CreateMappedBuffer(
+        imageSize, vk::BufferUsageFlagBits::eTransferSrc, vk::SharingMode::eExclusive);
+    memcpy(stagingBuffer.Mapped(), pixels, imageSize);
+
+    stbi_image_free(pixels);
 }
 
 void HelloTriangleApplication::CreateVertexBuffer()
