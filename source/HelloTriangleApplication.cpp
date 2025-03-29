@@ -7,6 +7,7 @@
 #include "Strings.h"
 #include "SwapChainSupportDetails.h"
 #include "Validation.h"
+#include "VmaImage.h"
 
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
 
@@ -370,6 +371,8 @@ void HelloTriangleApplication::CreateTextureImage()
                                         vk::SharingMode::eExclusive,
                                         {},
                                         vk::ImageLayout::eUndefined};
+
+    VmaImage image{m_vma.Allocator(), imageCreateInfo};
 
     stbi_image_free(pixels);
 }
