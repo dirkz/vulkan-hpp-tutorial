@@ -22,9 +22,8 @@ struct BufferTransfer
     {
         auto contentsSize = sizeof(T) * contents.size();
 
-        vk::BufferUsageFlags stagingBufferUsageFlags{vk::BufferUsageFlagBits::eTransferSrc};
-        MappedBuffer *stagingBuffer =
-            vma.NewMappedBuffer(contentsSize, stagingBufferUsageFlags, vk::SharingMode::eExclusive);
+        MappedBuffer *stagingBuffer = vma.NewMappedBuffer(
+            contentsSize, vk::BufferUsageFlagBits::eTransferSrc, vk::SharingMode::eExclusive);
         memcpy(stagingBuffer->Mapped(), contents.data(), contentsSize);
 
         usageFlags |= vk::BufferUsageFlagBits::eTransferDst;
