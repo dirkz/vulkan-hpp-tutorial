@@ -6,7 +6,6 @@
 #include "ShaderModule.h"
 #include "Strings.h"
 #include "SwapChainSupportDetails.h"
-#include "UploadQueue.h"
 #include "Validation.h"
 #include "VmaImage.h"
 
@@ -336,7 +335,7 @@ void HelloTriangleApplication::CreateCommandPool()
     m_commandPool = m_device->createCommandPoolUnique(createInfo);
 }
 
-void HelloTriangleApplication::CreateTextureImage()
+void HelloTriangleApplication::CreateTextureImage(UploadQueue &uploadQueue)
 {
     int width = 0, height = 0, channels = 0;
     std::filesystem::path texturePath = m_texturePath / "texture.jpg";
@@ -350,21 +349,19 @@ void HelloTriangleApplication::CreateTextureImage()
 
     stbi_uc *pixels = stbi_load(pFilePath, &width, &height, &channels, STBI_rgb_alpha);
 
-    UploadQueue uploadQueue{m_vma, m_device.get(), m_familyIndices->GraphicsFamily().value()};
     VmaImage image = uploadQueue.UploadImage(width, height, width * height * 4, pixels);
-    uploadQueue.FinishAndWait();
+    VmaImage *pImage = new VmaImage{std::move(image)};
+    m_texture.reset(pImage);
 
     stbi_image_free(pixels);
 }
 
-void HelloTriangleApplication::CreateVertexBuffer()
+void HelloTriangleApplication::CreateVertexBuffer(UploadQueue &uploadQueue)
 {
     std::vector<Vertex> vs = Vertices;
     const std::span<Vertex> vertices{vs};
     std::vector<uint16_t> is = Indices;
     const std::span<uint16_t> indices{is};
-
-    UploadQueue uploadQueue{m_vma, m_device.get(), m_familyIndices->GraphicsFamily().value()};
 
     VmaBuffer *vertexBuffer =
         uploadQueue.UploadData(vertices, vk::BufferUsageFlagBits::eVertexBuffer);
@@ -372,8 +369,6 @@ void HelloTriangleApplication::CreateVertexBuffer()
 
     VmaBuffer *indexBuffer = uploadQueue.UploadData(indices, vk::BufferUsageFlagBits::eIndexBuffer);
     m_indexBuffer.reset(indexBuffer);
-
-    uploadQueue.FinishAndWait();
 }
 
 void HelloTriangleApplication::CreateFrameData()
@@ -469,8 +464,14 @@ void HelloTriangleApplication::InitVulkan()
     CreateGraphicsPipeline();
     CreateFrameBuffers();
     CreateCommandPool();
-    CreateTextureImage();
-    CreateVertexBuffer();
+
+    UploadQueue uploadQueue{m_vma, m_device.get(), m_familyIndices->GraphicsFamily().value()};
+
+    CreateTextureImage(uploadQueue);
+    CreateVertexBuffer(uploadQueue);
+
+    uploadQueue.FinishAndWait();
+
     CreateFrameData();
     CreateDescriptorPool();
     CreateDescriptorSets();

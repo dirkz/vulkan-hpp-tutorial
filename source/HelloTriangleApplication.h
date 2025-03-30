@@ -8,6 +8,7 @@
 #include "QueueFamilyIndices.h"
 #include "SwapChain.h"
 #include "UniformBufferObject.h"
+#include "UploadQueue.h"
 #include "Vertex.h"
 #include "Vma.h"
 #include "VmaBuffer.h"
@@ -55,6 +56,8 @@ struct HelloTriangleApplication : public Window::Callback
     vk::UniqueDescriptorPool m_descriptorPool;
     std::vector<vk::UniqueDescriptorSet> m_descriptorSets;
 
+    std::unique_ptr<VmaImage> m_texture;
+
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;
 
@@ -79,8 +82,8 @@ struct HelloTriangleApplication : public Window::Callback
     void CreateGraphicsPipeline();
     void CreateFrameBuffers();
     void CreateCommandPool();
-    void CreateTextureImage();
-    void CreateVertexBuffer();
+    void CreateTextureImage(UploadQueue &uploadQueue);
+    void CreateVertexBuffer(UploadQueue &uploadQueue);
     void CreateFrameData();
     void CreateDescriptorPool();
     void CreateDescriptorSets();
