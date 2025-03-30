@@ -13,7 +13,7 @@ struct UploadQueue
 {
     UploadQueue(const Vma &vma, const vk::Device device, uint32_t uploadQueue);
 
-    VmaImage UploadImage(int width, int height, int size, void *pImageData);
+    VmaImage *UploadImage(int width, int height, int size, void *pImageData);
 
     template <class T>
     VmaBuffer *UploadData(const std::span<T> contents, vk::BufferUsageFlags usageFlags)

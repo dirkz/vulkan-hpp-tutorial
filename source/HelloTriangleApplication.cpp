@@ -349,8 +349,7 @@ void HelloTriangleApplication::CreateTextureImage(UploadQueue &uploadQueue)
 
     stbi_uc *pixels = stbi_load(pFilePath, &width, &height, &channels, STBI_rgb_alpha);
 
-    VmaImage image = uploadQueue.UploadImage(width, height, width * height * 4, pixels);
-    VmaImage *pImage = new VmaImage{std::move(image)};
+    VmaImage *pImage = uploadQueue.UploadImage(width, height, width * height * 4, pixels);
     m_texture.reset(pImage);
 
     stbi_image_free(pixels);

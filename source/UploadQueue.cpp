@@ -28,7 +28,7 @@ UploadQueue::UploadQueue(const Vma &vma, const vk::Device device, uint32_t uploa
     m_commandBuffer->begin(beginInfo);
 }
 
-VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageData)
+VmaImage *UploadQueue::UploadImage(int width, int height, int size, void *pImageData)
 {
     MappedBuffer *stagingBuffer = m_vma.NewMappedBuffer(size, vk::BufferUsageFlagBits::eTransferSrc,
                                                         vk::SharingMode::eExclusive);
@@ -51,7 +51,7 @@ VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageD
                                         {},
                                         vk::ImageLayout::eUndefined};
 
-    VmaImage image{m_vma.Allocator(), imageCreateInfo};
+    VmaImage *pImage = new VmaImage{m_vma.Allocator(), imageCreateInfo};
 
     constexpr uint32_t baseMipLevel = 0;
     constexpr uint32_t levelCount = 1;
@@ -66,7 +66,7 @@ VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageD
                                                vk::ImageLayout::eTransferDstOptimal,
                                                VK_QUEUE_FAMILY_IGNORED,
                                                VK_QUEUE_FAMILY_IGNORED,
-                                               image.Image(),
+                                               pImage->Image(),
                                                imageSubresourceRange};
 
     m_commandBuffer->pipelineBarrier(vk::PipelineStageFlagBits::eTopOfPipe,
@@ -79,7 +79,7 @@ VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageD
                                                       baseArrayLayer, layerCount};
     vk::BufferImageCopy region{0, 0, 0, imageSubresourceLayers, imageOffset, imageExtent};
 
-    m_commandBuffer->copyBufferToImage(stagingBuffer->Buffer(), image.Image(),
+    m_commandBuffer->copyBufferToImage(stagingBuffer->Buffer(), pImage->Image(),
                                        vk::ImageLayout::eTransferDstOptimal, {region});
 
     vk::ImageMemoryBarrier imageMemoryBarrier2{vk::AccessFlagBits::eTransferWrite,
@@ -88,7 +88,7 @@ VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageD
                                                vk::ImageLayout::eShaderReadOnlyOptimal,
                                                VK_QUEUE_FAMILY_IGNORED,
                                                VK_QUEUE_FAMILY_IGNORED,
-                                               image.Image(),
+                                               pImage->Image(),
                                                imageSubresourceRange};
 
     m_commandBuffer->pipelineBarrier(vk::PipelineStageFlagBits::eTransfer,
@@ -98,7 +98,7 @@ VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageD
     std::unique_ptr<MappedBuffer> uniqueBuffer{stagingBuffer};
     m_stagingBuffers.push_back(std::move(uniqueBuffer));
 
-    return image;
+    return pImage;
 }
 
 void UploadQueue::FinishAndWait()
