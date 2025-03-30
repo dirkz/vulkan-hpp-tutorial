@@ -56,7 +56,7 @@ struct HelloTriangleApplication : public Window::Callback
     vk::UniqueDescriptorPool m_descriptorPool;
     std::vector<vk::UniqueDescriptorSet> m_descriptorSets;
 
-    std::unique_ptr<VmaImage> m_texture;
+    std::unique_ptr<VmaImage> m_textureImage;
 
     vk::Queue m_graphicsQueue;
     vk::Queue m_presentQueue;
