@@ -57,17 +57,28 @@ VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageD
     constexpr uint32_t levelCount = 1;
     constexpr uint32_t baseArrayLayer = 0;
     constexpr uint32_t layerCount = 1;
-    vk::ImageSubresourceRange subresourceRange{vk::ImageAspectFlagBits::eColor, baseMipLevel,
-                                               levelCount, baseArrayLayer, layerCount};
+    vk::ImageSubresourceRange imageSubresourceRange{vk::ImageAspectFlagBits::eColor, baseMipLevel,
+                                                    levelCount, baseArrayLayer, layerCount};
 
-    vk::ImageMemoryBarrier memoryBarrier{{},
-                                         {},
-                                         vk::ImageLayout::eUndefined,
-                                         vk::ImageLayout::eTransferDstOptimal,
-                                         VK_QUEUE_FAMILY_IGNORED,
-                                         VK_QUEUE_FAMILY_IGNORED,
-                                         image.Image(),
-                                         subresourceRange};
+    vk::ImageMemoryBarrier imageMemoryBarrier{{},
+                                              {},
+                                              vk::ImageLayout::eUndefined,
+                                              vk::ImageLayout::eTransferDstOptimal,
+                                              VK_QUEUE_FAMILY_IGNORED,
+                                              VK_QUEUE_FAMILY_IGNORED,
+                                              image.Image(),
+                                              imageSubresourceRange};
+
+    m_commandBuffer->pipelineBarrier({}, {}, {}, {}, {}, {imageMemoryBarrier});
+
+    vk::Offset3D imageOffset{0, 0, 0};
+    constexpr uint32_t mipLevel = 0;
+    vk::ImageSubresourceLayers imageSubresourceLayers{vk::ImageAspectFlagBits::eColor, mipLevel,
+                                                      baseArrayLayer, layerCount};
+    vk::BufferImageCopy region{0, 0, 0, imageSubresourceLayers, imageOffset, imageExtent};
+
+    m_commandBuffer->copyBufferToImage(stagingBuffer.Buffer(), image.Image(),
+                                       vk::ImageLayout::eTransferDstOptimal, {region});
 
     return image;
 }
