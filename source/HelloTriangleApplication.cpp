@@ -359,23 +359,21 @@ void HelloTriangleApplication::CreateTextureImage()
 
 void HelloTriangleApplication::CreateVertexBuffer()
 {
-    std::vector<uint32_t> qs = m_familyIndices->UniqueGraphicsAndTransfer();
     std::vector<Vertex> vs = Vertices;
     const std::span<Vertex> vertices{vs};
     std::vector<uint16_t> is = Indices;
     const std::span<uint16_t> indices{is};
 
-    BufferTransfer transfer{*m_device, m_familyIndices.get()};
+    UploadQueue uploadQueue{m_vma, m_device.get(), m_familyIndices->GraphicsFamily().value()};
 
     VmaBuffer *vertexBuffer =
-        transfer.Upload(m_vma, vertices, vk::BufferUsageFlagBits::eVertexBuffer, qs);
+        uploadQueue.UploadData(vertices, vk::BufferUsageFlagBits::eVertexBuffer);
     m_vertexBuffer.reset(vertexBuffer);
 
-    VmaBuffer *indexBuffer =
-        transfer.Upload(m_vma, indices, vk::BufferUsageFlagBits::eIndexBuffer, qs);
+    VmaBuffer *indexBuffer = uploadQueue.UploadData(indices, vk::BufferUsageFlagBits::eIndexBuffer);
     m_indexBuffer.reset(indexBuffer);
 
-    transfer.FinishAndWait();
+    uploadQueue.FinishAndWait();
 }
 
 void HelloTriangleApplication::CreateFrameData()
