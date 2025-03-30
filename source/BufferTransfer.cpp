@@ -23,7 +23,7 @@ BufferTransfer::BufferTransfer(const vk::Device device, const QueueFamilyIndices
     auto commandBuffers = device.allocateCommandBuffersUnique(allocInfo);
     m_commandBuffer = std::move(commandBuffers[0]);
 
-    vk::CommandBufferBeginInfo beginInfo{};
+    vk::CommandBufferBeginInfo beginInfo{vk::CommandBufferUsageFlagBits::eOneTimeSubmit};
     m_commandBuffer->begin(beginInfo);
 }
 

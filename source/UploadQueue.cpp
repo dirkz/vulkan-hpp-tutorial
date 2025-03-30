@@ -24,7 +24,7 @@ UploadQueue::UploadQueue(const Vma &vma, const vk::Device device, uint32_t uploa
     auto commandBuffers = device.allocateCommandBuffersUnique(allocInfo);
     m_commandBuffer = std::move(commandBuffers[0]);
 
-    vk::CommandBufferBeginInfo beginInfo{};
+    vk::CommandBufferBeginInfo beginInfo{vk::CommandBufferUsageFlagBits::eOneTimeSubmit};
     m_commandBuffer->begin(beginInfo);
 }
 
