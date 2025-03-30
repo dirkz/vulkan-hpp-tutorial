@@ -14,6 +14,11 @@ struct VmaImage
 
     ~VmaImage();
 
+    inline VkImage Image() const
+    {
+        return m_image;
+    }
+
   private:
     VmaAllocator m_allocator;
     VkImage m_image;

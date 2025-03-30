@@ -21,7 +21,7 @@ struct UploadQueue
     const Vma &m_vma;
     vk::Device m_device;
     vk::UniqueFence m_fence;
-    vk::Queue m_queue;
+    vk::Queue m_uploadQueue;
     vk::UniqueCommandPool m_commandPool;
     vk::UniqueCommandBuffer m_commandBuffer;
     std::vector<std::unique_ptr<MappedBuffer>> m_stagingBuffers;

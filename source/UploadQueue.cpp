@@ -8,7 +8,7 @@ namespace zvk
 UploadQueue::UploadQueue(const Vma &vma, const vk::Device device, uint32_t uploadQueue)
     : m_vma{vma}, m_device{device}
 {
-    m_queue = device.getQueue(uploadQueue, 0);
+    m_uploadQueue = device.getQueue(uploadQueue, 0);
 
     vk::FenceCreateInfo fenceCreateInfo{};
     m_fence = device.createFenceUnique(fenceCreateInfo);
@@ -53,6 +53,22 @@ VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageD
 
     VmaImage image{m_vma.Allocator(), imageCreateInfo};
 
+    constexpr uint32_t baseMipLevel = 0;
+    constexpr uint32_t levelCount = 1;
+    constexpr uint32_t baseArrayLayer = 0;
+    constexpr uint32_t layerCount = 1;
+    vk::ImageSubresourceRange subresourceRange{vk::ImageAspectFlagBits::eColor, baseMipLevel,
+                                               levelCount, baseArrayLayer, layerCount};
+
+    vk::ImageMemoryBarrier memoryBarrier{{},
+                                         {},
+                                         vk::ImageLayout::eUndefined,
+                                         vk::ImageLayout::eTransferDstOptimal,
+                                         VK_QUEUE_FAMILY_IGNORED,
+                                         VK_QUEUE_FAMILY_IGNORED,
+                                         image.Image(),
+                                         subresourceRange};
+
     return image;
 }
 
@@ -60,7 +76,7 @@ void UploadQueue::FinishAndWait()
 {
     m_commandBuffer->end();
     vk::SubmitInfo submitInfo{{}, {}, {*m_commandBuffer}, {}};
-    m_queue.submit({submitInfo}, *m_fence);
+    m_uploadQueue.submit({submitInfo}, *m_fence);
     vk::Result result = m_device.waitForFences({*m_fence}, VK_TRUE, UINT64_MAX);
     assert(result == vk::Result::eSuccess);
 }
