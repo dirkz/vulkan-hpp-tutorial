@@ -30,9 +30,9 @@ UploadQueue::UploadQueue(const Vma &vma, const vk::Device device, uint32_t uploa
 
 VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageData)
 {
-    MappedBuffer stagingBuffer = m_vma.CreateMappedBuffer(
-        size, vk::BufferUsageFlagBits::eTransferSrc, vk::SharingMode::eExclusive);
-    memcpy(stagingBuffer.Mapped(), pImageData, size);
+    MappedBuffer *stagingBuffer = m_vma.NewMappedBuffer(size, vk::BufferUsageFlagBits::eTransferSrc,
+                                                        vk::SharingMode::eExclusive);
+    memcpy(stagingBuffer->Mapped(), pImageData, size);
 
     vk::Extent3D imageExtent{static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1};
     constexpr uint32_t mipLayers = 1;
@@ -77,8 +77,11 @@ VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageD
                                                       baseArrayLayer, layerCount};
     vk::BufferImageCopy region{0, 0, 0, imageSubresourceLayers, imageOffset, imageExtent};
 
-    m_commandBuffer->copyBufferToImage(stagingBuffer.Buffer(), image.Image(),
+    m_commandBuffer->copyBufferToImage(stagingBuffer->Buffer(), image.Image(),
                                        vk::ImageLayout::eTransferDstOptimal, {region});
+
+    std::unique_ptr<MappedBuffer> uniqueBuffer{stagingBuffer};
+    m_stagingBuffers.push_back(std::move(uniqueBuffer));
 
     return image;
 }

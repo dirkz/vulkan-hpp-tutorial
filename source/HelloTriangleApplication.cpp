@@ -352,6 +352,7 @@ void HelloTriangleApplication::CreateTextureImage()
 
     UploadQueue uploadQueue{m_vma, m_device.get(), m_familyIndices->GraphicsFamily().value()};
     VmaImage image = uploadQueue.UploadImage(width, height, width * height * 4, pixels);
+    uploadQueue.FinishAndWait();
 
     stbi_image_free(pixels);
 }
