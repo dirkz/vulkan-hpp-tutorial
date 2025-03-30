@@ -60,18 +60,18 @@ VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageD
     vk::ImageSubresourceRange imageSubresourceRange{vk::ImageAspectFlagBits::eColor, baseMipLevel,
                                                     levelCount, baseArrayLayer, layerCount};
 
-    vk::ImageMemoryBarrier imageMemoryBarrier{{},
-                                              vk::AccessFlagBits::eTransferWrite,
-                                              vk::ImageLayout::eUndefined,
-                                              vk::ImageLayout::eTransferDstOptimal,
-                                              VK_QUEUE_FAMILY_IGNORED,
-                                              VK_QUEUE_FAMILY_IGNORED,
-                                              image.Image(),
-                                              imageSubresourceRange};
+    vk::ImageMemoryBarrier imageMemoryBarrier1{{},
+                                               vk::AccessFlagBits::eTransferWrite,
+                                               vk::ImageLayout::eUndefined,
+                                               vk::ImageLayout::eTransferDstOptimal,
+                                               VK_QUEUE_FAMILY_IGNORED,
+                                               VK_QUEUE_FAMILY_IGNORED,
+                                               image.Image(),
+                                               imageSubresourceRange};
 
     m_commandBuffer->pipelineBarrier(vk::PipelineStageFlagBits::eTopOfPipe,
                                      vk::PipelineStageFlagBits::eTransfer, {}, {}, {},
-                                     {imageMemoryBarrier});
+                                     {imageMemoryBarrier1});
 
     vk::Offset3D imageOffset{0, 0, 0};
     constexpr uint32_t mipLevel = 0;
