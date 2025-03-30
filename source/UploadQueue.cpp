@@ -82,6 +82,19 @@ VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageD
     m_commandBuffer->copyBufferToImage(stagingBuffer->Buffer(), image.Image(),
                                        vk::ImageLayout::eTransferDstOptimal, {region});
 
+    vk::ImageMemoryBarrier imageMemoryBarrier2{vk::AccessFlagBits::eTransferWrite,
+                                               vk::AccessFlagBits::eShaderRead,
+                                               vk::ImageLayout::eTransferDstOptimal,
+                                               vk::ImageLayout::eShaderReadOnlyOptimal,
+                                               VK_QUEUE_FAMILY_IGNORED,
+                                               VK_QUEUE_FAMILY_IGNORED,
+                                               image.Image(),
+                                               imageSubresourceRange};
+
+    m_commandBuffer->pipelineBarrier(vk::PipelineStageFlagBits::eTransfer,
+                                     vk::PipelineStageFlagBits::eFragmentShader, {}, {}, {},
+                                     {imageMemoryBarrier2});
+
     std::unique_ptr<MappedBuffer> uniqueBuffer{stagingBuffer};
     m_stagingBuffers.push_back(std::move(uniqueBuffer));
 
