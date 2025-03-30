@@ -61,7 +61,7 @@ VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageD
                                                     levelCount, baseArrayLayer, layerCount};
 
     vk::ImageMemoryBarrier imageMemoryBarrier{{},
-                                              {},
+                                              vk::AccessFlagBits::eTransferWrite,
                                               vk::ImageLayout::eUndefined,
                                               vk::ImageLayout::eTransferDstOptimal,
                                               VK_QUEUE_FAMILY_IGNORED,
@@ -69,7 +69,9 @@ VmaImage UploadQueue::UploadImage(int width, int height, int size, void *pImageD
                                               image.Image(),
                                               imageSubresourceRange};
 
-    m_commandBuffer->pipelineBarrier({}, {}, {}, {}, {}, {imageMemoryBarrier});
+    m_commandBuffer->pipelineBarrier(vk::PipelineStageFlagBits::eTopOfPipe,
+                                     vk::PipelineStageFlagBits::eTransfer, {}, {}, {},
+                                     {imageMemoryBarrier});
 
     vk::Offset3D imageOffset{0, 0, 0};
     constexpr uint32_t mipLevel = 0;
