@@ -8,8 +8,8 @@ namespace zvk
 struct DebugUtilsMessenger
 {
     /// <summary>
-    /// Create a stand-alone debug utils messenger suitable before instance creation
-    /// and during its destruction.
+    /// Create a stand-alone debug utils messenger suitable during instance creation
+    /// and its destruction.
     /// </summary>
     DebugUtilsMessenger();
 
