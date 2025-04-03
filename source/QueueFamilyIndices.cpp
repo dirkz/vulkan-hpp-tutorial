@@ -20,12 +20,12 @@ QueueFamilyIndices::QueueFamilyIndices(const vk::PhysicalDevice device,
             }
         }
 
-        if (!m_transferFamily.has_value())
+        if (!m_transferOnlyFamily.has_value())
         {
             if (queueFamilies[i].queueFlags & vk::QueueFlagBits::eTransfer &&
                 !(queueFamilies[i].queueFlags & vk::QueueFlagBits::eGraphics))
             {
-                m_transferFamily = i;
+                m_transferOnlyFamily = i;
             }
         }
 
@@ -49,7 +49,7 @@ QueueFamilyIndices::QueueFamilyIndices(const vk::PhysicalDevice device,
 bool QueueFamilyIndices::IsComplete() const
 {
     return m_graphicsFamily.has_value() && m_presentFamily.has_value() &&
-           m_transferFamily.has_value();
+           m_transferOnlyFamily.has_value();
 }
 
 std::optional<uint32_t> QueueFamilyIndices::GraphicsFamily() const
@@ -62,15 +62,15 @@ std::optional<uint32_t> QueueFamilyIndices::PresentFamily() const
     return m_presentFamily;
 }
 
-std::optional<uint32_t> QueueFamilyIndices::TransferFamily() const
+std::optional<uint32_t> QueueFamilyIndices::TransferOnlyFamily() const
 {
-    return m_transferFamily;
+    return m_transferOnlyFamily;
 }
 
 std::vector<uint32_t> QueueFamilyIndices::UniqueFamilies() const
 {
     set<uint32_t> familySet{m_graphicsFamily.value(), m_presentFamily.value(),
-                            m_transferFamily.value()};
+                            m_transferOnlyFamily.value()};
     return vector<uint32_t>{familySet.begin(), familySet.end()};
 }
 
@@ -80,9 +80,9 @@ std::vector<uint32_t> QueueFamilyIndices::UniqueGraphicsAndPresent() const
     return vector<uint32_t>{familySet.begin(), familySet.end()};
 }
 
-std::vector<uint32_t> QueueFamilyIndices::UniqueGraphicsAndTransfer() const
+std::vector<uint32_t> QueueFamilyIndices::UniqueGraphicsAndTransferOnly() const
 {
-    set<uint32_t> familySet{m_graphicsFamily.value(), m_transferFamily.value()};
+    set<uint32_t> familySet{m_graphicsFamily.value(), m_transferOnlyFamily.value()};
     return vector<uint32_t>{familySet.begin(), familySet.end()};
 }
 

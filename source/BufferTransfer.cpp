@@ -6,7 +6,7 @@ namespace zvk
 BufferTransfer::BufferTransfer(const vk::Device device, const QueueFamilyIndices *familyIndices)
     : m_device{device}
 {
-    m_queue = device.getQueue(familyIndices->TransferFamily().value(), 0);
+    m_queue = device.getQueue(familyIndices->TransferOnlyFamily().value(), 0);
 
     vk::FenceCreateInfo fenceCreateInfo{};
     m_fence = device.createFenceUnique(fenceCreateInfo);
@@ -15,7 +15,7 @@ BufferTransfer::BufferTransfer(const vk::Device device, const QueueFamilyIndices
         vk::CommandPoolCreateFlagBits::eResetCommandBuffer |
         vk::CommandPoolCreateFlagBits::eTransient;
     vk::CommandPoolCreateInfo createInfo{commandPoolCreateFlags,
-                                         familyIndices->TransferFamily().value()};
+                                         familyIndices->TransferOnlyFamily().value()};
     m_commandPool = device.createCommandPoolUnique(createInfo);
 
     vk::CommandBufferAllocateInfo allocInfo{m_commandPool.get(), vk::CommandBufferLevel::ePrimary,
